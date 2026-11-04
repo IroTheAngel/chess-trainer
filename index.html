@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Learn and drill a full chess opening repertoire: Catalan, Queen's Gambit and Vienna as White; Caro-Kann, Slav, Sicilian and Dutch as Black. Spoken coach, puzzles and play against the computer.">
+<meta name="description" content="Learn and drill a full chess opening repertoire: Catalan, Queen's Gambit, Vienna and the Alien Gambit as White; Caro-Kann, Slav, Sicilian and Dutch as Black. Spoken coach, puzzles and play against the computer.">
 <meta name="theme-color" content="#5d9b3c">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%235d9b3c'%2F%3E%3Ctext%20x%3D'32'%20y%3D'49'%20font-size%3D'44'%20text-anchor%3D'middle'%20fill%3D'%23fff'%20font-family%3D'Segoe%20UI%20Symbol%2CDejaVu%20Sans%2Csans-serif'%3E%26%239822%3B%3C%2Ftext%3E%3C%2Fsvg%3E">
 <title>Repertoire Trainer</title>
@@ -68,9 +68,11 @@ header .sp{flex:1}
 
 main{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
 @media (max-width:900px){main{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:900px) and (min-width:600px) and (orientation:landscape) and (max-height:560px){main{grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:14px}}
 
-.boardwrap{min-width:0}
-.board{position:relative;width:100%;aspect-ratio:1;max-width:min(640px,100%);margin:0 auto;border-radius:4px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;box-shadow:var(--board-shadow)}
+.boardwrap{min-width:0;--bsz:min(640px,100%,max(260px,calc(100vh - 140px)))}
+@supports (height:100dvh){.boardwrap{--bsz:min(640px,100%,max(260px,calc(100dvh - 140px)))}}
+.board{position:relative;width:100%;aspect-ratio:1;max-width:var(--bsz);margin:0 auto;border-radius:4px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;box-shadow:var(--board-shadow)}
 .grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr)}
 .sq{position:relative}
 .sq.l{background:var(--light)} .sq.d{background:var(--dark)}
@@ -112,12 +114,12 @@ main{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,
 .board.shake{animation:shake .32s}
 @keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
 
-.underboard{max-width:min(640px,100%);margin:12px auto 0;display:flex;gap:8px}
+.underboard{max-width:var(--bsz);margin:12px auto 0;display:flex;gap:8px}
 .ctrl{flex:1;height:44px;border-radius:8px;background:var(--panel);display:grid;place-items:center;color:var(--muted);font-weight:800}
 .ctrl:hover:not(:disabled){background:var(--line);color:var(--fg)}
 .ctrl:disabled{opacity:.35;cursor:default}
 .ctrl svg{width:20px;height:20px}
-.tip{max-width:min(640px,100%);margin:10px auto 0;color:var(--dim);font-size:12.5px;line-height:1.55;text-align:center;text-wrap:balance}
+.tip{max-width:var(--bsz);margin:10px auto 0;color:var(--dim);font-size:12.5px;line-height:1.55;text-align:center;text-wrap:balance}
 .tip kbd{font-family:var(--mono);font-size:11px;background:var(--panel);color:var(--muted);padding:1px 5px;border-radius:4px}
 .tip b{color:var(--muted);font-weight:800}
 
@@ -145,6 +147,12 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .bubble.good{box-shadow:inset 4px 0 0 var(--good)} .bubble.bad{box-shadow:inset 4px 0 0 var(--bad)}
 .stats{display:flex;gap:16px;padding:0 16px 10px;font-size:12.5px;color:var(--muted);font-weight:700;flex-wrap:wrap}
 .stats span b{color:var(--fg);font-variant-numeric:tabular-nums}
+.rrange{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:0 16px 12px;padding:8px 12px;background:var(--panel-2);border-radius:6px;font-size:13.5px;font-weight:800;color:var(--muted)}
+.rrange input{width:58px;height:32px;border-radius:6px;border:2px solid var(--line);background:var(--panel);color:var(--fg);font:inherit;font-weight:900;text-align:center;font-variant-numeric:tabular-nums}
+.rrange input:focus{outline:none;border-color:var(--accent)}
+.rrange small{color:var(--dim);font-weight:700;font-size:12.5px}
+.rrange .rall{margin-left:auto;padding:5px 12px;border-radius:999px;background:var(--line);color:var(--fg);font-weight:800;font-size:12.5px}
+.rrange .rall:hover{filter:brightness(1.05)}
 .ideas{margin:0 16px 12px;background:var(--panel-2);border-radius:6px;font-size:13.5px}
 .ideas summary{cursor:pointer;padding:9px 12px;font-weight:800;color:var(--muted);list-style:none;display:flex;justify-content:space-between;gap:8px}
 .ideas summary::-webkit-details-marker{display:none}
@@ -186,6 +194,10 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .sheethead span{color:var(--muted);font-weight:800;font-size:13px;font-variant-numeric:tabular-nums}
 .sheet .lines{overflow-y:auto;padding:12px 16px 16px;overscroll-behavior:contain}
 .listblurb{margin:2px 4px 6px;color:var(--muted);font-size:13px;line-height:1.5}
+.listsub{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:14px 4px 4px;font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--fg)}
+.listsub:first-of-type{margin-top:4px}
+.listsub small{margin-left:8px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--dim)}
+.listsub em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:0;color:var(--muted);white-space:nowrap}
 .fam{background:var(--panel-2);border-radius:8px}
 .fam summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto 14px;gap:8px;align-items:center;padding:10px 12px;font-weight:900;font-size:14px}
 .fam summary::-webkit-details-marker{display:none}
@@ -261,14 +273,15 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .wd i svg{width:20px;height:20px;fill:#fff}
 .wd.on i{background:var(--streak);border-color:var(--streak-deep)}
 .wd.join::before{content:"";position:absolute;top:37px;left:-50%;width:100%;height:10px;background:var(--streak);border-radius:5px}
-.wd.today{color:var(--fg)}
-.wd.today:not(.on) i{border:2px dashed var(--streak)}
-.wd.today.on i{box-shadow:0 0 0 3px var(--panel),0 0 0 5px var(--streak)}
+.wd.tdy{color:var(--fg)}
+.wd.tdy:not(.on) i{border:2px dashed var(--streak)}
+.wd.tdy.on i{box-shadow:0 0 0 3px var(--panel),0 0 0 5px var(--streak)}
 .smsg{margin:18px 8px 0;max-width:340px;color:var(--muted);font-weight:800;font-size:16px;line-height:1.45;text-wrap:balance}
 .sbtn{margin-top:26px;width:100%;max-width:380px;height:54px;border-radius:14px;background:var(--streak);color:#fff;font-family:var(--display);font-weight:900;font-size:17px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 5px 0 var(--streak-deep);text-shadow:0 1px 0 rgba(0,0,0,.15)}
 .sbtn:hover{filter:brightness(1.06)}
 .sbtn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--streak-deep)}
 @media (max-height:700px),(max-width:420px){.flame{width:150px;height:180px}.snum{font-size:88px}.burst{width:180px;height:180px;margin:-90px 0 0 -90px}}
+@media (max-height:540px){.flame{width:80px;height:96px}.snum{font-size:52px;margin-top:2px}.slab{font-size:21px;margin-top:0}.burst{width:100px;height:100px;margin:-50px 0 0 -50px}.week{margin-top:12px;padding:10px 8px 12px}.smsg{margin-top:10px;font-size:15px}.sbtn{margin-top:14px;height:46px}}
 @keyframes fade{from{opacity:0}}
 @keyframes flick{0%,100%{transform:scale(1,1) skewX(0)}30%{transform:scale(1.03,.97) skewX(-2deg)}65%{transform:scale(.98,1.04) skewX(2deg)}}
 @keyframes flick2{0%,100%{transform:scale(1)}50%{transform:scale(.93,1.07)}}
@@ -489,6 +502,7 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
       <div class="bubble" id="bubble" aria-live="polite"></div>
     </div>
     <div class="stats" id="stats"></div>
+    <div class="rrange" id="rrange" hidden><span>Random from line</span><input type="number" id="rFrom" inputmode="numeric" min="1" aria-label="First line"><span>to</span><input type="number" id="rTo" inputmode="numeric" min="1" aria-label="Last line"><small id="rOf"></small><button class="rall" id="rAll" type="button">All lines</button></div>
     <details class="ideas" id="ideas"><summary id="ideasHead">Key ideas</summary><div id="ideasBody"></div></details>
     <div class="moves" id="moves"></div>
     <div class="actions" id="actions"></div>
@@ -548,37 +562,7 @@ const REP={families:[
    "Whenever Black's c8 bishop leaves early, check Qb3 hitting b7 and d5 together.",
    "Against gambits like the Albin, develop calmly (Nf3, g3, Bg2, Nbd2) and round up the advanced pawn later.",
    "If Black does something odd and you can put two pawns in the centre, do it."]},
- {id:"ck_adv",side:"b",name:"Caro-Kann: Advance",
-  blurb:"White pushes e5 for space. Your bishop goes to f5, then ...e6 and ...c5 attack the pawn chain.",
-  ideas:[
-   "Bishop first, ...e6 second. Your light-squared bishop has to get outside the pawn chain before ...e6 closes the door.",
-   "Attack the base of the chain. ...c5 hits d4, the pawn that holds e5 up.",
-   "...Nc6, ...Qb6 and ...Ne7–f5 all pile up on d4.",
-   "If White pushes h4, answer ...h5 so the f5 bishop always has a retreat. Don't let g4 and h5 trap it.",
-   "The g8 knight can't go to f6 (the e5 pawn hits it). It goes e7 and then f5 or g6."],
-  same:"Same structure as the French, but with your bishop already outside. Same ...c5 break as in every Slav line."},
- {id:"ck_classic",side:"b",name:"Caro-Kann: Classical",
-  blurb:"White defends e4 with a knight. You take on e4, develop the bishop with tempo and get a rock-solid game.",
-  ideas:[
-   "...dxe4 and ...Bf5 develop with tempo on the e4 knight.",
-   "When White chases the bishop with h4 and h5, retreat it to h7 and keep it alive.",
-   "Trade light-squared bishops on d3. That removes White's best attacking piece.",
-   "Then build the wall: ...e6, ...Nd7, ...Ngf6, ...Be7, and castle (often queenside if White did).",
-   "Your c6 and e6 pawns make a shelter White can't easily break. Solid now, active later with ...c5 or ...Qc7."]},
- {id:"ck_exch",side:"b",name:"Caro-Kann: Exchange & Panov",
-  blurb:"White takes on d5. The position opens up and you get easy development.",
-  ideas:[
-   "Knights first (...Nc6, ...Nf6), then the bishop (...Bg4 or ...Bf5), then ...e6. Same order as always.",
-   "In the Exchange, your plan is the minority attack with ...b5 and ...b4. It's the same plan White uses in the Queen's Gambit Exchange.",
-   "Against the Panov (c4), steady the centre with ...e6, then develop. If White's bishop has to move twice, you're gaining time.",
-   "Isolated pawn positions: blockade d5 with a knight, trade pieces, and White's d4 pawn turns from strength into a target."]},
- {id:"ck_other",side:"b",name:"Caro-Kann: other tries",
-  blurb:"The Fantasy (3.f3), the Two Knights, the King's Indian Attack and other side roads.",
-  ideas:[
-   "Whatever White tries, the plan stays: ...c6 and ...d5, bishop out, ...e6, castle.",
-   "Against an early f3, don't take on e4 into a big White centre. Hit it with ...e6 and ...c5 or ...Bb4.",
-   "Against slow setups like d3 and g3, take the centre yourself with ...e5. You have more space.",
-   "If White trades your bishop for a knight, put your pawns on light squares to cover the holes."]},
+ {id:"ck",side:"b",name:"Caro-Kann",blurb:"1.e4 c6 and 2...d5. White's next move picks the variation: Advance, Classical, Exchange, Panov, Two Knights or a side road. Same plan in all of them.",ideas:["Same plan in every variation: ...c6 and ...d5, bishop out to f5 or g4, then ...e6, develop and castle."],subs:[{id:"adv",name:"Advance",title:"Advance",move:"3.e5",blurb:"White pushes e5 for space. Your bishop goes to f5, then ...e6 and ...c5 attack the pawn chain.",ideas:["Bishop first, ...e6 second. Your light-squared bishop has to get outside the pawn chain before ...e6 closes the door.","Attack the base of the chain. ...c5 hits d4, the pawn that holds e5 up.","...Nc6, ...Qb6 and ...Ne7–f5 all pile up on d4.","If White pushes h4, answer ...h5 so the f5 bishop always has a retreat. Don't let g4 and h5 trap it.","The g8 knight can't go to f6 (the e5 pawn hits it). It goes e7 and then f5 or g6."],same:"Same structure as the French, but with your bishop already outside. Same ...c5 break as in every Slav line."},{id:"classic",name:"Classical",title:"Classical",move:"3.Nc3 or 3.Nd2",blurb:"White defends e4 with a knight. You take on e4, develop the bishop with tempo and get a rock-solid game.",ideas:["...dxe4 and ...Bf5 develop with tempo on the e4 knight.","When White chases the bishop with h4 and h5, retreat it to h7 and keep it alive.","Trade light-squared bishops on d3. That removes White's best attacking piece.","Then build the wall: ...e6, ...Nd7, ...Ngf6, ...Be7, and castle (often queenside if White did).","Your c6 and e6 pawns make a shelter White can't easily break. Solid now, active later with ...c5 or ...Qc7."]},{id:"exch",name:"Exchange & Panov",title:"Exchange & Panov",move:"3.exd5",blurb:"White takes on d5. The position opens up and you get easy development.",ideas:["Knights first (...Nc6, ...Nf6), then the bishop (...Bg4 or ...Bf5), then ...e6. Same order as always.","In the Exchange, your plan is the minority attack with ...b5 and ...b4. It's the same plan White uses in the Queen's Gambit Exchange.","Against the Panov (c4), steady the centre with ...e6, then develop. If White's bishop has to move twice, you're gaining time.","Isolated pawn positions: blockade d5 with a knight, trade pieces, and White's d4 pawn turns from strength into a target."]},{id:"other",name:"other tries",title:"Other tries",move:"Two Knights, Fantasy, 2.c4 and more",blurb:"The Fantasy (3.f3), the Two Knights, the King's Indian Attack and other side roads.",ideas:["Whatever White tries, the plan stays: ...c6 and ...d5, bishop out, ...e6, castle.","Against an early f3, don't take on e4 into a big White centre. Hit it with ...e6 and ...c5 or ...Bb4.","Against slow setups like d3 and g3, take the centre yourself with ...e5. You have more space.","If White trades your bishop for a knight, put your pawns on light squares to cover the holes."]}]},
  {id:"slav",side:"b",name:"Slav Defence",
   blurb:"1.d4 d5 2.c4 c6. The same ...c6 and ...d5 structure as the Caro-Kann, so the same plans work.",
   ideas:[
@@ -1227,7 +1211,7 @@ REP.lines.push(
 
 REP.lines.push(
 /* ===================== BLACK: CARO-KANN ADVANCE ===================== */
- {id:"ck_adv",side:"b",fam:"ck_adv",name:"Short system: 6.Be3",key:"3.e5 Bf5 4.Nf3 e6 5.Be2 c5 6.Be3",
+ {id:"ck_adv",side:"b",fam:"ck",sub:"adv",name:"Short system: 6.Be3",key:"3.e5 Bf5 4.Nf3 e6 5.Be2 c5 6.Be3",
   moves:"e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 cxd4 Nxd4 Ne7 O-O Nbc6",
   intro:"The Advance Variation, Short system: White develops quietly with Nf3, Be2 and O-O. Your recipe: bishop out, then ...e6, then ...c5 to hit the base of White's pawn chain.",
   plan:"Challenge the d4 knight, then ...Ng6 or ...Nf5 to pressure e5, ...Be7 and castle. Your pieces are active and White's e5 pawn needs looking after.",
@@ -1252,7 +1236,7 @@ REP.lines.push(
   5:{e6:"<b>...e6?!</b> locks your light-squared bishop behind your own pawns. It isn't losing, but it throws away the main idea of the Caro-Kann: the bishop comes out first, <i>then</i> ...e6. That's the whole reason you played ...c6 instead of ...e6 on move one.",c5:"...c5 is a real option (GothamChess likes it, and it's in your repertoire as another line). This line plays the main move ...Bf5 first."},
   7:{c5:"<b>...c5?!</b> comes one move too early here; the engine rates it clearly worse. Play ...e6 first: then d5 is rock-solid, and if White ever takes on c5, your f8 bishop is ready to take back.",Nd7:"...Nd7 looks natural, but the engine doesn't like it here. <b>...e6</b> first steadies d5 and opens your f8 bishop."},
   9:{Nd7:"...Nd7 is solid, but ...c5 is the move that fights: it attacks d4, the pawn that holds White's whole chain together."}}},
- {id:"ck_adv_oo",side:"b",fam:"ck_adv",name:"Short system: 6.O-O",key:"5.Be2 c5 6.O-O Nc6 7.c3 cxd4",
+ {id:"ck_adv_oo",side:"b",fam:"ck",sub:"adv",name:"Short system: 6.O-O",key:"5.Be2 c5 6.O-O Nc6 7.c3 cxd4",
   moves:"e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 O-O Nc6 c3 cxd4 cxd4 Nge7",
   intro:"White castles instead of guarding d4 with the bishop. You keep piling up on d4.",
   plan:"Play ...Nf5, ...Be7, castle and put a rook on c8. White's d4 pawn needs constant protection, so keep attacking it.",
@@ -1263,7 +1247,7 @@ REP.lines.push(
   13:"<b>...cxd4</b> Trade, so the c-file opens for your rook.",
   14:"White recaptures with the pawn and keeps the chain.",
   15:{t:"<b>...Nge7</b> The knight heads for f5 to put even more pressure on d4.",a:[["e7","f5"]]}}},
- {id:"ck_adv_h4",side:"b",fam:"ck_adv",name:"4.h4 h5! and the bishop trade",key:"3.e5 Bf5 4.h4 h5 5.Bd3 Bxd3",
+ {id:"ck_adv_h4",side:"b",fam:"ck",sub:"adv",name:"4.h4 h5! and the bishop trade",key:"3.e5 Bf5 4.h4 h5 5.Bd3 Bxd3",
   moves:"e4 c6 d4 d5 e5 Bf5 h4 h5 Bd3 Bxd3 Qxd3 e6 Nf3 c5",
   intro:"White pushes h4 to chase your bishop with g4 and h5. Stop it with ...h5, then trade bishops.",
   plan:"Develop with ...Nc6 and ...Ne7–f5. White's g4 push is now hard to play, so f5 is a great square for your knight.",
@@ -1278,7 +1262,7 @@ REP.lines.push(
   13:{t:"<b>...c5!</b> The usual break against the base of the chain.",a:[["c5","d4"]]}},
   why:{7:{h6:"...h6 is playable, but <b>...h5</b> stops White's h-pawn for good, so White can never use h5 to chase your bishop.",e6:"<b>...e6?</b> is the classic mistake here. White plays g4!, and after ...Bg6 h5 the bishop runs out of squares. The engine gives White more than three pawns' worth of advantage. When White pushes the h-pawn, answer with your own h-pawn."}}},
 /* ===================== BLACK: CARO-KANN CLASSICAL ===================== */
- {id:"ck_classic",side:"b",fam:"ck_classic",name:"Main line with h4–h5",key:"3.Nc3 dxe4 4.Nxe4 Bf5 5.Ng3 Bg6 6.h4",
+ {id:"ck_classic",side:"b",fam:"ck",sub:"classic",name:"Main line with h4–h5",key:"3.Nc3 dxe4 4.Nxe4 Bf5 5.Ng3 Bg6 6.h4",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7 Bd3 Bxd3 Qxd3 e6 Bd2 Ngf6 O-O-O Be7",
   intro:"The Classical Caro-Kann: White defends e4 with a knight. You take on e4, develop the bishop with tempo, and build a position that's very hard to break.",
   plan:"Castle, then free your game with ...Qc7 and ...c5, or ...Nb6–d5. Your pawns have no weaknesses, so you can wait for White to overpress.",
@@ -1306,7 +1290,7 @@ REP.lines.push(
   why:{
   7:{Nf6:"...Nf6 is a fine move too, but it's a different system. This repertoire plays <b>...Bf5</b>, developing with tempo.",Nd7:"...Nd7 is a good move too (the Karpov system). This repertoire plays <b>...Bf5</b>, developing the problem bishop with tempo."},
   11:{e6:"<b>...e6?</b> lets White play h5, and your bishop has no good square: h7 is blocked by your own pawn and f5 is covered by the g3 knight. Make room first with ...h6."}}},
- {id:"ck_classic_nf3",side:"b",fam:"ck_classic",name:"Quiet 6.Nf3",key:"5.Ng3 Bg6 6.Nf3 Nd7 7.Bd3",
+ {id:"ck_classic_nf3",side:"b",fam:"ck",sub:"classic",name:"Quiet 6.Nf3",key:"5.Ng3 Bg6 6.Nf3 Nd7 7.Bd3",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 Nf3 Nd7 Bd3 Bxd3 Qxd3 e6 O-O Ngf6",
   intro:"White skips the h4 push and just develops. You do the same and trade off White's light-squared bishop.",
   plan:"Castle, then ...c5 or ...Qc7 to free your game. Your pawn structure is the healthiest on the board.",
@@ -1319,7 +1303,7 @@ REP.lines.push(
   15:"<b>...e6</b> The usual wall.",
   16:"White castles.",
   17:"<b>...Ngf6</b> Develop. Next: ...Be7 and ...O-O, and you have a very comfortable game."}},
- {id:"ck_nc5",side:"b",fam:"ck_classic",name:"5.Nc5 hits b7",key:"4...Bf5 5.Nc5 e6 6.Nb3",
+ {id:"ck_nc5",side:"b",fam:"ck",sub:"classic",name:"5.Nc5 hits b7",key:"4...Bf5 5.Nc5 e6 6.Nb3",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Nc5 e6 Nb3 Nd7 Nf3 Ngf6",
   intro:"White's knight jumps to c5 and attacks b7. Don't panic: ...e6 opens your bishop, which attacks the knight.",
   plan:"Normal Caro-Kann development: ...Be7, ...O-O, ...c5. White's knight on b3 is a little offside.",
@@ -1332,7 +1316,7 @@ REP.lines.push(
   13:"Your last minor piece comes out. Next: ...Be7 or ...Bd6 and castle."},
 },
 /* ===================== BLACK: CARO-KANN EXCHANGE & PANOV ===================== */
- {id:"ck_exch",side:"b",fam:"ck_exch",name:"Exchange: 4.Bd3",key:"3.exd5 cxd5 4.Bd3 Nc6 5.c3 Nf6 6.Bf4 Bg4",
+ {id:"ck_exch",side:"b",fam:"ck",sub:"exch",name:"Exchange: 4.Bd3",key:"3.exd5 cxd5 4.Bd3 Nc6 5.c3 Nf6 6.Bf4 Bg4",
   moves:"e4 c6 d4 d5 exd5 cxd5 Bd3 Nc6 c3 Nf6 Bf4 Bg4 Qb3 Qd7 Nd2 e6 Ngf3 Bd6 Bxd6 Qxd6 O-O O-O",
   intro:"The Exchange Variation: White takes on d5 and builds a quiet setup. You develop knights, then the bishop, then ...e6, and later start a minority attack on the queenside.",
   plan:"Play ...Rab8 and push ...b5 and ...b4 (the minority attack) to leave White with a weak pawn on c3. It's the same plan White uses in the Queen's Gambit Exchange, just mirrored.",
@@ -1356,7 +1340,7 @@ REP.lines.push(
   20:"White castles.",
   21:"Castle. The position is equal and you know the plan: ...Rab8, ...b5, ...b4."},
   why:{11:{e6:"<b>...e6?!</b> shuts in your light-squared bishop. Get it out to g4 first; then ...e6. Knights, bishop, pawn wall: always in that order."}}},
- {id:"ck_panov",side:"b",fam:"ck_exch",name:"Panov: 4.c4",key:"3.exd5 cxd5 4.c4 Nf6 5.Nc3 e6",
+ {id:"ck_panov",side:"b",fam:"ck",sub:"exch",name:"Panov: 4.c4",key:"3.exd5 cxd5 4.c4 Nf6 5.Nc3 e6",
   moves:"e4 c6 d4 d5 exd5 cxd5 c4 Nf6 Nc3 e6 Nf3 Be7 cxd5 Nxd5 Bd3 Nc6 O-O O-O Re1 Bf6",
   intro:"The Panov Attack: White attacks d5 with c4 and usually ends up with an isolated pawn on d4. You blockade it and trade pieces.",
   plan:"Keep a knight on d5. Trade minor pieces with ...Nxc3 or ...Nb4, and in the endgame the isolated d4 pawn becomes a target.",
@@ -1376,7 +1360,7 @@ REP.lines.push(
   18:"White's rook comes to the e-file.",
   19:{t:"<b>...Bf6</b> Pile up on d4 with the bishop too. Three of your pieces now look at it.",a:[["f6","d4"]]}}},
 /* ===================== BLACK: CARO-KANN OTHER TRIES ===================== */
- {id:"ck_2kn",side:"b",fam:"ck_other",name:"Two Knights: 6.d4 gambit",key:"2.Nc3 d5 3.Nf3 Bg4 4.h3 Bxf3 5.Qxf3 e6 6.d4",
+ {id:"ck_2kn",side:"b",fam:"ck",sub:"other",name:"Two Knights: 6.d4 gambit",key:"2.Nc3 d5 3.Nf3 Bg4 4.h3 Bxf3 5.Qxf3 e6 6.d4",
   moves:"e4 c6 Nc3 d5 Nf3 Bg4 h3 Bxf3 Qxf3 e6 d4 Nf6 Bd3 dxe4 Nxe4 Qxd4 c3 Qd8",
   intro:"The Two Knights: White develops both knights first. You pin the f3 knight, take it, and get a very solid game.",
   plan:"You're a pawn up. Develop with ...Nbd7, ...Be7 and castle, and keep the position closed enough that White's bishops can't shine.",
@@ -1397,7 +1381,7 @@ REP.lines.push(
   15:{t:"<b>...Qxd4</b> The d4 pawn has no defender left, so take it.",a:[["d8","d4"]]},
   16:"White kicks the queen, hoping for a lead in development.",
   17:"<b>...Qd8</b> Back home safely. You're a pawn up; now finish development with ...Nbd7 and ...Be7."}},
- {id:"ck_2kn_d3",side:"b",fam:"ck_other",name:"Two Knights: 6.d3",key:"5.Qxf3 e6 6.d3 Nd7 7.Be2 g6",
+ {id:"ck_2kn_d3",side:"b",fam:"ck",sub:"other",name:"Two Knights: 6.d3",key:"5.Qxf3 e6 6.d3 Nd7 7.Be2 g6",
   moves:"e4 c6 Nc3 d5 Nf3 Bg4 h3 Bxf3 Qxf3 e6 d3 Nd7 Be2 g6 O-O Bg7",
   intro:"White keeps the centre closed with d3. You put all your pawns on light squares and fianchetto the other bishop.",
   plan:"Castle, play ...Ne7 and ...d4 to kick the c3 knight. With your pawns on light squares and the bishop on g7, you have no weak dark squares.",
@@ -1408,7 +1392,7 @@ REP.lines.push(
   13:{t:"<b>...g6!</b> Fianchetto the dark-squared bishop. Your pawns are on light squares, so this bishop is your good one.",a:[["f8","g7"]]},
   14:"White castles.",
   15:{t:"The bishop takes the long diagonal. Next: ...Ne7, ...O-O and ...d4 or ...e5 to gain space.",a:[["g7","c3"]]}}},
- {id:"ck_kia",side:"b",fam:"ck_other",name:"King's Indian Attack: 2.d3",key:"2.d3 d5 3.Nd2 e5 4.Ngf3 Bd6",
+ {id:"ck_kia",side:"b",fam:"ck",sub:"other",name:"King's Indian Attack: 2.d3",key:"2.d3 d5 3.Nd2 e5 4.Ngf3 Bd6",
   moves:"e4 c6 d3 d5 Nd2 e5 Ngf3 Bd6 g3 Nf6 Bg2 O-O O-O Re8",
   intro:"White plays slowly with d3, Nd2 and g3. You grab the centre with ...e5 and get a free, comfortable game.",
   plan:"Play ...Nbd7, ...a5 and maybe ...a4 for queenside space. If White pushes e5, your knight goes to d7 and you hit back with ...c5.",
@@ -1425,7 +1409,7 @@ REP.lines.push(
   11:"Castle.",
   12:"White castles.",
   13:{t:"<b>...Re8</b> The rook supports e5. Your centre is solid and you have more space.",a:[["e8","e5"]]}}},
- {id:"ck_accpanov",side:"b",fam:"ck_other",name:"2.c4: early pressure on d5",key:"2.c4 d5 3.exd5 cxd5 4.cxd5 Nf6",
+ {id:"ck_accpanov",side:"b",fam:"ck",sub:"other",name:"2.c4: early pressure on d5",key:"2.c4 d5 3.exd5 cxd5 4.cxd5 Nf6",
   moves:"e4 c6 c4 d5 exd5 cxd5 cxd5 Nf6 Nc3 Nxd5 Nf3 Nc6 Bb5 e6",
   intro:"White hits d5 with c4 before playing d4. You get easy development, and later a target if White's d-pawn ends up isolated.",
   plan:"Develop with ...Bd7 or ...Be7 and castle, keeping the knight on d5. If White plays d4, you're in a Panov-style position where you blockade d5.",
@@ -1714,7 +1698,7 @@ REP.lines.push(
 );
 
 REP.lines.push(
- {id:"ck_adv_c4",side:"b",fam:"ck_adv",name:"4.h4 h5 5.c4: the sharp line",key:"4.h4 h5 5.c4 e6 6.Nc3 Ne7 7.Nge2 Nd7",
+ {id:"ck_adv_c4",side:"b",fam:"ck",sub:"adv",name:"4.h4 h5 5.c4: the sharp line",key:"4.h4 h5 5.c4 e6 6.Nc3 Ne7 7.Nge2 Nd7",
   moves:"e4 c6 d4 d5 e5 Bf5 h4 h5 c4 e6 Nc3 Ne7 Nge2 Nd7",
   intro:"White pushes h4 and then hits your centre with c4. Stay calm: develop first, and don't rush to take on c4.",
   plan:"Use ...Nb6 or ...dxc4 once White's pieces are committed, then bring a knight to d5 or f5. Your bishop on f5 is safe thanks to ...h5.",
@@ -1726,7 +1710,7 @@ REP.lines.push(
   12:"White develops and prepares Ng3 to hit your bishop.",
   13:"<b>...Nd7!</b> Develop first. The engine prefers this to grabbing c4."},
   why:{13:{dxc4:"...dxc4 isn't a blunder, but the engine prefers developing with <b>...Nd7</b> first. Taking on c4 now lets White's f1 bishop recapture and develop in one move."}}},
- {id:"ck_adv_g4",side:"b",fam:"ck_adv",name:"Bayonet: 4.Nc3 e6 5.g4",key:"4.Nc3 e6 5.g4 Bg6 6.Nge2 c5 7.h4 h5!",
+ {id:"ck_adv_g4",side:"b",fam:"ck",sub:"adv",name:"Bayonet: 4.Nc3 e6 5.g4",key:"4.Nc3 e6 5.g4 Bg6 6.Nge2 c5 7.h4 h5!",
   moves:"e4 c6 d4 d5 e5 Bf5 Nc3 e6 g4 Bg6 Nge2 c5 h4 h5 Nf4 Bh7",
   intro:"The sharpest Advance line: White throws the g- and h-pawns at your bishop. Strike back in the centre with ...c5, and answer h4 with ...h5.",
   plan:"If White grabs h5 with the knight, play ...Nc6 and ...cxd4 and go after White's loose centre. White has weakened the kingside, so your king may be safer on the queenside.",
@@ -1742,7 +1726,7 @@ REP.lines.push(
   14:{t:"<b>Nf4</b> White's only good move: it attacks your bishop and the h5 pawn.",a:[["f4","g6"],["f4","h5"]]},
   15:"<b>...Bh7</b> Keep the bishop. If White grabs h5 with the knight, your queenside play with ...Nc6 and ...cxd4 comes fast."},
   why:{13:{h6:"...h6 is playable, but <b>...h5!</b> is stronger: it stops White's h-pawn for good, and White is left with only one good move.",Nc6:"...Nc6 lets White play h5, and your bishop gets pushed around again. Stop the h-pawn first with ...h5."}}},
- {id:"ck_adv_bd3",side:"b",fam:"ck_adv",name:"4.Bd3: bishop trade",key:"4.Bd3 Bxd3 5.Qxd3 e6 6.Nf3 c5",
+ {id:"ck_adv_bd3",side:"b",fam:"ck",sub:"adv",name:"4.Bd3: bishop trade",key:"4.Bd3 Bxd3 5.Qxd3 e6 6.Nf3 c5",
   moves:"e4 c6 d4 d5 e5 Bf5 Bd3 Bxd3 Qxd3 e6 Nf3 c5 c3 Ne7",
   intro:"White offers to trade light-squared bishops right away. Take it: your 'problem' bishop is gone, and ...e6 can't lock anything in.",
   plan:"Play ...Nbc6, ...Nf5 and ...Qb6, all aimed at d4. Your pieces are perfectly placed for this structure.",
@@ -1756,7 +1740,7 @@ REP.lines.push(
   12:"<b>c3</b> White props up d4.",
   13:{t:"<b>...Ne7</b> Heading for f5 or c6, both aimed at d4.",a:[["e7","f5"]]}},
   why:{11:{Qb6:"...Qb6 is fine, but the engine prefers striking first with <b>...c5</b>. Hit the chain before White gets organised."}}},
- {id:"ck_adv_c5",side:"b",fam:"ck_adv",name:"GothamChess's 3...c5",key:"3.e5 c5 4.dxc5 Nc6 5.Nf3 Bg4 6.Bb5 Qa5+",
+ {id:"ck_adv_c5",side:"b",fam:"ck",sub:"adv",name:"GothamChess's 3...c5",key:"3.e5 c5 4.dxc5 Nc6 5.Nf3 Bg4 6.Bb5 Qa5+",
   moves:"e4 c6 d4 d5 e5 c5 dxc5 Nc6 Nf3 Bg4 Bb5 Qa5+ Nc3 e6",
   intro:"GothamChess's favourite answer to the Advance: hit the chain right away with 3...c5. White can grab the pawn, but your pieces come out fast and you win it back.",
   plan:"Win back c5 with ...Bxc5, develop with ...Ne7 and castle. If White's centre stays loose, aim everything at e5.",
@@ -1771,7 +1755,7 @@ REP.lines.push(
   12:"White blocks with the knight, which also guards b5.",
   13:"<b>...e6</b> Now open your bishop. ...Bxc5 is coming, and you're fully back in the game."},
   why:{11:{e6:"...e6 is natural, but it misses the big chance. <b>...Qa5+</b> hits the king and the b5 bishop at once.",a6:"...a6 asks the bishop a question, but <b>...Qa5+</b> is much stronger: check, plus an attack on b5."}}},
- {id:"ck_bdg",side:"b",fam:"ck_other",name:"Gambit: 4.f3",key:"3.Nc3 dxe4 4.f3 exf3 5.Nxf3 Bf5",
+ {id:"ck_bdg",side:"b",fam:"ck",sub:"other",name:"Gambit: 4.f3",key:"3.Nc3 dxe4 4.f3 exf3 5.Nxf3 Bf5",
   moves:"e4 c6 d4 d5 Nc3 dxe4 f3 exf3 Nxf3 Bf5",
   intro:"White offers a pawn with f3, hoping to open lines for an attack. Take it: the engine says that's the best answer.",
   plan:"Play ...e6, ...Nf6, ...Bd6 and castle. You're a pawn up, and White's attack is smaller than it looks.",
@@ -1781,7 +1765,7 @@ REP.lines.push(
   8:"White recaptures, with lots of open lines.",
   9:{t:"<b>...Bf5</b> Bishop out before ...e6, as always. You're a pawn up with a healthy position.",a:[["f5","b1"]]}},
   why:{7:{e5:"...e5 (GothamChess's suggestion) gives the pawn back for easy development. It's playable, but the engine prefers taking with <b>...exf3</b> and keeping the extra pawn."}}},
- {id:"ck_fantasy",side:"b",fam:"ck_other",name:"Fantasy: 3.f3",key:"3.f3 e6 4.Nc3 Bb4 5.Bf4 Nf6",
+ {id:"ck_fantasy",side:"b",fam:"ck",sub:"other",name:"Fantasy: 3.f3",key:"3.f3 e6 4.Nc3 Bb4 5.Bf4 Nf6",
   moves:"e4 c6 d4 d5 f3 e6 Nc3 Bb4 Bf4 Nf6 Qd3 O-O",
   intro:"The Fantasy: White props up e4 with the f-pawn. Don't open the f-file for White by taking on e4; build with ...e6 and pin with ...Bb4.",
   plan:"Play ...c5 or ...dxe4 at the right moment to open the centre, and use the pin on c3. White's f3 push has loosened the dark squares around the king.",
@@ -2767,7 +2751,7 @@ REP.lines.push(
 
 /* ===================== filling thin families: Caro-Kann Classical, Exchange & Panov, 1...Nf6 sidelines ===================== */
 REP.lines.push(
- {id:"ck_n1e2",side:"b",fam:"ck_classic",name:"6.N1e2 and Nf4",key:"5.Ng3 Bg6 6.N1e2 Nf6 7.h4 h6 8.Nf4",
+ {id:"ck_n1e2",side:"b",fam:"ck",sub:"classic",name:"6.N1e2 and Nf4",key:"5.Ng3 Bg6 6.N1e2 Nf6 7.h4 h6 8.Nf4",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 N1e2 Nf6 h4 h6 Nf4 Bh7",
   intro:"White brings a knight to f4 via e2 to chase your bishop. Keep giving it escape squares.",
   plan:"Play ...e6, ...Bd6 and ...Nbd7. If White trades on d6 or g6, your structure stays solid.",
@@ -2778,7 +2762,7 @@ REP.lines.push(
   13:{t:"<b>...h6</b> Make room on h7, as always.",a:[["g6","h7"]]},
   14:{t:"White's knight hits your bishop.",a:[["f4","g6"]]},
   15:"<b>...Bh7</b> The bishop steps back but stays outside the pawn chain. Next: ...e6, ...Bd6 and castle."}},
- {id:"ck_bc4",side:"b",fam:"ck_classic",name:"6.Bc4",key:"5.Ng3 Bg6 6.Bc4 e6 7.N1e2 Nf6",
+ {id:"ck_bc4",side:"b",fam:"ck",sub:"classic",name:"6.Bc4",key:"5.Ng3 Bg6 6.Bc4 e6 7.N1e2 Nf6",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 Bc4 e6 N1e2 Nf6",
   intro:"White develops the bishop to c4 early. Block its diagonal with ...e6.",
   plan:"Play ...Bd6, ...Nbd7 and castle. Your bishop on g6 is safe and your pawns are solid.",
@@ -2787,7 +2771,7 @@ REP.lines.push(
   11:"<b>...e6</b> Close the diagonal. Your bishop is already outside, so this is safe.",
   12:"White heads for f4 with the knight.",
   13:"Develop. Next: ...Bd6 and castle. The d5 square is a good spot for a knight later."}},
- {id:"ck_nd2",side:"b",fam:"ck_classic",name:"3.Nd2 move order",key:"3.Nd2 dxe4 4.Nxe4 Bf5",
+ {id:"ck_nd2",side:"b",fam:"ck",sub:"classic",name:"3.Nd2 move order",key:"3.Nd2 dxe4 4.Nxe4 Bf5",
   moves:"e4 c6 d4 d5 Nd2 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7",
   intro:"3.Nd2 is just another road into the Classical Caro-Kann. Play exactly the same way.",
   plan:"Same plan as the Classical: ...e6, ...Ngf6, ...Be7 or ...Bd6, and castle.",
@@ -2802,7 +2786,7 @@ REP.lines.push(
   11:{t:"<b>...h6</b> Make an escape square on h7.",a:[["g6","h7"]]},
   12:"White develops.",
   13:"<b>...Nd7</b> Develop and keep Ne5 out. It's the same Classical setup you know."}},
- {id:"ck_exch_nf3",side:"b",fam:"ck_exch",name:"Exchange with Nf3 and Bf4",key:"4.Nf3 Nc6 5.c3 Nf6 6.Bf4 Bf5",
+ {id:"ck_exch_nf3",side:"b",fam:"ck",sub:"exch",name:"Exchange with Nf3 and Bf4",key:"4.Nf3 Nc6 5.c3 Nf6 6.Bf4 Bf5",
   moves:"e4 c6 d4 d5 exd5 cxd5 Nf3 Nc6 c3 Nf6 Bf4 Bf5",
   intro:"White plays the Exchange with Nf3 and Bf4 instead of Bd3. Copy the setup: knights, then bishop to f5, then ...e6.",
   plan:"Play ...e6, ...Bd6 or ...Be7 and castle. Later, the minority attack with ...b5 and ...b4 is your plan.",
@@ -2814,7 +2798,7 @@ REP.lines.push(
   10:"White's bishop goes outside the chain.",
   11:{t:"<b>...Bf5</b> Mirror White: your bishop also comes out before ...e6. The engine prefers f5 to g4 here.",a:[["f5","b1"]]}},
   why:{11:{Bg4:"...Bg4 is playable, but here the engine prefers <b>...Bf5</b>: with White's bishop not on d3, f5 is a safe, active square."}}},
- {id:"ck_panov_bg5",side:"b",fam:"ck_exch",name:"Panov: 6.Bg5",key:"4.c4 Nf6 5.Nc3 e6 6.Bg5 Be7",
+ {id:"ck_panov_bg5",side:"b",fam:"ck",sub:"exch",name:"Panov: 6.Bg5",key:"4.c4 Nf6 5.Nc3 e6 6.Bg5 Be7",
   moves:"e4 c6 d4 d5 exd5 cxd5 c4 Nf6 Nc3 e6 Bg5 Be7 Nf3 O-O",
   intro:"In the Panov, White can pin your knight with 6.Bg5. Break the pin and castle.",
   plan:"Take on c4 once White's bishop has moved, then blockade d5 with a knight and trade pieces.",
@@ -2823,7 +2807,7 @@ REP.lines.push(
   11:"<b>...Be7</b> Break the pin.",
   12:"White develops.",
   13:"Castle. Next: ...dxc4 or ...Nc6, and the same blockade plan on d5."}},
- {id:"ck_exch_c3",side:"b",fam:"ck_exch",name:"Exchange with c3 and Bf4",key:"4.c3 Nc6 5.Bf4 Nf6 6.Nd2 Bf5",
+ {id:"ck_exch_c3",side:"b",fam:"ck",sub:"exch",name:"Exchange with c3 and Bf4",key:"4.c3 Nc6 5.Bf4 Nf6 6.Nd2 Bf5",
   moves:"e4 c6 d4 d5 exd5 cxd5 c3 Nc6 Bf4 Nf6 Nd2 Bf5",
   intro:"Another quiet Exchange setup with c3, Bf4 and Nd2. Your recipe never changes: knights, bishop, then ...e6.",
   plan:"Play ...e6, ...Bd6 and castle. Then ...b5 and ...b4 for the minority attack.",
@@ -3093,7 +3077,7 @@ REP.lines.push(
 /* ===================== gaps found by comparing with chessreps.com's courses (their move sequences only; notes are our own) ===================== */
 REP.lines.push(
  /* ---------- Caro-Kann: White's other second moves ---------- */
- {id:"ck_nf3_e5",side:"b",fam:"ck_other",name:"2.Nf3 d5 3.e5",key:"2.Nf3 d5 3.e5 Bf5 4.d4 e6",
+ {id:"ck_nf3_e5",side:"b",fam:"ck",sub:"other",name:"2.Nf3 d5 3.e5",key:"2.Nf3 d5 3.e5 Bf5 4.d4 e6",
   moves:"e4 c6 Nf3 d5 e5 Bf5 d4 e6 Be2 c5",
   intro:"White starts with the knight, then pushes e5. Play the Advance setup you know: the bishop goes out first.",
   plan:"After 4.d4 e6 5.Be2 c5 you're in the Short System of the Advance. Same plan: hit d4 with ...c5 and ...Nc6.",
@@ -3106,7 +3090,7 @@ REP.lines.push(
   7:"<b>...e6</b> Now close the door: your bishop is already outside.",
   8:"White develops.",
   9:{t:"<b>...c5</b> The usual strike at the base of the chain. This is exactly the Short System.",a:[["c5","d4"]]}}},
- {id:"ck_nf3_exd5",side:"b",fam:"ck_other",name:"2.Nf3 d5 3.exd5",key:"2.Nf3 d5 3.exd5 cxd5 4.d4 Nc6 5.Nc3 Bg4",
+ {id:"ck_nf3_exd5",side:"b",fam:"ck",sub:"other",name:"2.Nf3 d5 3.exd5",key:"2.Nf3 d5 3.exd5 cxd5 4.d4 Nc6 5.Nc3 Bg4",
   moves:"e4 c6 Nf3 d5 exd5 cxd5 d4 Nc6 Nc3 Bg4 Be2 e6 h3 Bf5",
   intro:"White trades on d5 and gets an Exchange Caro-Kann with the knight on f3.",
   plan:"Develop with ...Nf6, ...Bd6 or ...Be7 and castle. Your bishop is active on f5, and your d5 pawn controls e4.",
@@ -3121,7 +3105,7 @@ REP.lines.push(
   11:"<b>...e6</b> Open the f8 bishop and keep d5 solid.",
   12:"White asks the bishop to decide.",
   13:"<b>...Bf5</b> Keep the bishop. On f5 it watches e4 and the long b1–h7 diagonal."}},
- {id:"ck_2bc4",side:"b",fam:"ck_other",name:"2.Bc4",key:"2.Bc4 d5 3.exd5 cxd5 4.Bb5+ Bd7",
+ {id:"ck_2bc4",side:"b",fam:"ck",sub:"other",name:"2.Bc4",key:"2.Bc4 d5 3.exd5 cxd5 4.Bb5+ Bd7",
   moves:"e4 c6 Bc4 d5 exd5 cxd5 Bb5+ Bd7 Bxd7+ Qxd7 Nf3 Nc6 O-O e6 d4 Bd6",
   intro:"2.Bc4 points at f7, but ...d5 simply hits the bishop.",
   plan:"You have a solid centre and easy development: ...Nge7 or ...Nf6, castle, then use the c-file.",
@@ -3140,7 +3124,7 @@ REP.lines.push(
   13:"<b>...e6</b> Open the dark-squared bishop.",
   14:"White takes space.",
   15:"<b>...Bd6</b> Develop and get ready to castle. Next: ...Nge7 and ...O-O."}},
- {id:"ck_f4",side:"b",fam:"ck_other",name:"2.f4",key:"2.f4 d5 3.e5 c5",
+ {id:"ck_f4",side:"b",fam:"ck",sub:"other",name:"2.f4",key:"2.f4 d5 3.e5 c5",
   moves:"e4 c6 f4 d5 e5 c5 Nf3 Nc6 Bb5 Bg4 O-O e6",
   intro:"2.f4 aims for a quick e5 and a kingside attack. Hit the centre before White gets going.",
   plan:"White's d-pawn is still at home, so ...c5 and ...Nc6 give you a strong grip on d4. Develop with ...e6, ...Nge7 and castle.",
@@ -3155,7 +3139,7 @@ REP.lines.push(
   9:{t:"<b>...Bg4</b> Pin White's knight back.",a:[["g4","d1"]]},
   10:"White castles.",
   11:"<b>...e6</b> Open your bishop and get ready for ...Nge7."}},
- {id:"ck_c4cxd5",side:"b",fam:"ck_other",name:"2.c4 d5 3.cxd5",key:"2.c4 d5 3.cxd5 cxd5 4.exd5 Nf6",
+ {id:"ck_c4cxd5",side:"b",fam:"ck",sub:"other",name:"2.c4 d5 3.cxd5",key:"2.c4 d5 3.cxd5 cxd5 4.exd5 Nf6",
   moves:"e4 c6 c4 d5 cxd5 cxd5 exd5 Nf6 Nc3 Nxd5",
   intro:"Another move order of 2.c4. You reach exactly the same position as in your 2.c4 line.",
   plan:"Win back the d5 pawn with the knight. Then develop calmly: ...Nc6, ...e6 and ...Be7.",
@@ -3166,7 +3150,7 @@ REP.lines.push(
   7:{t:"<b>...Nf6</b> Attack d5. You'll win the pawn back.",a:[["f6","d5"]]},
   8:"White guards d5.",
   9:"<b>...Nxd5</b> Pawn back. This is the same position as in your 2.c4 line."}},
- {id:"ck_2kn_exd5",side:"b",fam:"ck_other",name:"Two Knights: 3.exd5",key:"2.Nc3 d5 3.exd5 cxd5 4.d4 Nc6",
+ {id:"ck_2kn_exd5",side:"b",fam:"ck",sub:"other",name:"Two Knights: 3.exd5",key:"2.Nc3 d5 3.exd5 cxd5 4.d4 Nc6",
   moves:"e4 c6 Nc3 d5 exd5 cxd5 d4 Nc6 Nf3 Bg4 h3 Bxf3 Qxf3 e6",
   intro:"White trades on d5 and plays d4. It's like an Exchange Caro-Kann with the knight on c3.",
   plan:"Develop with ...Nf6, ...Be7 or ...Bd6 and castle. White's knight on c3 blocks the c-pawn, so White can't build a c3–d4 chain.",
@@ -3181,7 +3165,7 @@ REP.lines.push(
   11:"<b>...Bxf3</b> Trade it. Now d4 has one defender fewer.",
   12:"White takes back with the queen.",
   13:"<b>...e6</b> Close the centre and open your dark bishop. Next: ...Nf6, ...Be7 and castle."}},
- {id:"ck_2kn_qf3",side:"b",fam:"ck_other",name:"Two Knights: 3.Qf3",key:"2.Nc3 d5 3.Qf3 dxe4 4.Nxe4 Nf6",
+ {id:"ck_2kn_qf3",side:"b",fam:"ck",sub:"other",name:"Two Knights: 3.Qf3",key:"2.Nc3 d5 3.Qf3 dxe4 4.Nxe4 Nf6",
   moves:"e4 c6 Nc3 d5 Qf3 dxe4 Nxe4 Nf6 Bc4 Nbd7 d4 Nb6",
   intro:"3.Qf3 guards e4 with the queen. It's a tricky sideline. Just take on e4 and develop.",
   plan:"White's queen came out early. Develop with tempo where you can, then ...e6, ...Be7 and castle.",
@@ -3194,7 +3178,7 @@ REP.lines.push(
   9:"<b>...Nbd7</b> Develop. Don't take on e4 yet.",
   10:"White builds the centre.",
   11:{t:"<b>...Nb6</b> Kick the c4 bishop.",a:[["b6","c4"]]}}},
- {id:"ck_fantasy_a3",side:"b",fam:"ck_other",name:"Fantasy: 5.a3",key:"3.f3 e6 4.Nc3 Bb4 5.a3 Bxc3+ 6.bxc3 dxe4",
+ {id:"ck_fantasy_a3",side:"b",fam:"ck",sub:"other",name:"Fantasy: 5.a3",key:"3.f3 e6 4.Nc3 Bb4 5.a3 Bxc3+ 6.bxc3 dxe4",
   moves:"e4 c6 d4 d5 f3 e6 Nc3 Bb4 a3 Bxc3+ bxc3 dxe4 fxe4 Qh4+ Ke2 Qxe4+",
   intro:"White asks your bishop to decide. Take on c3, then grab e4.",
   plan:"White's king is stuck in the centre and the pawns are broken. Develop fast with ...Nf6 and ...Nd7, and keep the king under pressure.",
@@ -3207,7 +3191,7 @@ REP.lines.push(
   13:{t:"<b>...Qh4+</b> White's f-pawn has left, so the queen can check on h4.",a:[["h4","e1"]]},
   14:"White's king has to walk.",
   15:"<b>...Qxe4+</b> Win the pawn with check. You're a pawn up and White's king is exposed."}},
- {id:"ck_fantasy_bd2",side:"b",fam:"ck_other",name:"Fantasy: 5.Bd2",key:"3.f3 e6 4.Nc3 Bb4 5.Bd2 Ne7 6.a3 Ba5",
+ {id:"ck_fantasy_bd2",side:"b",fam:"ck",sub:"other",name:"Fantasy: 5.Bd2",key:"3.f3 e6 4.Nc3 Bb4 5.Bd2 Ne7 6.a3 Ba5",
   moves:"e4 c6 d4 d5 f3 e6 Nc3 Bb4 Bd2 Ne7 a3 Ba5 Qe2 O-O f4 Bxc3",
   intro:"White protects the c3 knight with the bishop. Develop and keep the pressure on c3.",
   plan:"Castle, then trade on c3 at a good moment and hit the centre with ...c5 or ...dxe4. Your position is solid and easy to play.",
@@ -3221,7 +3205,7 @@ REP.lines.push(
   14:"White grabs space.",
   15:"<b>...Bxc3</b> Trade on c3 now. White's pawns get weaker and e4 loses a defender."}},
  /* ---------- Caro-Kann Advance with 3...c5 ---------- */
- {id:"ck_adv_c5c3",side:"b",fam:"ck_adv",name:"3...c5 4.c3",key:"3...c5 4.c3 Nc6 5.Nf3 cxd4 6.cxd4 Bg4",
+ {id:"ck_adv_c5c3",side:"b",fam:"ck",sub:"adv",name:"3...c5 4.c3",key:"3...c5 4.c3 Nc6 5.Nf3 cxd4 6.cxd4 Bg4",
   moves:"e4 c6 d4 d5 e5 c5 c3 Nc6 Nf3 cxd4 cxd4 Bg4 Be2 e6 O-O Nge7",
   intro:"Against 3...c5, White can prop up d4 with c3. It looks like a French, but your c8 bishop is still free.",
   plan:"Pin with ...Bg4, then ...e6, ...Nge7 and ...Nf5 to pile up on d4. Your bishop is outside the pawn chain, which is the big plus over the French.",
@@ -3236,7 +3220,7 @@ REP.lines.push(
   13:"<b>...e6</b> Now ...e6, with the bishop already out.",
   14:"White castles.",
   15:{t:"<b>...Nge7</b> Heading for f5 to hit d4 again.",a:[["e7","f5"]]}}},
- {id:"ck_adv_c5nf3",side:"b",fam:"ck_adv",name:"3...c5 4.Nf3",key:"3...c5 4.Nf3 cxd4 5.Qxd4 Nc6 6.Bb5",
+ {id:"ck_adv_c5nf3",side:"b",fam:"ck",sub:"adv",name:"3...c5 4.Nf3",key:"3...c5 4.Nf3 cxd4 5.Qxd4 Nc6 6.Bb5",
   moves:"e4 c6 d4 d5 e5 c5 Nf3 cxd4 Qxd4 Nc6 Bb5 e6 O-O Ne7 Bg5 h6",
   intro:"White develops instead of defending d4. Take the pawn and gain time on the queen.",
   plan:"Bring the e7 knight to f5 or g6, then go after the e5 pawn. It has no pawn behind it any more.",
@@ -3252,7 +3236,7 @@ REP.lines.push(
   14:"White pins the e7 knight against your queen.",
   15:{t:"<b>...h6</b> Ask the bishop what it wants.",a:[["h6","g5"]]}}},
  /* ---------- Caro-Kann Exchange with 4.Nc3 ---------- */
- {id:"ck_exch_nc3",side:"b",fam:"ck_exch",name:"Exchange: 4.Nc3",key:"4.Nc3 Nc6 5.Bf4 Bf5",
+ {id:"ck_exch_nc3",side:"b",fam:"ck",sub:"exch",name:"Exchange: 4.Nc3",key:"4.Nc3 Nc6 5.Bf4 Bf5",
   moves:"e4 c6 d4 d5 exd5 cxd5 Nc3 Nc6 Bf4 Bf5 Bd3 Bxd3 Qxd3 e6",
   intro:"White puts the knight on c3 instead of building c3. Play the same simple setup.",
   plan:"Develop ...Nf6, ...Be7 and castle. Then put a rook on c8, or play ...a6 and ...b5 on the queenside.",
@@ -3688,7 +3672,7 @@ REP.lines.push(
   14:"<b>b3</b> Get ready for Bb2.",
   15:"Black develops.",
   16:{t:"<b>Bb2</b> Your bishop aims at e5 and g7. A comfortable endgame for you.",a:[["b2","g7"]]}}},
- {id:"ck_nf3_nc3",side:"b",fam:"ck_other",name:"2.Nf3 d5 3.Nc3",key:"2.Nf3 d5 3.Nc3 Bg4",
+ {id:"ck_nf3_nc3",side:"b",fam:"ck",sub:"other",name:"2.Nf3 d5 3.Nc3",key:"2.Nf3 d5 3.Nc3 Bg4",
   moves:"e4 c6 Nf3 d5 Nc3 Bg4 h3 Bxf3 Qxf3 e6",
   intro:"2.Nf3 and 3.Nc3 is just the Two Knights in another move order. Play it the same way.",
   plan:"Same as your Two Knights line: ...Nf6, ...Nbd7, ...Be7 and castle. Your pawns on c6, d5 and e6 are rock solid.",
@@ -3699,7 +3683,7 @@ REP.lines.push(
   7:"<b>...Bxf3</b> Trade it.",
   8:"White takes back.",
   9:"<b>...e6</b> Now you're in your Two Knights line."}},
- {id:"ck_nf3_d3",side:"b",fam:"ck_other",name:"2.Nf3 d5 3.d3",key:"2.Nf3 d5 3.d3 dxe4 4.dxe4 Qxd1+",
+ {id:"ck_nf3_d3",side:"b",fam:"ck",sub:"other",name:"2.Nf3 d5 3.d3",key:"2.Nf3 d5 3.d3 dxe4 4.dxe4 Qxd1+",
   moves:"e4 c6 Nf3 d5 d3 dxe4 dxe4 Qxd1+ Kxd1 Nf6 Nbd2 Nbd7",
   intro:"White plays quietly with d3. Trade in the centre and trade queens. White's king loses the right to castle.",
   plan:"Develop ...Nbd7, then ...e5 or ...g6 and ...Bg7. The endgame is comfortable for you.",
@@ -3712,7 +3696,7 @@ REP.lines.push(
   9:{t:"<b>...Nf6</b> Develop and hit e4.",a:[["f6","e4"]]},
   10:"White guards e4.",
   11:"<b>...Nbd7</b> Develop. Next: ...e5 or ...g6 and ...Bg7."}},
- {id:"ck_bc4_bb3",side:"b",fam:"ck_other",name:"2.Bc4 d5 3.Bb3",key:"2.Bc4 d5 3.Bb3 dxe4 4.Qh5 g6",
+ {id:"ck_bc4_bb3",side:"b",fam:"ck",sub:"other",name:"2.Bc4 d5 3.Bb3",key:"2.Bc4 d5 3.Bb3 dxe4 4.Qh5 g6",
   moves:"e4 c6 Bc4 d5 Bb3 dxe4 Qh5 g6 Qh4 a5 Nc3 Bg7",
   intro:"The bishop steps back to b3 instead of trading. Take the e4 pawn, and block the queen when it comes to h5.",
   plan:"You're a pawn up. Finish developing with ...Nf6 and ...Nd7, and castle.",
@@ -3771,7 +3755,7 @@ REP.lines.push(
 /* ===================== third round from the chessreps comparison: every remaining opponent branch from their official courses ===================== */
 REP.lines.push(
  /* ---------- Caro-Kann ---------- */
- {id:"ck_bc4_exd5_bb3",side:"b",fam:"ck_other",name:"2.Bc4: 3.exd5 cxd5 4.Bb3",key:"2.Bc4 d5 3.exd5 cxd5 4.Bb3 Nc6",
+ {id:"ck_bc4_exd5_bb3",side:"b",fam:"ck",sub:"other",name:"2.Bc4: 3.exd5 cxd5 4.Bb3",key:"2.Bc4 d5 3.exd5 cxd5 4.Bb3 Nc6",
   moves:"e4 c6 Bc4 d5 exd5 cxd5 Bb3 Nc6 d4 Nf6 Nf3 Bg4 c3 Qc7",
   intro:"After the trade on d5, the bishop drops back to b3 instead of checking on b5. You get an Exchange-style position where your light-squared bishop is free.",
   plan:"Finish with ...e6, ...Bd6 and castling. Your pieces are active and the c-file is yours.",
@@ -3784,7 +3768,7 @@ REP.lines.push(
   11:{t:"<b>...Bg4</b> Pin the knight to the queen. Your bishop gets outside the pawn chain.",a:[["g4","d1"]]},
   12:"White props up d4.",
   13:"<b>...Qc7</b> Put the queen on the b8-h2 diagonal. Next come ...e6 and castling."}},
- {id:"ck_nf3_bb5",side:"b",fam:"ck_other",name:"2.Nf3 d5 3.exd5: 5.Bb5",key:"3.exd5 cxd5 4.d4 Nc6 5.Bb5 Bg4",
+ {id:"ck_nf3_bb5",side:"b",fam:"ck",sub:"other",name:"2.Nf3 d5 3.exd5: 5.Bb5",key:"3.exd5 cxd5 4.d4 Nc6 5.Bb5 Bg4",
   moves:"e4 c6 Nf3 d5 exd5 cxd5 d4 Nc6 Bb5 Bg4 O-O e6 h3 Bh5 c4 Bd6",
   intro:"White pins your c6 knight. Pin White's f3 knight right back.",
   plan:"Castle short and keep the pin on f3. It's an equal, comfortable position.",
@@ -3797,7 +3781,7 @@ REP.lines.push(
   13:"<b>...Bh5</b> Keep the pin.",
   14:{t:"White hits d5.",a:[["c4","d5"]]},
   15:"<b>...Bd6</b> Develop and get ready to castle."}},
- {id:"ck_c4_nc3_d4",side:"b",fam:"ck_other",name:"2.c4: 5.Nc3 Nxd5 6.d4",key:"4.exd5 Nf6 5.Nc3 Nxd5 6.d4 g6",
+ {id:"ck_c4_nc3_d4",side:"b",fam:"ck",sub:"other",name:"2.c4: 5.Nc3 Nxd5 6.d4",key:"4.exd5 Nf6 5.Nc3 Nxd5 6.d4 g6",
   moves:"e4 c6 c4 d5 cxd5 cxd5 exd5 Nf6 Nc3 Nxd5 d4 g6 Bc4 Nb6 Bb3 Bg7 d5 O-O",
   intro:"White's d4 pawn ends up all alone in the centre. Fianchetto your bishop and pile up on it.",
   plan:"Hit the d-pawn with ...Bf5, ...Na6 and ...e6. The g7 bishop is a monster on the long diagonal.",
@@ -3810,7 +3794,7 @@ REP.lines.push(
   15:{t:"<b>...Bg7</b> Aim at d4.",a:[["g7","d4"]]},
   16:"White pushes past with d5.",
   17:"<b>...O-O</b> Castle. Next, go after the d5 pawn with ...Bf5, ...Na6 and ...e6."}},
- {id:"adv_c3_bb5",side:"b",fam:"ck_adv",name:"Advance 3...c5: 4.c3 Nc6 5.Bb5",key:"3...c5 4.c3 Nc6 5.Bb5 cxd4",
+ {id:"adv_c3_bb5",side:"b",fam:"ck",sub:"adv",name:"Advance 3...c5: 4.c3 Nc6 5.Bb5",key:"3...c5 4.c3 Nc6 5.Bb5 cxd4",
   moves:"e4 c6 d4 d5 e5 c5 c3 Nc6 Bb5 cxd4 cxd4 Bf5 Nc3 e6 Be3 Ne7",
   intro:"White pins your knight before you can pile up on d4. Trade on d4, get your bishop out, then back up the knight.",
   plan:"Play ...a6 and ...Rc8 and use the c-file. Your structure is solid, and the light-squared bishop is already outside the chain.",
@@ -3823,7 +3807,7 @@ REP.lines.push(
   13:"<b>...e6</b> Lock in d5 and free the f8 bishop.",
   14:"White guards d4.",
   15:"<b>...Ne7</b> Back up the pinned knight on c6. Next, ...a6 asks the bishop what it wants."}},
- {id:"exch_h3",side:"b",fam:"ck_exch",name:"Exchange: 6.h3",key:"5.c3 Nf6 6.h3 e5 7.dxe5 Nxe5",
+ {id:"exch_h3",side:"b",fam:"ck",sub:"exch",name:"Exchange: 6.h3",key:"5.c3 Nf6 6.h3 e5 7.dxe5 Nxe5",
   moves:"e4 c6 d4 d5 exd5 cxd5 Bd3 Nc6 c3 Nf6 h3 e5 dxe5 Nxe5 Nf3 Nxd3+ Qxd3 Bd6",
   intro:"6.h3 stops ...Bg4, but it costs White a move. Use the time to hit the centre with ...e5.",
   plan:"Castle, put a rook on e8 and play ...Bf5 or ...Be6. You have the two bishops, and they make up for the lone pawn on d5.",
@@ -3836,7 +3820,7 @@ REP.lines.push(
   15:"<b>...Nxd3+</b> Take White's best bishop. Now you have the two bishops.",
   16:"White takes back.",
   17:"<b>...Bd6</b> Develop and castle next."}},
- {id:"ck_nf3_bd3",side:"b",fam:"ck_other",name:"2.Nf3 d5 3.exd5: 5.Bd3",key:"4.d4 Nc6 5.Bd3 Bg4 6.c3 Qc7",
+ {id:"ck_nf3_bd3",side:"b",fam:"ck",sub:"other",name:"2.Nf3 d5 3.exd5: 5.Bd3",key:"4.d4 Nc6 5.Bd3 Bg4 6.c3 Qc7",
   moves:"e4 c6 Nf3 d5 exd5 cxd5 d4 Nc6 Bd3 Bg4 c3 Qc7 h3 Bh5 O-O e6",
   intro:"White sets up like the Exchange variation, but with the knight already on f3. Pin it straight away.",
   plan:"Develop with ...Nf6, ...Bd6 and castle. White's dark-squared bishop has no good square.",
@@ -3849,7 +3833,7 @@ REP.lines.push(
   13:"<b>...Bh5</b> Keep the pin.",
   14:"White castles.",
   15:"<b>...e6</b> Open the way for your bishop. Next come ...Nf6, ...Bd6 and castling."}},
- {id:"fan_kd2",side:"b",fam:"ck_other",name:"Fantasy: 8.Kd2",key:"7.fxe4 Qh4+ 8.Kd2 Nf6 9.e5 Ne4+",
+ {id:"fan_kd2",side:"b",fam:"ck",sub:"other",name:"Fantasy: 8.Kd2",key:"7.fxe4 Qh4+ 8.Kd2 Nf6 9.e5 Ne4+",
   moves:"e4 c6 d4 d5 f3 e6 Nc3 Bb4 a3 Bxc3+ bxc3 dxe4 fxe4 Qh4+ Kd2 Nf6 e5 Ne4+ Ke3 Nxc3",
   intro:"After the queen check, the king walks to d2 instead of e2. Hit the loose e4 pawn and keep checking.",
   plan:"Keep your knight active and check the king whenever you can. You're a pawn up and White's king has no shelter.",
@@ -3860,7 +3844,7 @@ REP.lines.push(
   17:"<b>...Ne4+</b> Jump in with check.",
   18:"The king steps to e3.",
   19:{t:"<b>...Nxc3</b> Grab a pawn and hit the queen. White's king is stuck in the centre.",a:[["c3","d1"]]}}},
- {id:"fan_nh3",side:"b",fam:"ck_other",name:"Fantasy: 7.Nh3 gambit",key:"6.bxc3 dxe4 7.Nh3 Qa5 8.Bb2 e5",
+ {id:"fan_nh3",side:"b",fam:"ck",sub:"other",name:"Fantasy: 7.Nh3 gambit",key:"6.bxc3 dxe4 7.Nh3 Qa5 8.Bb2 e5",
   moves:"e4 c6 d4 d5 f3 e6 Nc3 Bb4 a3 Bxc3+ bxc3 dxe4 Nh3 Qa5 Bb2 e5 Ng5 Nf6 dxe5 Qxe5",
   intro:"White doesn't take back on e4 and develops instead. It's a gambit, so grab the initiative too.",
   plan:"Keep the extra pawn. Castle, develop with ...Nbd7 or ...Bf5, and meet White's attack calmly.",
@@ -6195,7 +6179,7 @@ REP.lines.push(
   10:"White fianchettoes too.",
   11:"<b>...d6</b> Keep the centre solid. Next, ...Ne7 and castle."}},
  /* ---------- Caro-Kann ---------- */
- {id:"ck_cl_bf4",side:"b",fam:"ck_classic",name:"Classical: 11.Bf4",key:"10.Qxd3 e6 11.Bf4 Qa5+ 12.Bd2 Bb4",
+ {id:"ck_cl_bf4",side:"b",fam:"ck",sub:"classic",name:"Classical: 11.Bf4",key:"10.Qxd3 e6 11.Bf4 Qa5+ 12.Bd2 Bb4",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7 Bd3 Bxd3 Qxd3 e6 Bf4 Qa5+ Bd2 Bb4 c3 Be7 c4 Qc7",
   intro:"In the main Classical, White plays 11.Bf4. Check on a5 to make the bishop drop back, then develop with ...Bb4 and ...Be7.",
   plan:"Develop with ...Ngf6 and castle. Your position is very solid.",
@@ -6208,7 +6192,7 @@ REP.lines.push(
   25:"<b>...Be7</b> Drop back.",
   26:"White grabs space with c4. Now the d2 bishop hits your queen again.",
   27:{t:"<b>...Qc7</b> Move the queen out of the bishop's reach. It also hits the g3 knight.",a:[["c7","g3"]]}}},
- {id:"pan_bb5",side:"b",fam:"ck_exch",name:"2.c4: 5.Bb5+",key:"4.exd5 Nf6 5.Bb5+ Nbd7 6.Nc3 a6",
+ {id:"pan_bb5",side:"b",fam:"ck",sub:"exch",name:"2.c4: 5.Bb5+",key:"4.exd5 Nf6 5.Bb5+ Nbd7 6.Nc3 a6",
   moves:"e4 c6 c4 d5 cxd5 cxd5 exd5 Nf6 Bb5+ Nbd7 Nc3 a6 Qa4 Rb8 Bxd7+ Bxd7",
   intro:"White checks on b5 to hold on to the d5 pawn. Block with ...Nbd7 and ask the bishop with ...a6.",
   plan:"You have the two bishops, and you'll win back the d5 pawn. Develop with ...g6 and ...Bg7.",
@@ -7488,7 +7472,7 @@ REP.lines.push(
   10:"White develops.",
   11:"<b>...Bf5</b> Develop the bishop outside the pawn chain. You're a pawn up."}},
  /* ---------- Caro-Kann Classical (Black) ---------- */
- {id:"ck_cl_bf4_ne4",side:"b",fam:"ck_classic",name:"Classical: 11.Bf4 with 13.Ne4",key:"12.Bd2 Bb4 13.Ne4 Ngf6 14.Nd6+ Ke7",
+ {id:"ck_cl_bf4_ne4",side:"b",fam:"ck",sub:"classic",name:"Classical: 11.Bf4 with 13.Ne4",key:"12.Bd2 Bb4 13.Ne4 Ngf6 14.Nd6+ Ke7",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7 Bd3 Bxd3 Qxd3 e6 Bf4 Qa5+ Bd2 Bb4 Ne4 Ngf6 Nd6+ Ke7 Nxb7 Bxd2+ Nxd2 Qb4",
   intro:"White's knight goes on a raid: e4, d6 with check, and b7. Step aside with the king, trade bishops, and trap the knight.",
   plan:"The b7 knight has no way out. Win it, keep your king safe on e7, and connect your rooks later.",
@@ -7501,7 +7485,7 @@ REP.lines.push(
   29:"<b>...Bxd2+</b> Trade bishops with check.",
   30:"White takes back.",
   31:{t:"<b>...Qb4</b> Hit the b7 knight and the b2 pawn. The knight on b7 has no way out.",a:[["b4","b7"],["b4","b2"]]}}},
- {id:"ck_cl_bf4_bxb4",side:"b",fam:"ck_classic",name:"Classical: 11.Bf4 with 13.Bxb4",key:"12.Bd2 Bb4 13.Bxb4 Qxb4+ 14.Nd2",
+ {id:"ck_cl_bf4_bxb4",side:"b",fam:"ck",sub:"classic",name:"Classical: 11.Bf4 with 13.Bxb4",key:"12.Bd2 Bb4 13.Bxb4 Qxb4+ 14.Nd2",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7 Bd3 Bxd3 Qxd3 e6 Bf4 Qa5+ Bd2 Bb4 Bxb4 Qxb4+ Nd2 Ngf6 O-O-O O-O Nge4 Rad8",
   intro:"If White trades bishops on b4, take back with check and develop.",
   plan:"Prepare ...c5 or ...e5 to open the centre. White's king on the queenside can become a target.",
@@ -7514,7 +7498,7 @@ REP.lines.push(
   29:"<b>...O-O</b> Castle. Your queen already eyes White's king on the queenside.",
   30:"White's knight hits your f6 knight.",
   31:"<b>...Rad8</b> Put the rook on the d-file behind your knight. Later, ...c5 or ...e5 opens it."}},
- {id:"ck_cl_bf4_c3",side:"b",fam:"ck_classic",name:"Classical: 11.Bf4 Qa5+ 12.c3",key:"11.Bf4 Qa5+ 12.c3 Ngf6 13.a4 Nd5",
+ {id:"ck_cl_bf4_c3",side:"b",fam:"ck",sub:"classic",name:"Classical: 11.Bf4 Qa5+ 12.c3",key:"11.Bf4 Qa5+ 12.c3 Ngf6 13.a4 Nd5",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7 Bd3 Bxd3 Qxd3 e6 Bf4 Qa5+ c3 Ngf6 a4 Nd5 Bd2 N5f6 b4 Qc7",
   intro:"If White blocks the check with c3, develop and hit the f4 bishop with ...Nd5.",
   plan:"White's queenside pawns have moved a lot. Play ...Bd6, castle, and look for ...c5.",
@@ -7527,6 +7511,324 @@ REP.lines.push(
   27:"<b>...N5f6</b> Bring the knight back. White's bishop has lost time.",
   28:{t:"White hits your queen with b4.",a:[["b4","a5"]]},
   29:{t:"<b>...Qc7</b> Drop back. Your queen hits the g3 knight.",a:[["c7","g3"]]}}}
+);
+
+/* ===================== WHITE: ALIEN GAMBIT (vs the Caro-Kann) =====================
+   1.e4 c6 2.d4 d5 3.Nc3 dxe4 4.Nxe4 Nf6 5.Ng5, and after 5...h6 the knight sacrifice 6.Nxf7.
+   Every White move is chessdb's best (Lichess cloud-eval for 11.c3 in al_e6), except the gambit itself.
+   book: plies where this course's move is rated "Book" (6.Nxf7 is a real sacrifice, but the engine calls it unsound),
+   and where the good alternatives in the Why-not notes (5.Nxf6+, 6.N5f3, 7.Bc4+) are rated "Book" too, not "Inaccuracy". */
+REP.families.push(
+ {id:"alien",side:"w",name:"Alien Gambit",
+  blurb:"Against the Caro-Kann: 4...Nf6 5.Ng5 and a knight sacrifice on f7. A trap opening for fast games: the engine says it's unsound, but Black has to find the right moves.",
+  ideas:[
+   "The gambit only happens after 4...Nf6 5.Ng5 h6. Then 6.Nxf7! drags Black's king out, and it can never castle.",
+   "You're a knight down for a pawn, so keep making threats: checks with Ne5+ and Bc4+, and pawn pushes like g4. If you play slowly, the extra piece wins.",
+   "Aim everything at the king: bishop on c4 or d3, knight on e5, queen to e2, rook to e1.",
+   "Know the big traps: ...Bg4? loses a piece to Ne5+, ...Qd5? loses the queen to Bc4, and ...Ke8 can walk into Bg6 mate.",
+   "If Black doesn't play ...h6, don't sacrifice. Develop (Bd3 or Bc4, N1f3, castle) and keep an eye on f7."],
+  same:"It's the Caro-Kann from the other side. In your own Caro-Kann you play 4...Bf5, so nobody can use this gambit against you."});
+
+REP.lines.push(
+/* ---------- the gambit: 5...h6 6.Nxf7 Kxf7 7.Nf3 ---------- */
+ {id:"al_main",side:"w",fam:"alien",name:"Main line: 7...Bf5 8.Ne5+ Ke8",key:"6.Nxf7 Kxf7 7.Nf3 Bf5 8.Ne5+ Ke8 9.Bc4 e6 10.g4",book:[8,10,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Bf5 Ne5+ Ke8 Bc4 e6 g4 Bh7 Bxe6 Nbd7 Nxd7 Nxd7 O-O",
+  intro:"The main line of the Alien Gambit. Black kicks your knight with ...h6, you sacrifice it on f7, and then you keep the king busy with checks and threats.",
+  plan:"Bring the rook to e1 and push f4 and f5. You have two pawns for the knight, and the e6 bishop keeps Black's king stuck in the middle.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  1:{t:"<b>1...c6</b> The Caro-Kann. Black gets ready for ...d5.",a:[["c6","d5"]]},
+  2:"<b>2.d4</b> Build the big centre with two pawns.",
+  3:{t:"<b>2...d5</b> Black hits your e4 pawn.",a:[["d5","e4"]]},
+  4:{t:"<b>3.Nc3</b> Defend e4 with the knight. Black usually takes.",a:[["c3","e4"]]},
+  5:"<b>3...dxe4</b> Black takes, like in most Caro-Kann games.",
+  6:"<b>4.Nxe4</b> Take back. Your knight sits in the middle of the board.",
+  7:{t:"<b>4...Nf6</b> Black hits your knight. This is the move you're hoping for: now the Alien Gambit is possible.",a:[["f6","e4"]]},
+  8:{t:"<b>5.Ng5!?</b> The Alien Gambit move. The knight jumps next to f7, Black's weakest square. If Black kicks it with ...h6, it goes <i>into</i> f7.",a:[["g5","f7"]]},
+  9:{t:"<b>5...h6</b> The natural move: kick the knight. It's exactly what you wanted.",a:[["h6","g5"]]},
+  10:{t:"<b>6.Nxf7!?</b> The sacrifice! Your knight takes the pawn and forks the queen and the h8 rook, so Black has to take it with the king.",a:[["f7","d8"],["f7","h8"]]},
+  11:"<b>6...Kxf7</b> Black is a knight up for a pawn, but the king has come out to f7 and can never castle.",
+  12:{t:"<b>7.Nf3</b> Bring the other knight. It eyes e5, where it gives check.",a:[["f3","e5"]]},
+  13:{t:"<b>7...Bf5</b> Black develops the bishop and eyes c2.",a:[["f5","c2"]]},
+  14:{t:"<b>8.Ne5+</b> Check! The knight jumps in, hits c6 and makes the king move again.",a:[["e5","f7"]]},
+  15:"<b>8...Ke8</b> The king goes back to e8. It's Black's best try.",
+  16:{t:"<b>9.Bc4</b> Your bishop aims at e6, f7 and g8, the squares around Black's king.",a:[["c4","f7"]]},
+  17:"<b>9...e6</b> Black blocks the bishop with a pawn.",
+  18:{t:"<b>10.g4!</b> Kick the f5 bishop. You gain time and space right in front of Black's king.",a:[["g4","f5"]]},
+  19:"<b>10...Bh7</b> The bishop steps back but stays on the diagonal toward c2.",
+  20:{t:"<b>11.Bxe6</b> Take a second pawn. The bishop on e6 cuts the king off from d7 and f7.",a:[["e6","d7"],["e6","f7"]]},
+  21:{t:"<b>11...Nbd7</b> Black develops and challenges your e5 knight.",a:[["d7","e5"]]},
+  22:"<b>12.Nxd7</b> Take first, before Black takes on e5. Now the f6 knight has to recapture and leaves the kingside.",
+  23:"<b>12...Nxd7</b> Black takes back.",
+  24:{t:"<b>13.O-O</b> Castle. Your king is safe, Black's isn't, and your rook can come to e1.",a:[["f1","e1"]]}},
+  why:{
+  8:{"Nxf6+":"<b>5.Nxf6+</b> is the normal main line, and the engine likes it a tiny bit more. This course plays 5.Ng5 to set up the gambit."},
+  10:{"N5f3":"<b>6.N5f3</b> is the safe move, and the engine says it's objectively better. But then it's a quiet, normal game. The Alien Gambit is 6.Nxf7: you give a knight to drag Black's king out."},
+  12:{"Bc4+":"<b>7.Bc4+</b> is just as good. 7.Nf3 is played because it sets two traps: ...Bg4? runs into Ne5+, and ...Qd5? runs into Bc4."},
+  14:{"Bc4+":"<b>8.Bc4+</b> is a bit slower. 8.Ne5+ first makes the king pick a square before your bishop arrives."},
+  18:{"O-O":"<b>10.O-O</b> is too slow. 10.g4 kicks the bishop with tempo and grabs space next to Black's king."},
+  20:{"g5":"<b>11.g5</b> attacks the knight, but 11.Bxe6 is stronger: a second pawn, and the bishop locks Black's king in the middle."}}},
+
+ {id:"al_kg8",side:"w",fam:"alien",name:"7...Bf5 8.Ne5+ Kg8",key:"8...Kg8 9.Bc4+ e6 10.g4 Be4 11.Bxe6+ Kh7 12.f3",book:[8,10,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Bf5 Ne5+ Kg8 Bc4+ e6 g4 Be4 Bxe6+ Kh7 f3",
+  intro:"Same start as the main line, but Black hides the king on g8. That shuts the h8 rook in, and your bishop check from c4 hurts even more.",
+  plan:"Win the e4 bishop or chase it away, then castle and attack. Black's king is boxed in on h7 and the h8 rook is buried. The engine calls it about equal now: your gambit has paid off.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  15:"<b>8...Kg8</b> The king hides on g8. It looks safe, but it shuts the h8 rook in for a long time.",
+  16:{t:"<b>9.Bc4+</b> Check, on the diagonal toward g8.",a:[["c4","g8"]]},
+  17:"<b>9...e6</b> Black blocks with the pawn. 9...Nd5 was a bit better.",
+  18:{t:"<b>10.g4!</b> Hit the bishop. Black's pieces keep getting pushed around.",a:[["g4","f5"]]},
+  19:{t:"<b>10...Be4</b> The bishop attacks your rook on h1.",a:[["e4","h1"]]},
+  20:{t:"<b>11.Bxe6+</b> Grab the pawn with check.",a:[["e6","g8"]]},
+  21:"<b>11...Kh7</b> The only move. The king is squeezed into the corner.",
+  22:{t:"<b>12.f3</b> Attack the bishop and block its diagonal, so your h1 rook is safe.",a:[["f3","e4"]]}},
+  why:{
+  20:{"O-O":"<b>11.O-O</b> is too slow. 11.Bxe6+ wins a pawn with check and pushes the king into the corner."},
+  22:{"g5":"<b>12.g5</b> sets a sneaky trap (12...Bxh1?? 13.g6 is mate), but a careful player won't fall for it, and the engine rates it clearly worse. 12.f3 hits the bishop and saves your rook."}}},
+
+ {id:"al_e6",side:"w",fam:"alien",name:"7...e6: the solid defence",key:"7...e6 8.Bf4 Bd6 9.Bxd6 Qxd6 10.Ne5+ Kg8 11.c3",book:[8,10,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 e6 Bf4 Bd6 Bxd6 Qxd6 Ne5+ Kg8 c3",
+  intro:"Black stays calm with 7...e6. It gets the f8 bishop out and covers the d5 and f5 squares.",
+  plan:"Bring the queen out to f3 or b3, then castle long. Use the e5 knight and the open f-file to bother Black's king. You're still a knight down, so keep making threats.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  13:"<b>7...e6</b> A calm move. It opens the f8 bishop and covers d5 and f5.",
+  14:{t:"<b>8.Bf4</b> Develop. The bishop eyes b8 and h6, and it controls e5 for your knight.",a:[["f4","b8"]]},
+  15:{t:"<b>8...Bd6</b> Black offers a trade of bishops.",a:[["d6","f4"]]},
+  16:"<b>9.Bxd6</b> Take it. Your f4 bishop had no protection, so the trade is the cleanest answer.",
+  17:{t:"<b>9...Qxd6</b> The queen takes back and now looks at d4 and h2.",a:[["d6","d4"]]},
+  18:{t:"<b>10.Ne5+</b> Check, from a great square in the middle.",a:[["e5","f7"]]},
+  19:"<b>10...Kg8</b> The king steps away to g8.",
+  20:{t:"<b>11.c3</b> Guard d4. The queen on d6 was hitting it.",a:[["c3","d4"]]}},
+  why:{
+  14:{"Ne5+":"<b>8.Ne5+</b> is playable, but bring a new piece first. 8.Bf4 develops and keeps e5 ready for the knight."},
+  20:{"Qe2":"<b>11.Qe2?!</b> looks active, but it leaves d4 without a guard, and 11...c5 hits it again. 11.c3 keeps your centre together first."}}},
+
+ {id:"al_c5",side:"w",fam:"alien",name:"7...c5: the engine's choice",key:"7...c5 8.Bc4+ e6 9.Qe2 cxd4 10.O-O",book:[8,10,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 c5 Bc4+ e6 Qe2 cxd4 O-O",
+  intro:"The engine's favourite defence: Black hits your centre at once with 7...c5. It's the toughest test of the gambit.",
+  plan:"Win the d4 pawn back with Nxd4, and bring a rook to d1 or e1. Keep the queen and bishop aimed at e6 and the king. Black is better here, so look for tricks.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  13:{t:"<b>7...c5</b> Black attacks d4. It's the engine's top move.",a:[["c5","d4"]]},
+  14:{t:"<b>8.Bc4+</b> Check first. The bishop lands on the diagonal toward the king.",a:[["c4","f7"]]},
+  15:"<b>8...e6</b> Black blocks the check.",
+  16:{t:"<b>9.Qe2</b> Pile up on e6. Your queen and bishop both hit it.",a:[["e2","e6"]]},
+  17:"<b>9...cxd4</b> Black grabs another pawn.",
+  18:{t:"<b>10.O-O</b> Castle and get your rook into the game. Next you can take back on d4.",a:[["f3","d4"]]}},
+  why:{
+  18:{"c3":"<b>10.c3</b> tries to win d4 back with a pawn, but it's slow. 10.O-O first: Nxd4 is coming anyway."}}},
+
+ {id:"al_nbd7",side:"w",fam:"alien",name:"7...Nbd7",key:"7...Nbd7 8.Bc4+ e6 9.Qe2 Nd5 10.O-O Bd6 11.Ne5+",book:[8,10,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Nbd7 Bc4+ e6 Qe2 Nd5 O-O Bd6 Ne5+ Bxe5 dxe5",
+  intro:"Black develops the queen's knight to d7, where it guards e5. So your knight can't jump in yet: first you check from c4.",
+  plan:"Your e5 pawn takes the f6 and d6 squares away from Black's pieces. Bring the bishop to d2 or e3 and a rook to d1, and look for Qh5+ or f4 and f5 to open lines to the king.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  13:{t:"<b>7...Nbd7</b> Black develops and keeps an eye on e5.",a:[["d7","e5"]]},
+  14:{t:"<b>8.Bc4+</b> Check! Your bishop aims straight at the king.",a:[["c4","f7"]]},
+  15:"<b>8...e6</b> The best way to block. 8...Ke8? walks into a trap: see the next line.",
+  16:{t:"<b>9.Qe2</b> Attack e6 twice, with the queen and the bishop.",a:[["e2","e6"]]},
+  17:{t:"<b>9...Nd5</b> The knight blocks your bishop's diagonal, so e6 is only attacked once.",a:[["d5","c4"]]},
+  18:"<b>10.O-O</b> Castle. Your king is safe and your rook can join in.",
+  19:{t:"<b>10...Bd6</b> Black develops and eyes h2.",a:[["d6","h2"]]},
+  20:{t:"<b>11.Ne5+</b> Check! The knight jumps in and hits d7 and c6 too.",a:[["e5","f7"]]},
+  21:"<b>11...Bxe5</b> Black gives the bishop back for your knight.",
+  22:{t:"<b>12.dxe5</b> Take back. The e5 pawn takes f6 and d6 away from Black's pieces.",a:[["e5","f6"],["e5","d6"]]}},
+  why:{
+  16:{"O-O":"<b>9.O-O</b> is a bit slow. 9.Qe2 hits e6 right away, so Black has to deal with it first."}}},
+
+ {id:"al_mate",side:"w",fam:"alien",name:"Trap: 8...Ke8? and Bg6 mate",key:"8.Bc4+ Ke8 9.O-O Nb6 10.Bd3 Bg4 11.Ne5!",trap:[19,21],book:[8,10,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Nbd7 Bc4+ Ke8 O-O Nb6 Bd3 Bg4 Ne5 Bxd1 Bg6#",
+  intro:"The most famous Alien Gambit trap. If Black's king goes back to e8 and then Black pins your knight, you leave your queen hanging and mate with the bishop.",
+  plan:"It's checkmate! And if Black doesn't take your queen on move 11, you're winning anyway: the g4 bishop is attacked and Bg6+ is coming.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  15:"<b>8...Ke8?</b> The king goes home. It looks safe, but it gives back most of Black's advantage, and now the e8 to h5 diagonal is open.",
+  16:"<b>9.O-O</b> Castle first. Your king is safe, and the rook can join the attack later.",
+  17:{t:"<b>9...Nb6</b> Black attacks your bishop.",a:[["b6","c4"]]},
+  18:{t:"<b>10.Bd3</b> Step back, onto the diagonal toward g6. Remember that square!",a:[["d3","g6"]]},
+  19:{t:"<b>10...Bg4?</b> Black pins your knight to your queen. It looks strong, but it's a big mistake.",a:[["g4","d1"]]},
+  20:{t:"<b>11.Ne5!!</b> Ignore the pin! If Black takes your queen, Bg6 is checkmate.",a:[["d3","g6"]]},
+  21:"<b>11...Bxd1??</b> Black grabs the queen.",
+  22:{t:"<b>12.Bg6#</b> Checkmate! The knight covers d7 and f7, and Black's own queen and bishop block d8 and f8.",a:[["g6","e8"]]}},
+  why:{
+  20:{"Bg6+":"<b>11.Bg6+</b> is a check, but 11.Ne5!! is much stronger: it threatens Bg6 mate and attacks the g4 bishop at the same time."}}},
+
+ {id:"al_bg4",side:"w",fam:"alien",name:"Trap: 7...Bg4? 8.Ne5+",key:"7...Bg4 8.Ne5+ Ke8 9.Nxg4 Nxg4 10.Qxg4",trap:[13],book:[8,10,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Bg4 Ne5+ Ke8 Nxg4 Nxg4 Qxg4",
+  intro:"A trap that catches lots of players. Black pins your f3 knight with 7...Bg4, but that bishop has no defender.",
+  plan:"You've won your piece back and you're a pawn up, and Black's king still can't castle. Develop with Bd3 or Bc4, castle and attack.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  13:{t:"<b>7...Bg4?</b> Black pins your knight. It looks natural, but the bishop is undefended.",a:[["g4","d1"]]},
+  14:{t:"<b>8.Ne5+!</b> The knight jumps out of the pin with check and attacks the g4 bishop. A fork!",a:[["e5","f7"],["e5","g4"]]},
+  15:"<b>8...Ke8</b> The king has to move first.",
+  16:"<b>9.Nxg4</b> Take the bishop.",
+  17:"<b>9...Nxg4</b> Black takes back.",
+  18:{t:"<b>10.Qxg4</b> And your queen wins the knight. You've got all your material back, plus a pawn.",a:[["g4","g7"]]}},
+  why:{
+  14:{"Bc4+":"<b>8.Bc4+</b> is fine, but 8.Ne5+! wins a whole piece back right away."}}},
+
+ {id:"al_qd5",side:"w",fam:"alien",name:"Trap: 7...Qd5? 8.Bc4",key:"7...Qd5 8.Bc4 Qxc4 9.Ne5+ Kg8 10.Nxc4",trap:[13],book:[8,10,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Qd5 Bc4 Qxc4 Ne5+ Kg8 Nxc4",
+  intro:"Another trap. Black's queen jumps to d5 to attack your knight and pawns, but it's on the same diagonal as the king.",
+  plan:"You're way ahead: a queen for a bishop. Castle, develop and trade pieces. Don't rush.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  13:{t:"<b>7...Qd5?</b> The queen comes out to attack. But look at the diagonal from c4 to f7.",a:[["d5","f3"]]},
+  14:{t:"<b>8.Bc4!</b> A pin! The queen can't leave the diagonal, because the king is behind it.",a:[["c4","f7"]]},
+  15:"<b>8...Qxc4</b> Black takes the bishop. It's the best of bad choices.",
+  16:{t:"<b>9.Ne5+</b> A fork: check, and the knight hits the queen on c4.",a:[["e5","f7"],["e5","c4"]]},
+  17:"<b>9...Kg8</b> The king moves.",
+  18:"<b>10.Nxc4</b> Take the queen. You're up a queen for a bishop."},
+  why:{
+  14:{"Ne5+":"<b>8.Ne5+</b> gives check, but then the queen just escapes. 8.Bc4! pins it to the king and wins it."}}},
+
+/* ---------- no gambit: Black doesn't play 5...h6 ---------- */
+ {id:"al_5e6",side:"w",fam:"alien",name:"5...e6: no bait",key:"5...e6 6.Bd3 c5 7.N1f3 cxd4 8.Nxd4",book:[8,14],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 e6 Bd3 c5 N1f3 cxd4 Nxd4 Bc5 Nb3 Be7 O-O",
+  intro:"Black doesn't kick your knight with ...h6, so there's no gambit. You just develop and keep an eye on f7.",
+  plan:"Next come Qe2, Rd1 and Bf4 or Be3. Your g5 knight can go back to f3 or e4 when it's attacked. It's a normal, equal game.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:"<b>5...e6</b> Black stays solid and doesn't play ...h6. No sacrifice this time.",
+  10:{t:"<b>6.Bd3</b> Develop toward the kingside. The bishop eyes h7.",a:[["d3","h7"]]},
+  11:{t:"<b>6...c5</b> Black attacks your centre.",a:[["c5","d4"]]},
+  12:"<b>7.N1f3</b> Bring the other knight out. It guards d4.",
+  13:"<b>7...cxd4</b> Black trades on d4.",
+  14:"<b>8.Nxd4</b> Take back with the knight. If Black grabs it with 8...Qxd4?, then 9.Bb5+ uncovers your queen on d1 and wins Black's queen.",
+  15:{t:"<b>8...Bc5</b> Black attacks the knight.",a:[["c5","d4"]]},
+  16:{t:"<b>9.Nb3</b> Move it away with tempo: it hits the bishop.",a:[["b3","c5"]]},
+  17:"<b>9...Be7</b> The bishop steps back.",
+  18:"<b>10.O-O</b> Castle. Everything is developed and the game is level."},
+  why:{
+  10:{"Nxf7":"<b>6.Nxf7?</b> doesn't work without ...h6. The king takes, and you're simply a piece down."}}},
+
+ {id:"al_5bf5",side:"w",fam:"alien",book:[8],name:"5...Bf5: bishop trade",key:"5...Bf5 6.Bd3 Bxd3 7.Qxd3 e6 8.N1f3 h6 9.Ne4",
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 Bf5 Bd3 Bxd3 Qxd3 e6 N1f3 h6 Ne4 Nxe4 Qxe4",
+  intro:"Black develops the bishop to f5 instead of kicking your knight. You offer a trade of the light-squared bishops.",
+  plan:"Castle, put a rook on e1 and the bishop on d2 or f4. Your queen on e4 is active. It's an equal, normal Caro-Kann middlegame.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:{t:"<b>5...Bf5</b> Black develops the bishop and hits c2.",a:[["f5","c2"]]},
+  10:{t:"<b>6.Bd3</b> Offer a trade. Black's f5 bishop is its best minor piece.",a:[["d3","f5"]]},
+  11:"<b>6...Bxd3</b> Black trades.",
+  12:{t:"<b>7.Qxd3</b> Take back with the queen. Together with the g5 knight, it eyes h7.",a:[["d3","h7"]]},
+  13:"<b>7...e6</b> Black builds the wall.",
+  14:"<b>8.N1f3</b> Develop the other knight.",
+  15:{t:"<b>8...h6</b> Now Black kicks the g5 knight.",a:[["h6","g5"]]},
+  16:{t:"<b>9.Ne4</b> No sacrifice here. Bring the knight back to e4 and offer a trade.",a:[["e4","f6"]]},
+  17:"<b>9...Nxe4</b> Black trades.",
+  18:"<b>10.Qxe4</b> Your queen takes back and sits in the middle of the board."},
+  why:{
+  16:{"Nxf7":"<b>9.Nxf7?</b> doesn't work here. Black's king takes, and the engine gives Black a clear edge: you're a piece down for a pawn."}}},
+
+ {id:"al_5bg4",side:"w",fam:"alien",book:[8],name:"5...Bg4",key:"5...Bg4 6.Be2 Bxe2 7.Nxe2 h6 8.Nf3",
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 Bg4 Be2 Bxe2 Nxe2 h6 Nf3 e6 O-O",
+  intro:"Black attacks your queen with 5...Bg4. You block with the bishop and offer a trade.",
+  plan:"Next come c4 or c3, Bf4 and a rook to e1. Your knights are well placed and the game is equal.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:{t:"<b>5...Bg4</b> The bishop hits your queen.",a:[["g4","d1"]]},
+  10:{t:"<b>6.Be2</b> Block the attack and offer a trade.",a:[["e2","g4"]]},
+  11:"<b>6...Bxe2</b> Black trades.",
+  12:"<b>7.Nxe2</b> Take back with the g1 knight. It develops and your queen stays at home.",
+  13:{t:"<b>7...h6</b> Black kicks the g5 knight.",a:[["h6","g5"]]},
+  14:"<b>8.Nf3</b> Back to f3. Without your light-squared bishop there's no attack, so no sacrifice.",
+  15:"<b>8...e6</b> Black builds the wall.",
+  16:"<b>9.O-O</b> Castle. A calm, equal game."},
+  why:{
+  10:{"f3":"<b>6.f3</b> also blocks the bishop, but it weakens your king and takes f3 away from your knights. 6.Be2 is simpler."}}},
+
+ {id:"al_5nbd7",side:"w",fam:"alien",book:[8],name:"5...Nbd7: Karpov main line",key:"5...Nbd7 6.Bd3 e6 7.N1f3 Bd6 8.Qe2 h6 9.Ne4",
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 Nbd7 Bd3 e6 N1f3 Bd6 Qe2 h6 Ne4 Nxe4 Qxe4",
+  intro:"Black develops the queen's knight. This is the same position as the famous Karpov Variation (4...Nd7 5.Ng5 Ngf6), so it's real top-level theory.",
+  plan:"Castle, put the bishop on d2 and a rook on e1. Your queen stands in the middle of the board, and Black still has to find a job for the c8 bishop.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:"<b>5...Nbd7</b> Black develops the knight. It backs up the f6 knight and watches e5.",
+  10:{t:"<b>6.Bd3</b> Develop, aiming at h7.",a:[["d3","h7"]]},
+  11:"<b>6...e6</b> Black opens the f8 bishop.",
+  12:"<b>7.N1f3</b> The other knight comes out and guards d4 and e5.",
+  13:{t:"<b>7...Bd6</b> Black develops and eyes h2.",a:[["d6","h2"]]},
+  14:{t:"<b>8.Qe2</b> The main move. The queen lines up on e6 and gets ready for Ne4.",a:[["e2","e6"]]},
+  15:{t:"<b>8...h6</b> Now Black kicks the knight.",a:[["h6","g5"]]},
+  16:{t:"<b>9.Ne4</b> Back to e4 to trade knights. No sacrifice here.",a:[["e4","d6"]]},
+  17:"<b>9...Nxe4</b> Black trades.",
+  18:"<b>10.Qxe4</b> Your queen takes back and stands in the middle of the board."},
+  why:{
+  16:{"Nxe6":"<b>9.Nxe6?</b> is Deep Blue's sacrifice, but it only works one move earlier (see the next line). Here Black's bishop is already on d6, and the engine rates it clearly worse for you.",
+      "Nxf7":"<b>9.Nxf7?</b> is no Alien Gambit here: the engine says you're just a piece down for a pawn."}}},
+
+ {id:"al_deepblue",side:"w",fam:"alien",book:[8],name:"Deep Blue's sacrifice: 7...h6? 8.Nxe6!",key:"5...Nbd7 6.Bd3 e6 7.N1f3 h6 8.Nxe6 fxe6 9.Bg6+",trap:[13],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 Nbd7 Bd3 e6 N1f3 h6 Nxe6 fxe6 Bg6+ Ke7 Bf4 Nd5 Bg3",
+  intro:"In 1997 the computer Deep Blue beat world champion Garry Kasparov with this sacrifice. Black kicks the knight one move too early, before ...Bd6.",
+  plan:"Castle, put a rook on e1 and push c4 to chase the d5 knight. Black's king is stuck on e7 in the middle, and you have a pawn and a big attack for the knight.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  13:{t:"<b>7...h6?</b> Black kicks the knight, but too early: e6 is only guarded by the f7 pawn.",a:[["h6","g5"]]},
+  14:{t:"<b>8.Nxe6!!</b> Deep Blue's sacrifice! The knight takes on e6 and hits the queen and the f8 bishop.",a:[["e6","d8"],["e6","f8"]]},
+  15:"<b>8...fxe6</b> Black takes the knight.",
+  16:{t:"<b>9.Bg6+</b> Check! The king's only square is e7, right in the middle of the board.",a:[["g6","e8"]]},
+  17:"<b>9...Ke7</b> Forced.",
+  18:{t:"<b>10.Bf4</b> Bring the other bishop toward the king. It eyes d6 and c7.",a:[["f4","d6"]]},
+  19:{t:"<b>10...Nd5</b> Black attacks your bishop.",a:[["d5","f4"]]},
+  20:{t:"<b>11.Bg3</b> Keep the bishop on the diagonal toward d6, next to the king.",a:[["g3","d6"]]}},
+  why:{
+  14:{"Ne4":"<b>8.Ne4</b> is the safe move. But after 7...h6? you can punish Black: 8.Nxe6!! rips the king open, and the engine says you're better."}}},
+
+ {id:"al_5e5",side:"w",fam:"alien",book:[8],name:"Trap: 5...e5? 6.Bc4!",key:"5...e5 6.Bc4 Nd5 7.dxe5 Be7 8.N1f3",trap:[9],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 e5 Bc4 Nd5 dxe5 Be7 N1f3 Na6 O-O",
+  intro:"Black strikes back in the centre with 5...e5, but it leaves f7 weak. Your bishop joins the knight against it.",
+  plan:"Next come Re1 and Ne4. You're a pawn up and your pieces are more active. Keep watching f7: it's still Black's weak spot.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:{t:"<b>5...e5?</b> Black hits d4, but forgets about f7.",a:[["e5","d4"]]},
+  10:{t:"<b>6.Bc4!</b> Now f7 is attacked twice: by the bishop and the knight.",a:[["c4","f7"],["g5","f7"]]},
+  11:{t:"<b>6...Nd5</b> Black blocks the bishop's diagonal with the knight.",a:[["d5","c4"]]},
+  12:"<b>7.dxe5</b> Take the pawn. You're a pawn up.",
+  13:{t:"<b>7...Be7</b> Black develops and attacks your g5 knight.",a:[["e7","g5"]]},
+  14:"<b>8.N1f3</b> Protect the knight and develop.",
+  15:"<b>8...Na6</b> Black brings the last knight out.",
+  16:"<b>9.O-O</b> Castle. You're a healthy pawn up."},
+  why:{
+  10:{"dxe5":"<b>6.dxe5</b> wins a pawn too, but after 6.Bc4! Black is in real trouble on f7. The engine likes it much more."}}},
+
+ {id:"al_5g6",side:"w",fam:"alien",book:[8],name:"Trap: 5...g6 6.Bc4 Bg7? 7.Bxf7+!",key:"5...g6 6.Bc4 Bg7 7.Bxf7+ Kf8",trap:[11],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 g6 Bc4 Bg7 Bxf7+ Kf8 N1f3 c5 O-O",
+  intro:"Black wants to fianchetto the bishop, but that leaves f7 guarded only by the king.",
+  plan:"Keep the bishop on f7 or bring it back to b3. You're a pawn up, Black can't castle and the h8 rook is stuck.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:"<b>5...g6</b> Black gets ready for ...Bg7.",
+  10:{t:"<b>6.Bc4</b> Aim at f7. Your knight already hits it too.",a:[["c4","f7"]]},
+  11:"<b>6...Bg7?</b> Natural, but it ignores the threat on f7. Only 6...e6 holds.",
+  12:{t:"<b>7.Bxf7+!</b> Take with check. The bishop is protected by the g5 knight.",a:[["g5","f7"]]},
+  13:"<b>7...Kf8</b> The king steps aside. It can't castle any more.",
+  14:"<b>8.N1f3</b> Develop and keep an eye on e5.",
+  15:{t:"<b>8...c5</b> Black hits your centre.",a:[["c5","d4"]]},
+  16:"<b>9.O-O</b> Castle. You're a pawn up and Black's king and h8 rook are stuck."},
+  why:{
+  12:{"Nxf7":"<b>7.Nxf7</b> also wins the pawn, but 7.Bxf7+! does it with check and keeps the knight on g5."}}},
+
+ {id:"al_5c5",side:"w",fam:"alien",book:[8],name:"5...c5: the engine's choice",key:"5...c5 6.Bc4 e6 7.Ne2 Nc6 8.Nf3",
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 c5 Bc4 e6 Ne2 Nc6 Nf3 Be7 O-O",
+  intro:"The engine's top move: Black hits d4 at once with the c-pawn, even though it already moved once. You aim at f7 first.",
+  plan:"Next come c3 or dxc5, and Bf4 or Be3. Keep your pieces active; the game is level.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:{t:"<b>5...c5</b> The engine's favourite: Black attacks d4 right away.",a:[["c5","d4"]]},
+  10:{t:"<b>6.Bc4</b> Aim at f7, together with the knight.",a:[["c4","f7"]]},
+  11:"<b>6...e6</b> The only good move: it blocks the bishop. 6...Qxd4? would run into 7.Bxf7+.",
+  12:{t:"<b>7.Ne2</b> Develop the g1 knight to e2, where it guards d4.",a:[["e2","d4"]]},
+  13:{t:"<b>7...Nc6</b> More pressure on d4.",a:[["c6","d4"]]},
+  14:{t:"<b>8.Nf3</b> The g5 knight comes back to guard d4. Now that ...e6 has blocked your bishop, there's no attack on f7, so the knight has a better job here.",a:[["f3","d4"]]},
+  15:"<b>8...Be7</b> Black develops.",
+  16:"<b>9.O-O</b> Castle. The game is level."},
+  why:{
+  10:{"dxc5":"<b>6.dxc5</b> lets Black trade queens with check (6...Qxd1+), and then there's no attack left. 6.Bc4 keeps the queens on."}}}
 );
 
 /* why-not notes: why the line's move beats the tempting alternative (generated from whyrows1.txt) */
@@ -8742,6 +9044,25 @@ REP.lines.push(
 "sl_nc3_bg5":"Against 5.e4 and 5.Bxf6 White plays sharper. Here 5.e3 tries to win c4 back calmly, so hold it with ...b5, and when a4 hits it, ...Qb6 guards b5. Then ...Bb7.",
 "sl_nc3_bf4":"Against 4.e3 you build a triangle, and against 4.Nf3 you take on c4. Here 4.Bf4 leaves c4 unguarded, so take it and hold it with ...b5 and ...Qb6."});
 
+/* how each Alien Gambit line differs from its closest relative */
+(function(V){const ids=new Set(REP.lines.map(l=>l.id));for(const k in V)if(!ids.has(k))throw new Error('vs: unknown line '+k);for(const L of REP.lines)if(V[L.id])L.vs=V[L.id]})({
+"al_main":"After 8.Ne5+, the king goes back to e8. You don't need another check: 9.Bc4 and 10.g4 come with threats anyway. If the king goes to g8 instead, 9.Bc4 is a check (next line).",
+"al_kg8":"Same start as the main line, but 8...Kg8 instead of 8...Ke8. Now 9.Bc4 is a check, and after 10.g4 Be4 you take on e6 with check too. The king ends up stuck on h7.",
+"al_e6":"Instead of developing the bishop with 7...Bf5, Black plays the calm 7...e6. With no bishop on f5 to chase, you develop with 8.Bf4 and trade the dark-squared bishops first.",
+"al_c5":"Black's sharpest answer: 7...c5 hits d4 at once. You don't defend it: you give check with 8.Bc4+, pile up on e6 with Qe2 and castle.",
+"al_nbd7":"7...Nbd7 covers e5, so 8.Ne5+ isn't possible yet. Give the bishop check first, and only jump to e5 once Black's bishop has moved to d6.",
+"al_mate":"Same as the 7...Nbd7 line until move 8, but the king goes back to e8 instead of blocking with ...e6. That opens the diagonal from e8 to h5, and Bg6 becomes mate.",
+"al_bg4":"Like the main line, but Black pins with 7...Bg4 instead of 7...Bf5. On g4 the bishop is loose, and 8.Ne5+ hits it with check.",
+"al_qd5":"Instead of a bishop move, Black's queen comes out with 7...Qd5. On d5 it stands on the same diagonal as the king on f7, so 8.Bc4 pins it.",
+"al_5e6":"Here Black never plays ...h6, so there's no sacrifice. You just develop: Bd3, N1f3 and castle, like in a normal Caro-Kann.",
+"al_5bf5":"Like the 5...e6 line, there's no sacrifice. Black's bishop goes to f5 first, so you trade it off with 6.Bd3.",
+"al_5bg4":"Black's bishop goes to g4 instead of f5 and hits your queen. You block with 6.Be2 instead of 6.Bd3, and take back on e2 with the g1 knight.",
+"al_5nbd7":"Black plays ...h6 only after ...Bd6. Because the bishop is already out, the Deep Blue sacrifice doesn't work, and you trade knights with 9.Ne4.",
+"al_deepblue":"Same as the 5...Nbd7 line, but Black plays 7...h6? before 7...Bd6. That one-move difference makes 8.Nxe6!! work.",
+"al_5e5":"Black hits back in the centre with 5...e5. Unlike the quiet lines, f7 is weak at once, so 6.Bc4! is strong.",
+"al_5g6":"Black goes for a fianchetto with 5...g6. Like after 5...e5, 6.Bc4 hits f7, and the natural 6...Bg7? drops the pawn with check.",
+"al_5c5":"The engine's top move. Like in the 5...g6 line you play 6.Bc4, but Black has the right answer, 6...e6. So you develop calmly and bring the g5 knight back to f3."});
+
 /* ===================== videos that explain each course (they open on YouTube) =====================
    Found with YouTube search and checked by title and channel. m = length in minutes. */
 REP.videos={
@@ -8768,18 +9089,14 @@ REP.videos={
  vienna:[
   {id:"JVxENCPcCjU",t:"WIN WITH 1. E4 | The Vienna Gambit",ch:"GothamChess",m:25},
   {id:"PbteFFxkZIc",t:"Learn the Vienna Gambit with Hikaru",ch:"GMHikaru",m:31}],
- ck_adv:[
-  {id:"rmbU97iftC8",t:"Learn the Caro-Kann Defense | 10-Minute Chess Openings",ch:"GothamChess",m:9},
-  {id:"ebfzL_GwiIE",t:"How to CRUSH with the Caro-Kann!",ch:"GothamChess",m:34},
-  {id:"d_Rgvyt-tTc",t:"Caro-Kann Defense: Advance Variation FULL GUIDE for Black",ch:"IM Alex Banzea",m:39}],
- ck_classic:[
+ ck:[
   {id:"rmbU97iftC8",t:"Learn the Caro-Kann Defense | 10-Minute Chess Openings",ch:"GothamChess",m:9},
   {id:"HvER2idtW6M",t:"Learn the Caro-Kann in 15 Minutes",ch:"Remote Chess Academy",m:17},
-  {id:"OiMf511N_xc",t:"Caro-Kann, Classical Variation (Bf5): Complete Chess Openings",ch:"Hanging Pawns",m:54}],
- ck_exch:[
+  {id:"ebfzL_GwiIE",t:"How to CRUSH with the Caro-Kann!",ch:"GothamChess",m:34},
+  {id:"d_Rgvyt-tTc",t:"Caro-Kann Defense: Advance Variation FULL GUIDE for Black",ch:"IM Alex Banzea",m:39},
+  {id:"OiMf511N_xc",t:"Caro-Kann, Classical Variation (Bf5): Complete Chess Openings",ch:"Hanging Pawns",m:54},
   {id:"898k4qkY0vg",t:"Handling the IQP | Caro-Kann Exchange | The Sensei Speedrun",ch:"Daniel Naroditsky",m:78},
-  {id:"6lwQQaSkkIU",t:"Caro-Kann Panov Attack | An Active Black Repertoire",ch:"ChessGoals",m:15}],
- ck_other:[
+  {id:"6lwQQaSkkIU",t:"Caro-Kann Panov Attack | An Active Black Repertoire",ch:"ChessGoals",m:15},
   {id:"75eCBgJyGJY",t:"How To Crush The Caro-Kann Fantasy Variation With Black",ch:"Chessscape",m:19},
   {id:"mBxYn8v3j-Q",t:"How to Play The Caro-Kann Defense: Two Knights Variation",ch:"VadimChess",m:14}],
  slav:[
@@ -8811,11 +9128,16 @@ REP.videos={
   {id:"tiDCW-NO848",t:"How to Play the Queen's Indian!",ch:"Chess.com",m:8}],
  nf6_other:[
   {id:"8gvj7_LCsa0",t:"Indian Game: The Only Opening You Need to Beat the London System",ch:"Remote Chess Academy",m:19},
-  {id:"BmFrJuPdwxE",t:"How to CRUSH the London System!!",ch:"Daniel Naroditsky",m:36}]
+  {id:"BmFrJuPdwxE",t:"How to CRUSH the London System!!",ch:"Daniel Naroditsky",m:36}],
+ alien:[
+  {id:"W5JEs5UdwFE",t:"All Alien Gambit Brilliants And Tricks",ch:"Witty_Alien",m:19},
+  {id:"S6dozy6euxc",t:"Crush EVERYONE with the Alien Gambit!",ch:"GothamChess",m:33},
+  {id:"kPjJUoVahfs",t:"Learn the Alien Gambit in 15 Minutes",ch:"Remote Chess Academy",m:17},
+  {id:"gBy4ncE246w",t:"The Alien Gambit is TOO STRONG",ch:"Eric Rosen",m:6}]
 };
 
 /* middlegame puzzles from games in each opening: Lichess puzzle database (CC0), collected by getpuzzles.js */
-REP.puzzles={"catalan":[{"id":"cQXuV","fen":"r1b4r/1Nkn1pp1/2p2q1p/p7/2P5/P5P1/4PPBP/1R1Q1RK1 b - - 0 18","last":"c8b7","sol":["b1b7","c7b7","d1d7"],"r":1214,"th":["deflection","crushing","attraction"]},{"id":"n2rGK","fen":"qr3rk1/1p2bppp/p2n1B2/3p2N1/6b1/1P2P1P1/P1QN1PBP/R2R2K1 b - - 0 18","last":"e7f6","sol":["c2h7"],"r":825,"th":["master","mateIn1","kingsideAttack"]},{"id":"dbvSG","fen":"r4rk1/p4ppp/1p1qpnN1/8/2P2B2/6P1/PP2QP1P/5RK1 b - - 1 19","last":"d6c6","sol":["g6e7","g8h8","e7c6"],"r":871,"th":["crushing","fork"]},{"id":"o13no","fen":"r2q1r2/3nbppk/b1p1p2p/pp2P1P1/2pPN3/3n1N2/PPQB1PBP/R3R1K1 b - - 2 18","last":"d3e1","sol":["e4f6","h7h8","c2h7"],"r":1401,"th":["mateIn2","discoveredCheck","doubleCheck","master"]},{"id":"ApiJz","fen":"rnb2rk1/pp3pp1/4pn1p/2p5/2N5/P4NP1/1q2PPBP/R2Q1RK1 b - - 1 13","last":"b2c3","sol":["a1c1","c3c1","d1c1"],"r":1621,"th":["trappedPiece","advantage"]},{"id":"Y06TR","fen":"1r2k2r/pbp1bppp/2n5/1p1q4/2p5/2Nn1NP1/PP2QPBP/R1BR2K1 b k - 1 15","last":"c6d4","sol":["e2e7","e8e7","c3d5","b7d5","f3d4"],"r":1885,"th":["advantage","attraction","master"]},{"id":"Q6bPa","fen":"r5k1/pp4pp/2n1pp2/2b3B1/2N1P1n1/P5PP/1P1R1PB1/6K1 b - - 0 18","last":"g4f2","sol":["g5e3","c5e3","c4e3","f2h3","g2h3"],"r":1763,"th":["trappedPiece","advantage"]},{"id":"pRy4N","fen":"2Qq1rk1/p3bppp/bp3n2/8/2P5/1P4P1/Pp1N1PBP/R2Q1RK1 b - - 0 15","last":"b2a1q","sol":["c8d8","a1d1","d8f8","g8f8","f1d1"],"r":1581,"th":["advantage"]},{"id":"stqaY","fen":"r2q1rk1/pb2bppp/n3pn2/1p4N1/2pPP3/6P1/1PQB1PBP/RN3RK1 b - - 1 12","last":"h7h6","sol":["e4e5","b7g2","e5f6"],"r":1430,"th":["advantage"]},{"id":"Ov5xu","fen":"r3r1k1/1bp1qp1p/3p1np1/2P5/4P3/5BP1/2QN1P1P/2R1R1K1 b - - 0 19","last":"f6d7","sol":["c5c6","b7c6","c2c6"],"r":1589,"th":["crushing","fork","master"]},{"id":"Mn07I","fen":"3r2k1/1p2bppp/p4n2/5b2/PnQ5/3r2PP/1P1N1PB1/R1B3K1 b - - 0 19","last":"d3d2","sol":["c1d2","d8d2","c4f4","d2d7","f4f5"],"r":1985,"th":["crushing","fork","master"]},{"id":"ZbSGl","fen":"rn1q1rk1/pb2b1pp/4pp2/1p4N1/2pP4/2P3P1/2Q1PPBP/R1B2RK1 b - - 1 14","last":"b7g2","sol":["c2h7"],"r":963,"th":["mateIn1","kingsideAttack"]}],"qga":[{"id":"AIffR","fen":"r4rk1/pp3pp1/6b1/2p3q1/3nP2R/2N4Q/PP4PP/R5K1 b - - 1 19","last":"f7f6","sol":["h4h8","g8f7","h3d7"],"r":1152,"th":["mateIn2","epauletteMate","kingsideAttack"]},{"id":"6yjOC","fen":"r1b2r2/p2nq1p1/2p1p1k1/1p1nPpN1/P2P3Q/2P5/3B1PPP/R4RK1 b - - 1 16","last":"c8b7","sol":["h4h7"],"r":880,"th":["mateIn1"]},{"id":"60tva","fen":"2r2k1r/p3bppp/1q3n2/1Q1PN3/4P3/2N2P2/6PP/R3K2R b KQ - 0 18","last":"c8c3","sol":["b5b6","a7b6","a1a8"],"r":1645,"th":["advantage"]},{"id":"ehWzC","fen":"r4rk1/p1nqppbp/2N3p1/2nP4/PpN5/1P3P2/6PP/1RBQR1K1 b - - 2 17","last":"c7d5","sol":["d1d5","d7d5","c6e7","g8h8","e7d5"],"r":1683,"th":["deflection","advantage","attraction","fork","sacrifice","capturingDefender"]},{"id":"EYlen","fen":"rn3bkr/p3p1pp/3n4/q1pP4/PpB5/1P5Q/3B1PPP/RN2K2R b KQ - 0 14","last":"d6c4","sol":["h3e6"],"r":824,"th":["mateIn1","master"]},{"id":"EP9Fe","fen":"rn2k2r/pp3pp1/2P4p/4p3/2B1q1b1/2P3Q1/P3NPPP/R3K2R b KQkq - 0 13","last":"e4c4","sol":["g3e5","c4e6","e5e6","g4e6","c6b7"],"r":1765,"th":["advancedPawn","advantage"]},{"id":"sjDZP","fen":"rnb2rk1/p5pp/2p1pp2/1p2N1qB/2pP1P2/P1P5/6PP/R2Q1RK1 b - f3 0 14","last":"g5h6","sol":["e5g4","h6h5","g4f6","f8f6","d1h5"],"r":1740,"th":["crushing","sacrifice","kingsideAttack","discoveredAttack"]},{"id":"qQGrT","fen":"2kr3r/pppqbppp/4Pn2/8/2Q1PB2/2N2P2/PP3P1P/2KR3R b - - 0 13","last":"d7e6","sol":["c4c7"],"r":993,"th":["queensideAttack","mateIn1"]},{"id":"pQOeK","fen":"r2q1rk1/1b1nbppp/p3p3/2pnP3/Pp1P4/1P1BB2Q/N3NPPP/R4RK1 b - - 1 15","last":"c5d4","sol":["h3h7"],"r":1023,"th":["mateIn1","kingsideAttack"]},{"id":"HnvAa","fen":"r1b2rk1/pp3ppp/3q4/3N4/8/3Q4/PP3PPP/R3R1K1 b - - 2 17","last":"c8e6","sol":["d5f6","g7f6","d3d6"],"r":1382,"th":["advantage","discoveredAttack"]},{"id":"eRI8K","fen":"rn3k1r/pp3ppp/2p5/3P2Q1/1bB1q1b1/2N1B1P1/PP3K1P/R5N1 b - - 6 14","last":"b4c3","sol":["g5d8","e4e8","e3c5","f8g8","d8e8"],"r":1523,"th":["deflection","mateIn3"]},{"id":"Y23MB","fen":"r2qk2r/2pb1ppp/pp2p3/3nP3/2QP4/B7/PR1N1PPP/5RK1 b kq - 1 16","last":"d7b5","sol":["b2b5","a6b5","c4c6","d8d7","c6a8"],"r":1704,"th":["deflection","advantage","sacrifice"]}],"qgd":[{"id":"uFXWj","fen":"1r1k1b1r/p1Nn1Qpp/3q4/1p3b2/3P4/4PN2/PP3PPP/2R1K2R b K - 0 14","last":"f5g6","sol":["c7e6","d6e6","f7e6"],"r":1188,"th":["crushing"]},{"id":"frX5y","fen":"r1bq1rk1/pp2bpp1/4p2p/2p1P3/3PN3/P1NQn3/1P4PP/RB3RK1 b - - 1 16","last":"e3f1","sol":["e4f6","g7f6","d3h7"],"r":1250,"th":["clearance","mateIn2","sacrifice","kingsideAttack"]},{"id":"RlHI3","fen":"r1b2rk1/4qpp1/1p2pn1p/p1p5/3P2N1/2PQ4/P1B2PPP/R4RK1 b - - 1 16","last":"c5d4","sol":["g4f6","g7f6","d3h7"],"r":1209,"th":["mateIn2","kingsideAttack"]},{"id":"4sDlA","fen":"r1b2rQk/pp2N1bp/1npq2p1/4N3/3P4/3B4/PP3PPP/2R1R1K1 b - - 4 18","last":"f8g8","sol":["e5f7"],"r":1240,"th":["mateIn1","smotheredMate"]},{"id":"yF6xj","fen":"2r3k1/p2n1ppp/1p2pq2/3b4/3P4/P2Q1N2/1P3PPP/1B3RK1 b - - 3 17","last":"d5f3","sol":["d3h7","g8f8","h7h8","f8e7","h8c8","f6g5","g2g3"],"r":1291,"th":["advantage","skewer","defensiveMove","master"]},{"id":"cw2nL","fen":"r4nk1/pp3p1p/2pbbqpQ/8/3PB2N/6P1/PP1B1P1P/R5K1 b - - 3 17","last":"f6d4","sol":["d2c3","d4c3","b2c3"],"r":1414,"th":["advantage"]},{"id":"YltmD","fen":"2kr4/1ppq1p1p/B1n2p2/3p4/Q2P4/2P1P3/P4PrP/1R3R1K b - - 1 17","last":"d7h3","sol":["a6b7","c8d7","a4c6"],"r":1039,"th":["crushing","fork"]},{"id":"jmWoa","fen":"r1b1k2r/p4ppp/2p1pn2/6B1/2B5/2P1P3/P4PPP/3R1RK1 b kq - 0 12","last":"f6e4","sol":["d1d8"],"r":813,"th":["mateIn1"]},{"id":"mLyZc","fen":"r1b2rk1/pp3ppp/4p3/q2p2N1/1bPn3P/2NQ4/PP2BPP1/2R1K2R b K - 1 13","last":"d4e2","sol":["d3h7"],"r":824,"th":["mateIn1","kingsideAttack"]},{"id":"fI9BR","fen":"r2qr1k1/1b3ppp/p1n5/2pN4/8/P3PN2/1bQ2PPP/1BR2RK1 b - - 1 16","last":"b2c1","sol":["c2h7","g8f8","h7h8"],"r":1002,"th":["mateIn2","kingsideAttack"]},{"id":"CxXAK","fen":"r1b1k2r/ppq2p1p/2n1pN2/8/1bpp4/5N2/PP2QPPP/R2K1B1R b kq - 9 13","last":"e8e7","sol":["f6d5","e7d7","d5c7"],"r":1034,"th":["advantage","pin"]},{"id":"Rimq8","fen":"r3k2r/5ppp/bpp1p3/q2p4/nQ1PnP1B/P1P1P3/4N1PP/2R1KB1R b Kkq - 2 15","last":"a6e2","sol":["b4e7"],"r":858,"th":["mateIn1","master"]}],"slavw":[{"id":"mFDy1","fen":"1r2k1br/1p2p1bp/p1p3p1/6Nn/P1pqP1Q1/2N4P/1P3P2/3RKB1R b Kk - 1 18","last":"d4f6","sol":["g4d7","e8f8","d7d8","b8d8","d1d8"],"r":1287,"th":["mateIn3","sacrifice"]},{"id":"zz4eP","fen":"r2q1rk1/1p3ppp/p2bpn2/6B1/3PR1b1/P4NP1/1P3PBP/R2Q2K1 b - - 2 14","last":"d6e7","sol":["g5f6","e7f6","e4g4"],"r":1196,"th":["advantage","capturingDefender"]},{"id":"cBCzN","fen":"2rq1rk1/1p2bppp/p3pn2/3pP3/7B/2N1P2P/PPR1QPP1/2R3K1 b - - 0 18","last":"f6d7","sol":["h4e7","d8e7","c3d5","e6d5","c2c8"],"r":1176,"th":["crushing","discoveredAttack"]},{"id":"bFnqH","fen":"2kr1b1r/Rp1npppp/8/1B1NP1Bb/4p3/1P6/1P3PPP/4K2R b K - 2 14","last":"d7e5","sol":["a7a8"],"r":1273,"th":["mateIn1"]},{"id":"2Y7em","fen":"r2r2k1/pppn1ppp/5n2/q7/2P2Q2/P3PNP1/1P1N3P/1R3RK1 b - - 4 16","last":"d7c5","sol":["b2b4","a5a3","b4c5"],"r":1316,"th":["fork","advantage"]},{"id":"L2iMe","fen":"3r1rk1/2p2ppp/p1nb4/1pPNp3/4P1B1/P7/5PPP/3R1RK1 b - - 0 18","last":"d6c5","sol":["d1c1","c5a3","c1c6"],"r":1764,"th":["advantage"]},{"id":"hc8W0","fen":"2kr3r/ppp2B1p/5p2/4p3/1b2b3/4B3/PP3PPP/2R2RK1 b - - 1 16","last":"h8f8","sol":["f7e6","c8b8","c1c4","e4d3","c4b4"],"r":1599,"th":["advantage","fork"]},{"id":"oXTuY","fen":"r2qkb1r/2p1pppp/8/3bP3/4PP2/3Q4/PP3P1P/R3KB1R b KQkq e3 0 15","last":"d5b7","sol":["d3b5","c7c6","b5b7"],"r":1145,"th":["advantage","fork"]},{"id":"xdxGr","fen":"r1bqrk1Q/1pp3p1/p1n1p3/3nP1N1/3P4/2P1B3/P4PPP/R3K2R b KQ - 6 18","last":"f8e7","sol":["h8g7"],"r":809,"th":["epauletteMate","mateIn1"]},{"id":"MewHd","fen":"r1bqk2r/1p1nb1p1/p3Q2p/2pp4/3P4/3B1N2/PP1B1PPP/R4RK1 b kq - 0 14","last":"d7f6","sol":["d3g6","e8f8","e6f7"],"r":925,"th":["mateIn2"]},{"id":"YMfWV","fen":"r1bq1rk1/1pp2pp1/2n1p3/p2nP1NQ/1b1P3P/2N5/PP1B1PP1/R3K2R b KQ - 3 13","last":"f7f6","sol":["h5h7"],"r":851,"th":["mateIn1"]},{"id":"eAYyE","fen":"rn2kb1r/p4ppp/1pp1pn2/6B1/B3PP2/2N1q3/PP2N1PP/3QK2R b Kkq - 3 15","last":"f6e4","sol":["d1d8"],"r":1460,"th":["mateIn1"]}],"indian_w":[{"id":"LHYaM","fen":"r3r1k1/pp1b1p2/2p3pQ/4p1N1/2P5/6P1/Pq2PPBP/5RK1 b - - 0 18","last":"e5e4","sol":["h6h7","g8f8","h7f7"],"r":1100,"th":["mateIn2","kingsideAttack"]},{"id":"48uIo","fen":"r3kb1r/p2p2pp/b2Ppn2/2p5/2pn4/2N2BB1/PP1N1PPP/R3K2R b KQkq - 6 16","last":"d4c2","sol":["e1d1","c2a1","f3a8"],"r":1938,"th":["defensiveMove","advantage"]},{"id":"nLt0P","fen":"1q2kb1r/3n1ppp/2N1p3/Q2p4/1pp1b3/4BN2/1P3PPP/4KB1R b Kk - 3 18","last":"b8b7","sol":["a5d8"],"r":941,"th":["mateIn1"]},{"id":"C9TF0","fen":"rn2kb1r/p2q2pp/4p3/2p5/4NP2/2Qn4/PP1BK1PP/R5NR b kq - 2 16","last":"b8c6","sol":["c3d3","d7d3","e2d3"],"r":1523,"th":["crushing"]},{"id":"KfzF9","fen":"r3k2r/p2pppbp/6p1/2qP4/2b5/5NP1/P1Q1PPBP/2R2K1R b kq - 1 17","last":"c4e2","sol":["f1e2","c5c2","c1c2"],"r":1427,"th":["crushing","hangingPiece"]},{"id":"4ZvXD","fen":"q6r/3pk2p/2n1pp1Q/8/1p2P3/5P2/rP4PP/3R1KNR b - - 3 18","last":"a2a1","sol":["h6g7","e7e8","g7h8"],"r":1143,"th":["crushing","interference"]},{"id":"iZek0","fen":"r4rk1/p1q1pp1p/1nNp2p1/3P4/2p1PPn1/2Q2N2/PP4PP/R3R1K1 b - - 1 17","last":"b6d7","sol":["c6e7"],"r":962,"th":["mateIn1","kingsideAttack"]},{"id":"K2YVe","fen":"r1bqk2r/p2pp2p/2nP1ppB/2p5/1pP1Q3/1P1B1N2/P4PPP/bN2K2R b Kkq - 1 13","last":"a7a5","sol":["e4g6","h7g6","d3g6"],"r":1561,"th":["mateIn2","sacrifice"]},{"id":"YgKGV","fen":"rn3k1r/p1qp1p2/3bpn1p/1Pp1N1p1/2P5/2N3B1/P3QP1P/2KR4 b - - 0 17","last":"d6e5","sol":["g3e5","c7d8","e2f3"],"r":1980,"th":["fork","advantage"]},{"id":"Xyu4c","fen":"r2qk2r/4ppbp/bn1p1np1/p1pP4/2P1P3/2N2PN1/P2B2PP/1R1QKB1R b Kkq - 5 12","last":"b6c4","sol":["f1c4","a6c4","d1a4","f6d7","a4c4"],"r":1663,"th":["fork","advantage"]},{"id":"xO2zs","fen":"rn1qk2r/p2bpp1p/3p2p1/2p5/1pP5/1P3P2/PQ1BP1PP/1n2KBNR b Kkq - 0 13","last":"b1d2","sol":["b2h8"],"r":1006,"th":["mateIn1","backRankMate","hangingPiece"]},{"id":"YFKZS","fen":"rn4k1/4p2p/b3P1p1/1Np1b3/2B4q/5QP1/PP5P/R3K2R b KQ - 0 19","last":"h4c4","sol":["f3f7","g8h8","f7f8"],"r":967,"th":["mateIn2","kingsideAttack","master"]}],"ck_adv":[{"id":"xGS5q","fen":"2kr1b1r/pp2p1p1/2p1p1P1/6Np/3PB1nP/6q1/PPP5/R1BQ1K1R w - - 0 18","last":"h1h3","sol":["g3f2"],"r":1298,"th":["mateIn1"]},{"id":"sgHP4","fen":"r3k2r/pp2qppp/2n1p1bn/1B1pP3/3p4/1NP2N1P/PP3PP1/R2QK2R w KQkq - 0 12","last":"c3d4","sol":["e7b4","d1d2","b4b5"],"r":1038,"th":["advantage","fork"]},{"id":"RKATL","fen":"rn2kb1r/pp3Np1/q3p2p/2ppP3/3n1QP1/1P6/P1P2P1P/RNB1K2R w KQkq - 0 13","last":"f7h8","sol":["a6e2"],"r":1273,"th":["mateIn1"]},{"id":"0axzp","fen":"2rqk2r/pp3pp1/4p1p1/2bpP3/8/5P2/PP1N2PP/R1BQ1RK1 w k - 1 17","last":"g1h1","sol":["h8h2","h1h2","d8h4"],"r":1227,"th":["mateIn2","attraction","sacrifice","kingsideAttack"]},{"id":"r32tH","fen":"r4rk1/pp4bp/4p1p1/2Pp3n/2P2P1q/3BQP1b/PP2N2P/R1B1R1K1 w - - 1 17","last":"c4d5","sol":["h4e1"],"r":1189,"th":["hangingPiece","mateIn1","kingsideAttack"]},{"id":"woU2Y","fen":"2r2rk1/1p3ppp/pqn1p3/3pPn2/1b1P4/P2Q1N2/1BR1NPPP/5RK1 w - - 0 18","last":"a3b4","sol":["c6b4","d3b3","c8c2"],"r":1297,"th":["crushing","fork","discoveredAttack"]},{"id":"hHLtf","fen":"r2qr2k/pp5p/2p3p1/3pPn2/2nP4/P1P5/1P4PP/RNBQ1RK1 w - - 1 18","last":"b2b3","sol":["c4e3","c1e3","f5e3","d1e2","e3f1"],"r":1134,"th":["advantage","fork"]},{"id":"O2xDy","fen":"r3k2r/1p1b1ppp/p3p3/2qpP3/5P2/2N1nN2/PPPQ2PP/R3K2R w KQkq - 2 14","last":"c3d1","sol":["e3c2","d2c2","c5c2"],"r":1243,"th":["crushing","fork","master"]},{"id":"9Sk7P","fen":"r3kb1r/pp3ppp/1q2p3/3pP3/3n1P2/2NQ4/PP4PP/R1BR2K1 w kq - 0 14","last":"d3d4","sol":["f8c5","c1e3","c5d4"],"r":1147,"th":["pin","advantage"]},{"id":"wDBW0","fen":"3r1rk1/pp2bppp/4q3/1B1pPp2/1n3P2/3Q4/PPP1N1PP/R4RK1 w - - 3 16","last":"d3b3","sol":["e6b6","g1h1","b6b5"],"r":1557,"th":["crushing","fork","master"]},{"id":"I1cXj","fen":"4rbnr/ppk3p1/6R1/2pp4/3P2Q1/2P5/PP1N1PPq/R1B2K2 w - - 4 17","last":"d2f3","sol":["h2h1","f3g1","h1g1","f1g1","e8e1"],"r":1613,"th":["attraction","mateIn3","sacrifice"]},{"id":"RamZB","fen":"N6r/pp1k1pp1/2n1p1p1/3pPn2/3P4/b3B2P/1q3PP1/R2QKB1R w KQ - 0 16","last":"a1b1","sol":["a3b4","e3d2","b4d2","d1d2","b2b1"],"r":1583,"th":["crushing"]}],"ck_classic":[{"id":"tHYn7","fen":"r3k2r/pp3pp1/1qp1p2p/3n3P/3P4/b4N2/PPP1QPP1/1KBR3R w kq - 7 18","last":"c2c4","sol":["d5c3","b1a1","c3e2"],"r":1200,"th":["advantage","pin"]},{"id":"4jfrj","fen":"3rk2r/pp3p2/1qp1ppp1/1n6/2BP4/5P2/PPPQ2PP/1K1R3R w k - 2 19","last":"c2c3","sol":["b5a3","b1a1","a3c4"],"r":1262,"th":["queensideAttack","crushing","pin"]},{"id":"vulxX","fen":"r3r1k1/pp3ppp/2pq1pb1/3n4/3P4/2PB1PN1/PP4PP/R2Q1RK1 w - - 3 15","last":"f1e1","sol":["e8e1","d1e1","g6d3"],"r":1342,"th":["advantage","kingsideAttack"]},{"id":"p5ibE","fen":"1k1r3r/ppR2ppp/2p2nb1/2n5/5B2/1N4N1/qPPQ1PPP/2K2B1R w - - 3 17","last":"d2b4","sol":["c5b3","b4b3","a2a1"],"r":1303,"th":["mateIn2","queensideAttack"]},{"id":"5UFJO","fen":"r4rk1/ppq2pp1/2n1pn1p/8/8/4BNQ1/PPP2PPP/R2R2K1 w - - 1 17","last":"e3h6","sol":["c7g3","h2g3","g7h6"],"r":1116,"th":["advantage"]},{"id":"PXgOD","fen":"r3kb1r/p1qn1pp1/1pp1p1p1/8/2PP2n1/4BNN1/PPQ2PPP/R4RK1 w kq - 2 13","last":"h2h3","sol":["g4e3","f2e3","c7g3"],"r":1111,"th":["crushing"]},{"id":"uYWIJ","fen":"r3kb1r/pp1n1pp1/2p1pq1p/5b2/2PP4/3B1N2/PP3PPP/R1BQ1RK1 w kq - 1 10","last":"c1f4","sol":["f5d3","d1d3","f6f4"],"r":1061,"th":["advantage","discoveredAttack"]},{"id":"gBwUo","fen":"rn2r1k1/ppbq1ppp/2p2p2/2P5/2B5/1Q5P/PP3PP1/R1B2RK1 w - - 2 15","last":"b3b7","sol":["c7h2","g1h2","d7b7"],"r":1028,"th":["advantage","discoveredAttack"]},{"id":"dlUod","fen":"2kr3r/pp1n1Qp1/2p1P2p/3n4/1b5P/qP3NN1/P1PB1PP1/1K1R3R w - - 1 18","last":"d2c1","sol":["d5c3","b1a1","a3a2"],"r":1118,"th":["fork","mate","mateIn2"]},{"id":"X6pFI","fen":"r3k2r/ppq2ppp/2p1pnb1/5P2/2BP4/2P3b1/PP2Q1PP/R1B2RK1 w kq - 0 16","last":"f5g6","sol":["g3h2","g1h1","h7g6"],"r":1264,"th":["advantage","intermezzo"]},{"id":"FgzjF","fen":"rn1kr3/ppq3p1/2pb1n2/5N1p/3P2p1/4Q2B/PPP2PPP/R1B1R1K1 w - - 2 18","last":"e3g5","sol":["e8e1"],"r":1488,"th":["hangingPiece","kingsideAttack","mate","mateIn1"]},{"id":"7oxOE","fen":"2kr1bnr/pp1nq2b/2p2p2/6BQ/2BPN3/8/PPP2PPP/R3R1K1 w - - 0 16","last":"e4f6","sol":["g8f6","e1e7","f6h5"],"r":1659,"th":["advantage"]}],"ck_exch":[{"id":"FGRIk","fen":"r4k1r/pR3ppp/5n2/1Bbpp3/3N4/2B2P2/q4P1P/3QK2R w K - 0 17","last":"d4b3","sol":["a2f2"],"r":904,"th":["attackingF2F7","master","mate","mateIn1"]},{"id":"F4lvt","fen":"r2qk2r/pp1b1ppp/2n1p3/1B1N4/3b4/5N2/PPP1QPPP/R3K2R w KQkq - 0 11","last":"f3d4","sol":["c6d4","b5d7","d8d7"],"r":981,"th":["advantage"]},{"id":"EOBAE","fen":"r4rk1/pp3ppp/2n1p3/3p4/3P4/1NP1B1qN/PP2B2b/R2QRK2 w - - 2 18","last":"e3f2","sol":["g3h3"],"r":1064,"th":["hangingPiece","mate","mateIn1"]},{"id":"PuTYr","fen":"1r1q1rk1/p4ppp/4p3/8/3nB3/8/PP1Q1PPP/R3K2R w KQ - 3 16","last":"e1g1","sol":["d4f3","e4f3","d8d2"],"r":1167,"th":["advantage","discoveredAttack"]},{"id":"QqWyc","fen":"r4b1r/ppN1kppp/8/4pq2/2P5/5n2/PP2KP1P/R2Q1B1R w - - 4 15","last":"c7a8","sol":["f5e4"],"r":1262,"th":["mate","mateIn1"]},{"id":"2g3kn","fen":"r4rk1/pp3ppp/3b4/3Qnq2/4nB2/2P5/PP2NPPP/RN3RK1 w - - 1 14","last":"b1d2","sol":["e5f3","g2f3","f5d5"],"r":1339,"th":["advantage","discoveredAttack"]},{"id":"Etttw","fen":"r2q1rk1/pp3pbp/4p3/3pPp2/4n3/2P4P/PP1N1PP1/R1BQR1K1 w - - 1 14","last":"f2f3","sol":["d8b6","g1h1","e4f2"],"r":1451,"th":["crushing"]},{"id":"1ojvq","fen":"r4rk1/pp4pp/2nb4/3p4/6n1/1NPB1N1q/PP3P2/R1BQR1K1 w - - 2 15","last":"d3f1","sol":["d6h2","f3h2","h3h2"],"r":1481,"th":["kingsideAttack","mate","mateIn2"]},{"id":"Gqgjj","fen":"r3k2r/p4ppp/1qp1pb2/3p4/N2n4/4BQ1P/PPP2PP1/1R3RK1 w kq - 0 15","last":"a4b6","sol":["d4f3","g2f3","a7b6"],"r":1604,"th":["advantage","intermezzo"]},{"id":"LM2pd","fen":"2r1k2r/pp3pp1/3qp3/3p4/3n2n1/P1P2N2/1PQN1PP1/R3R1K1 w k - 0 17","last":"f3d4","sol":["h8h1","g1h1","d6h2"],"r":1675,"th":["attraction","kingsideAttack","mate","mateIn2","sacrifice"]},{"id":"FV2x5","fen":"4k2r/pp3pp1/2r1pnp1/3p4/4q1P1/7P/2PBNP2/R2QK2R w KQk - 2 18","last":"h1h2","sol":["f6g4","f2f3","e4f3"],"r":1701,"th":["master"]},{"id":"J96Np","fen":"r2qk2r/1p3pp1/p1n1p3/3N2N1/2PP1bp1/8/PP2QPP1/R2R2K1 w kq - 0 18","last":"g5e6","sol":["h8h1","g1h1","d8h4","h1g1","h4h2","g1f1","h2h1"],"r":1821,"th":["attraction","kingsideAttack","mate","mateIn4","sacrifice"]}],"ck_other":[{"id":"KPpFR","fen":"r3k2r/pp3Npp/2p5/2n5/2P1P3/7n/PP4PP/RNB2RqK w kq - 7 17","last":"f1g1","sol":["h3f2"],"r":916,"th":["mate","mateIn1","smotheredMate"]},{"id":"5RAU8","fen":"r6q/pp2kpp1/4pn2/3pb1B1/8/2P2Pp1/PP2B1P1/RN1QR2K w - - 1 17","last":"h1g1","sol":["h8h2","g1f1","h2h1"],"r":992,"th":["kingsideAttack","mate","mateIn2"]},{"id":"DBMz3","fen":"r3qnk1/pp3ppp/2pb1p2/8/3P4/2P2B1P/PP3PP1/R1BQ2K1 w - - 0 14","last":"d1d3","sol":["e8e1","d3f1","d6h2","g1h2","e1f1"],"r":1046,"th":["crushing","deflection","kingsideAttack"]},{"id":"B0aGD","fen":"2r2rk1/pb3ppp/1p3b2/4n3/2B1q3/P3BN2/1P2QPPP/2R1R1K1 w - - 0 18","last":"f3e5","sol":["e4g2"],"r":1182,"th":["kingsideAttack","mate","mateIn1"]},{"id":"INV52","fen":"rn1qk2r/pp6/2p1p3/2b1P1B1/4n3/8/PPQ3PP/RN3R1K w kq - 1 16","last":"g5d8","sol":["e4g3"],"r":1222,"th":["mate","mateIn1","pin"]},{"id":"IWSe6","fen":"rn3rk1/pp3p1p/6p1/5QN1/3P4/8/qPP2PPP/2KR3R w - - 0 16","last":"f5h3","sol":["a2a1","c1d2","a1a5","c2c3","a5g5"],"r":1321,"th":["advantage","fork"]},{"id":"NtkJ4","fen":"2r1kb1r/pp3ppp/1q2p3/8/3n4/2PB1P2/P1Q2P1P/1RB1K2R w Kk - 0 14","last":"b1b6","sol":["d4c2","e1d2","a7b6"],"r":1431,"th":["advantage","intermezzo"]},{"id":"LwOnx","fen":"r4rk1/2q2pp1/b1pbpn1p/pp2N3/3P4/1BP2Q2/PP3PPP/R1B1R1K1 w - - 0 16","last":"f3c6","sol":["d6e5","c6c7","e5c7"],"r":1480,"th":["advantage"]},{"id":"AaOIa","fen":"2r1k1r1/p4p1p/4pp2/4qb2/8/5Q2/PP1PNPPP/R1B1K2R w KQ - 7 18","last":"e1g1","sol":["f5e4","f3e4","e5e4"],"r":1565,"th":["advantage"]},{"id":"8tNGB","fen":"r6k/pp2p1bp/2n1Q1p1/q4r2/8/2PP4/PP3PPP/1K1R1BNR w - - 1 16","last":"e6b3","sol":["f5b5","b3b5","a5b5"],"r":1647,"th":["advantage","master"]},{"id":"0zuxU","fen":"2r2rk1/p1qnbppp/5p2/1p1Q4/8/4BP2/PPP2PBP/1K1R3R w - - 1 15","last":"d5d7","sol":["c7c2","b1a1","f8d8","g2h3","d8d7"],"r":1665,"th":["advantage"]},{"id":"MpqsX","fen":"rn2kb1r/1Q2pppp/n1p5/p3P3/2Pq2b1/P7/1P4PP/RNB1KBNR w KQkq - 0 11","last":"b7a8","sol":["d4d1","e1f2","d1c1"],"r":1784,"th":["advantage","fork"]}],"slav":[{"id":"2pwM0","fen":"r4rk1/ppq2ppp/2pb4/3Pn3/P1p2Bb1/2N2NP1/1P3PBP/R2Q1RK1 w - - 5 14","last":"d1c2","sol":["e5f3","g2f3","g4f3"],"r":926,"th":[]},{"id":"C2aqJ","fen":"r4rk1/pp1n2pp/2pb1qp1/3p2n1/1P1P2P1/P1N1PN1P/5PK1/R1BQR3 w - - 1 17","last":"f3g5","sol":["f6f2","g2h1","f2h2"],"r":1049,"th":["mate","mateIn2"]},{"id":"5LvLz","fen":"1r2kb1r/2qn1pp1/4pnp1/6N1/3Q4/4PB2/PP3PPP/R1B2RK1 w k - 1 17","last":"c1d2","sol":["c7h2"],"r":1094,"th":["kingsideAttack","mate","mateIn1"]},{"id":"BEgwL","fen":"r3k2r/pp1n1ppp/8/q1bQ2PP/5B2/4PP2/PP6/R3K1NR w KQkq - 1 17","last":"e1e2","sol":["a5b5","d5d3","b5b2"],"r":1186,"th":["advantage"]},{"id":"CpPg1","fen":"r3k2r/ppq2pp1/2p1pnp1/3P4/1b1Pn3/1PNBP3/PBQ2PPP/2R2RK1 w kq - 1 15","last":"c3e4","sol":["c7h2"],"r":1304,"th":["kingsideAttack","mate","mateIn1"]},{"id":"0AgtT","fen":"2r4r/1p1k1ppp/1b1N4/4n3/6b1/4P3/PP3PPP/R3KB1R w KQ - 2 17","last":"d6c8","sol":["b6a5","b2b4","a5b4"],"r":1392,"th":["bodenMate","mate","mateIn2"]},{"id":"F5duA","fen":"rn2k2r/pp3pp1/2p1p3/2Pp4/3P1P1q/P3P1p1/1P4P1/RNBQ1RK1 w kq - 0 14","last":"f1e1","sol":["h4h1"],"r":1500,"th":["mate","mateIn1"]},{"id":"EGbPB","fen":"r3k2r/pp1n1p2/2p1pn1p/7b/3P2p1/2N1PNqP/PP2B1P1/R2Q1K1R w kq - 0 16","last":"h3g4","sol":["f6g4","d1e1","g4e3","f1g1","g3g2"],"r":1534,"th":["mate","mateIn3"]},{"id":"4DVOd","fen":"rb2k2r/ppq2pp1/2p1p2p/3nn3/1P1P4/P1N1P3/1B2QPPP/2R2RK1 w kq - 0 15","last":"c3d5","sol":["e5f3","g2f3","c7h2"],"r":1642,"th":["discoveredAttack","kingsideAttack","mate","mateIn2","sacrifice"]},{"id":"GLRTR","fen":"2r2rk1/pp3ppp/1q2pn2/nN1p3b/3P4/P3PN1P/1P2BPP1/2RQ1RK1 w - - 5 15","last":"f3e5","sol":["c8c1","d1c1","h5e2"],"r":1678,"th":["advantage"]},{"id":"BXCLR","fen":"2r1kb1r/p3pp2/1ppq1np1/3nN3/3P4/1Q1B4/PP1B1PPP/2R2RK1 w k - 4 15","last":"e5c6","sol":["d6h2"],"r":1724,"th":["kingsideAttack","mate","mateIn1"]},{"id":"A2toK","fen":"1r4k1/5ppp/Rrnqpn2/3p4/3P4/4PN2/1P2QPPP/2RN2K1 w - - 3 19","last":"h2h3","sol":["c6d4","f3d4","b6a6"],"r":1835,"th":["crushing","master"]}],"other_b":[{"id":"0LGTB","fen":"r1b3k1/pp3rpp/8/3pn1q1/8/7P/PPB2PP1/RN1Q1RK1 w - - 2 17","last":"d1d5","sol":["e5f3","d5f3","f7f3"],"r":928,"th":["advantage","kingsideAttack","pin"]},{"id":"0qxrH","fen":"r2q2k1/1bpn2bp/1p1p4/p3prn1/1PP4N/P2P2P1/1BQN1P1P/R4RK1 w - - 0 18","last":"h4f5","sol":["g5h3"],"r":1022,"th":["mate","mateIn1"]},{"id":"5wtip","fen":"r3k1nr/pp3pp1/2p1p1bp/3p4/1PnP1BPP/2N1PP2/1PPQN3/q1KR1B1R w kq - 1 13","last":"c3b1","sol":["a1b2"],"r":1068,"th":["mate","mateIn1","queensideAttack"]},{"id":"6MzsL","fen":"N2q1b1r/pp1k1ppp/2n1p3/2pp4/3P1Pb1/3B1N2/PPP2PPP/R2QK2R w KQ - 1 11","last":"d3b5","sol":["d8a5","d1d2","a5b5"],"r":1184,"th":["advantage","fork"]},{"id":"7OLDk","fen":"r4rk1/4bpp1/p3pq1p/8/3PQ3/4PPB1/PP3P1P/R4RK1 w - - 5 18","last":"g3h4","sol":["f6h4","e4h4","e7h4"],"r":1273,"th":["advantage"]},{"id":"64qEg","fen":"2k1r3/ppp2ppp/2n5/1B6/8/2qb4/PR1B1PPP/2Q2K1R w - - 3 17","last":"f1g1","sol":["c3c1","d2c1","e8e1"],"r":1329,"th":["backRankMate","mate","mateIn2"]},{"id":"0MYzS","fen":"r5k1/1pp2ppp/p1q2n2/2Pp1p2/3Pn3/1BNQP3/PP3PPr/R4RK1 w - - 0 18","last":"g1h2","sol":["f6g4","h2g1","c6h6"],"r":1415,"th":["clearance","crushing"]},{"id":"6M8hK","fen":"4Qb1r/p1p4p/2N2p1k/3p1pp1/3PP1n1/8/PPP2PqP/RNB1KR2 w Q - 0 18","last":"h2h4","sol":["f8b4","c6b4","h8e8"],"r":1502,"th":["advantage","discoveredAttack","pin"]},{"id":"5OX3A","fen":"r1r3k1/pQn2ppp/4p3/5P2/3q4/P7/1P1N1PPP/2R1K2R w K - 0 17","last":"c1c7","sol":["d4e5","e1d1","e5c7","b7c7","c8c7"],"r":1531,"th":["advantage"]},{"id":"6B1yS","fen":"2rq1rk1/pp3ppp/3b1n2/3p4/8/1NPbBQ1P/PP1N1PP1/2KR3R w - - 8 18","last":"e3g5","sol":["c8c3","b2c3","d6a3"],"r":1586,"th":["bodenMate","mate","mateIn2","queensideAttack","sacrifice"]},{"id":"58tsC","fen":"r3k2r/ppq2pp1/2nbp1p1/2ppN2n/3P1B2/2P1PN2/PP3PPP/R2Q1RK1 w kq - 6 12","last":"d4c5","sol":["d6e5","f4e5","c6e5","f3e5","c7e5"],"r":1661,"th":[]},{"id":"1tjdi","fen":"2r2rk1/pb4pp/1p2p3/3pqp2/4n1PB/2PB4/PPQN3P/R3K1R1 w Q - 0 18","last":"e1c1","sol":["e4c3","b2c3","c8c3","c1b1","c3c2"],"r":1814,"th":["advantage","pin"]}],"qgd_b":[{"id":"0eLaY","fen":"2r1kb1r/pp3ppp/8/q2R2B1/1n6/Pb2P3/1P3PPP/K4BNR w k - 0 18","last":"d5a5","sol":["c8c1"],"r":883,"th":["mate","mateIn1"]},{"id":"12v93","fen":"q3k2r/p4ppp/4pn2/1p6/2pPb3/5PP1/PP1Q3P/RN2K2R w KQk - 0 14","last":"f3e4","sol":["a8e4","d2e2","e4h1"],"r":1035,"th":["advantage","fork"]},{"id":"90aYH","fen":"rnb1k1r1/ppb5/2p1p3/2PpNpqp/1P1Pn3/P2BPP2/1B5P/RN1Q1R1K w q - 3 15","last":"f1g1","sol":["e4f2"],"r":1070,"th":["cornerMate","mate","mateIn1"]},{"id":"4gAq5","fen":"r1b2rk1/pp3pp1/2pq3p/3p4/3P2n1/P1NBP1K1/1PQ1NPP1/R4R2 w - - 3 17","last":"g3f3","sol":["g4h2"],"r":1198,"th":["mate","mateIn1"]},{"id":"AR9ZO","fen":"3qk2r/p2n1p1p/3Qbp2/3p4/3P4/2r1P3/P4PPP/R3KBNR w KQk - 0 13","last":"f1b5","sol":["d8a5","b5d7","e6d7"],"r":1224,"th":["advantage"]},{"id":"369is","fen":"r1b1r1k1/ppqn1pp1/2p4p/3p4/3P2nB/2NBP1K1/PP2NPP1/2RQ1R2 w - - 3 14","last":"g3g4","sol":["d7f6","g4f3","c8g4"],"r":1356,"th":["discoveredCheck","doubleCheck","mate","mateIn2"]},{"id":"76L37","fen":"r4rk1/3B1ppp/bp2p3/p3N3/Q2PP3/8/Pq3PPP/2RK3R w - - 4 18","last":"a4c2","sol":["b2d4","c2d2","d4e5"],"r":1451,"th":["advantage","fork"]},{"id":"3KSK0","fen":"r4rk1/2q1bppp/2p1pn2/2P3B1/1Pb5/5N2/2B2PPP/R2QR1K1 w - - 3 19","last":"c2b3","sol":["a8a1","d1a1","c4b3"],"r":1479,"th":["advantage"]},{"id":"9ZMWg","fen":"r1b2rk1/pp5p/2p2q2/3p2p1/3Pp1P1/4P1b1/PPQ1BP1P/R2K1R2 w - - 0 19","last":"f2g3","sol":["f6f1","e2f1","f8f1","d1e2","f1a1"],"r":1565,"th":["advantage","exposedKing","skewer"]},{"id":"4QEH6","fen":"N1bk1b2/pp1n1prp/8/q1p5/2Bn1P2/8/PP1N1PPP/R2Q1RK1 w - - 4 15","last":"f1e1","sol":["a5d2","d1d2","d4f3","g1h1","f3d2"],"r":1671,"th":["advantage","attraction","pin","sacrifice"]},{"id":"54zG6","fen":"r3k2N/2pbq3/p1n2n1p/2Pp4/8/2NB2P1/P1Q2pP1/R3K2R w KQq - 0 18","last":"e1f2","sol":["f6g4","f2f1","g4e3","f1g1","e3c2"],"r":1731,"th":["advantage","fork"]},{"id":"7be7m","fen":"3rr1k1/pp3pp1/1np2n1p/q7/2PP2bB/P4N2/4BPPP/R2QR1K1 w - - 3 18","last":"f3e5","sol":["e8e5","d4e5","d8d1"],"r":1797,"th":["crushing"]}],"nimzo":[{"id":"1Pxeg","fen":"r1b2rk1/pp1n1qp1/4p3/2ppP1p1/2PP3P/2P5/P2N4/R2QKB1R w KQ - 1 17","last":"h4g5","sol":["f7f2"],"r":955,"th":["mate","mateIn1"]},{"id":"AGOMr","fen":"rn2nrk1/pbp1q1p1/1p1p3p/3P1p2/2P1PR2/2NB4/PP1N2PP/R2Q2K1 w - - 0 15","last":"e4f5","sol":["e7e3","f4f2","e3d3"],"r":1044,"th":["advantage","fork"]},{"id":"LEOoy","fen":"r4rk1/pp3ppp/8/2bpn2q/6b1/2N2NP1/PP2BK1P/R1BQ3R w - - 2 17","last":"f2g2","sol":["h5h3"],"r":1129,"th":["master","masterVsMaster","mate","mateIn1"]},{"id":"FQPhE","fen":"5rk1/p4ppp/3pp3/q1pb2B1/3Pn3/2P1P1P1/P3BP1P/R2QK1R1 w Q - 3 18","last":"g5e7","sol":["a5c3","e1f1","e4d2","d1d2","c3d2"],"r":1183,"th":["advantage"]},{"id":"CL9A4","fen":"r5k1/p1pn2pp/1p1p2qr/3P1p2/4b3/2B1PN1P/PP2QPP1/R5RK w - - 2 18","last":"f3d2","sol":["h6h3"],"r":1222,"th":["kingsideAttack","mate","mateIn1","pin"]},{"id":"AQ9kU","fen":"r4rk1/pQp3pp/6q1/4pb2/2P5/P1B1P3/1P3PPP/R4RK1 w - - 1 17","last":"c3e5","sol":["f5e4","b7e4","g6e4"],"r":1303,"th":["advantage"]},{"id":"Ynhyt","fen":"rn1k3r/pbN2ppp/1p4q1/1P6/2BPnB2/P7/5PPP/R2QK2R w KQ - 1 17","last":"e1g1","sol":["e4c3","f4g3","c3d1"],"r":1378,"th":["advantage","master"]},{"id":"8rj6O","fen":"rn3rk1/pp3pp1/3q3p/4P3/2B2n2/5b2/P2B1PPP/2RQ1RK1 w - - 0 18","last":"g2f3","sol":["d6g6","g1h1","g6g2"],"r":1484,"th":["mate","mateIn2"]},{"id":"UwwII","fen":"r1r3k1/1n3ppp/p3pn2/Kp1b4/3RP3/5N2/PP2BPPP/R1B5 w - - 1 18","last":"a5b6","sol":["f6d7"],"r":1576,"th":["master","mate","mateIn1"]},{"id":"CnezL","fen":"rn1r2k1/pp3ppp/3q4/b1pN4/2BPb3/1Q2PN2/PP3PPP/R4RK1 w - - 3 15","last":"b3b7","sol":["e4d5","b7d5","d6d5","c4d5","d8d5"],"r":1629,"th":["advantage"]},{"id":"0vyQC","fen":"3r4/pp1bkp1p/4p3/8/3Qn3/P7/1P2NqPP/R1BK1B1R w - - 7 17","last":"d4f2","sol":["d7a4","d1e1","d8d1"],"r":1691,"th":["discoveredCheck","doubleCheck","master","mate","mateIn2","operaMate"]},{"id":"V7gku","fen":"r2r2k1/pp3ppp/3b1n2/3P3q/3Q4/P1N4b/1PB2PP1/R1B2RK1 w - - 0 17","last":"g2h3","sol":["h5h3","c1f4","h3g4"],"r":1807,"th":["advantage","kingsideAttack"]}],"qid":[{"id":"nhj2J","fen":"3r1rk1/2p2ppp/1pn1pn2/p2q4/3Pb3/2B2NP1/PP2PPBP/R1QR2K1 w - - 2 14","last":"e2e3","sol":["e4f3","g2f3","d5f3"],"r":869,"th":["crushing","master"]},{"id":"2P8Si","fen":"3q1rk1/3p1ppp/1p2pn2/2b5/rnP1b3/PQ2PN2/1P1B1PPP/2KR1B1R w - - 0 15","last":"b3a4","sol":["b4a2"],"r":1089,"th":["mate","mateIn1"]},{"id":"ohW6A","fen":"q4rk1/p1p1b1pp/1p1pNn2/5p2/2PP4/1P4n1/PBQ1PP1P/2R3K1 w - - 0 16","last":"e6f8","sol":["a8h1"],"r":1165,"th":["mate","mateIn1"]},{"id":"hrFN7","fen":"r3k2r/2pn1p2/bp1p1q1p/2nPp1p1/p1P1P3/P4P2/1PQNBBPP/2KR3R w kq - 7 18","last":"d2b1","sol":["c5b3","c2b3","a4b3"],"r":1187,"th":["advantage","master","queensideAttack"]},{"id":"xTmCY","fen":"r2q1r1k/pb2b1pp/1p6/5p2/2QnP3/6P1/PB1N2BP/R4RK1 w - - 2 18","last":"c4d4","sol":["e7c5","d4c5","b6c5"],"r":1268,"th":["advantage","pin"]},{"id":"UUzha","fen":"q4k1r/p1pp4/1p2pbQ1/6p1/2P1N1n1/5PP1/PP2n2P/R1B2RK1 w - - 1 18","last":"g1g2","sol":["h8h2"],"r":1375,"th":["master","mate","mateIn1"]},{"id":"t8QGO","fen":"r4rk1/p2nqpp1/1p2p2p/2p5/2NPPn2/1P3N2/P4PPP/2RQ1RK1 w - - 1 16","last":"d4d5","sol":["e6d5","e4d5","f4e2","g1h1","e2c1"],"r":1501,"th":["advantage","fork"]},{"id":"Z9lC2","fen":"2q2rk1/Q2nbppp/1p2p3/8/3PP3/2r3P1/P4PBP/R1BR2K1 w - - 1 18","last":"c1e3","sol":["c3a3","a7a3","e7a3"],"r":1534,"th":["advantage","trappedPiece"]},{"id":"YYnKB","fen":"r2qr1k1/p5bp/1p1p1np1/2pN2B1/2PpP3/6P1/PP3PKP/R2Q1R2 w - - 0 17","last":"f2f3","sol":["f6d5","g5d8","d5e3","g2h1","e3d1"],"r":1582,"th":["crushing","fork","master","sacrifice"]},{"id":"D0gV6","fen":"3r1rk1/pq3pp1/1p2pn1B/2p5/2Pnb3/P1Q2NP1/1P2PPBP/3RR1K1 w - - 1 19","last":"h6g5","sol":["d4e2","e1e2","d8d1"],"r":1685,"th":["crushing","deflection","discoveredAttack","kingsideAttack","master"]},{"id":"58gm5","fen":"2rq1rk1/1b2bppp/p7/1p1pB3/3p4/Q5PB/PP2PP1P/2R2RK1 w - - 0 17","last":"c1c8","sol":["b7c8","a3d3","c8h3"],"r":1779,"th":["advantage"]},{"id":"Jwgfs","fen":"r2q2k1/p1p2rpp/1p6/2b5/6n1/1PN3P1/PB2PPKP/R2Q1R2 w - - 3 16","last":"c3e4","sol":["f7f2","e4f2","g4e3","g2g1","e3d1"],"r":1884,"th":["crushing","fork","sacrifice"]}],"nf6_other":[{"id":"5koc1","fen":"r2q1rk1/pbp1np2/1p2p2p/P7/2P1n1p1/1QP1PNB1/5PPP/R3KB1R w KQ - 0 15","last":"f3e5","sol":["d8d2"],"r":893,"th":["mate","mateIn1"]},{"id":"Td2DK","fen":"2r2rk1/p2n1pp1/Bpp2q1p/3n4/1b1Pp3/4P1BN/PPQ2PPP/2R2K1R w - - 6 18","last":"a6c8","sol":["d5e3","f1e2","e3c2"],"r":991,"th":["crushing","pin"]},{"id":"ONKgt","fen":"rnb3k1/pp3p1p/4p1p1/q1b1P3/6Q1/2NBnN2/PPP3PP/3RK2R w K - 4 16","last":"g4h4","sol":["e3g2","e1e2","g2h4"],"r":1079,"th":["crushing","fork","master"]},{"id":"GRgAW","fen":"rr4k1/1ppqbpp1/5p1p/1B1p1b2/pn1P4/P1P1PN2/1P1N1PPP/2KQ2RR w - - 5 15","last":"b5d7","sol":["b4a2"],"r":1160,"th":["mate","mateIn1"]},{"id":"KtXlz","fen":"r1b2rk1/1pqn3p/p2bppp1/3pN3/3P1B2/2PB2Q1/PP3PPP/R3K2R w KQ - 0 17","last":"e5d7","sol":["d6f4","d7f8","f4g3"],"r":1291,"th":["advantage"]},{"id":"Kza57","fen":"r1bq1rk1/ppp3b1/5np1/4p1B1/4N3/4P3/PPP2PPP/R2QK2R w KQ - 2 14","last":"e4f6","sol":["g7f6","d1d8","f6d8","g5d8","f8d8"],"r":1340,"th":["advantage"]},{"id":"9Go45","fen":"r3k1r1/pp3p1p/2p2p2/1PPp1q2/P2Pp2n/2N1P3/4BPPK/R2Q1R2 w q - 1 17","last":"e2g4","sol":["g8g4","d1g4","f5g4"],"r":1399,"th":["crushing"]},{"id":"Qdfyz","fen":"r1b1k2r/pp1p1ppp/3bp3/2pn4/3Pq3/N1P1BN2/PP2K1PP/R2Q1B1R w kq - 1 13","last":"d1d3","sol":["d5f4","e2d2","f4d3"],"r":1528,"th":["advantage","fork"]},{"id":"OHQ6t","fen":"2rq1rk1/1p1nppb1/p1p1b2p/3p2pn/1PPP4/P3PNB1/3NBPPP/R2Q1RK1 w - - 2 15","last":"f3g5","sol":["h5g3","g5e6","g3e2","d1e2","f7e6"],"r":1596,"th":["advantage","kingsideAttack"]},{"id":"hphfS","fen":"r1b2r2/ppp2Bbk/5q1p/4p1pQ/4P3/7P/PPPN1PPB/R3K2R w KQ - 1 15","last":"f7b3","sol":["f6f2","e1d1","f2g2","h1g1","g2h2"],"r":1709,"th":["advantage","attackingF2F7"]},{"id":"GTrmH","fen":"r3k2r/3bbppp/1pn1pn2/3p4/3N3B/2P1P3/PP1N1PPP/R3KB1R w KQkq - 2 14","last":"f1b5","sol":["c6d4","b5d7","f6d7","h4e7","d4c2"],"r":1789,"th":["advantage","master"]},{"id":"KDbx7","fen":"r1b1k2r/pp3p2/2pb3q/3p1pp1/2PP2P1/3NP1P1/PP1NQ1B1/R4RK1 w kq - 1 17","last":"g1f2","sol":["d6g3","f2g3","h6h4","g3f3","f5g4"],"r":1814,"th":["attraction","master","mate","mateIn3","sacrifice"]}],"vienna":[{"id":"1GZdj","fen":"3qk2r/2pb1ppp/2np4/rB1Qp3/Pp1N4/2P1P2P/2P3P1/R4RK1 b k - 5 16","last":"c6d4","sol":["d5f7"],"r":881,"th":["attackingF2F7","mate","mateIn1"]},{"id":"6o78G","fen":"r4knr/ppN2ppp/2np4/4p3/2B1P2b/3P3P/PPP4P/R1BK1R2 b - - 0 13","last":"a8c8","sol":["f1f7"],"r":1000,"th":["mate","mateIn1"]},{"id":"8efQQ","fen":"r2qk2r/ppp2pQp/3p1n2/2b1p3/2B1PP2/2NP3P/PP2K1P1/n1B4R b kq - 0 11","last":"h8g8","sol":["g7f7"],"r":1072,"th":["attackingF2F7","mate","mateIn1"]},{"id":"5u8wM","fen":"r3kbQ1/pp1bq1pp/2pp4/4n1B1/4P3/1BN5/PPP3PP/5RK1 b q - 7 17","last":"e7g5","sol":["g8f8"],"r":1130,"th":["mate","mateIn1"]},{"id":"2ORvE","fen":"r2q2kr/ppp3pp/3b4/4p1N1/4PRQ1/P7/1P1P2PP/n1B3K1 b - - 0 15","last":"e5f4","sol":["g4e6","g8f8","e6f7"],"r":1198,"th":["kingsideAttack","mate","mateIn2"]},{"id":"3qw17","fen":"rnb3nr/pp2b1pp/1k6/1B1p1P2/P2N1B2/8/1PP2PPP/R3K2R b KQ - 3 18","last":"e7c5","sol":["a4a5"],"r":1235,"th":["mate","mateIn1"]},{"id":"AdtQS","fen":"rnbq3r/pp1p1k1p/1bp3p1/4Q3/1P2P3/P7/2PP1PPP/R1B1K1NR b KQ - 0 10","last":"d8f6","sol":["e5f6","f7f6","c1b2","f6e7","b2h8"],"r":1337,"th":["advantage","attraction","skewer"]},{"id":"5QTEK","fen":"1n1qr1k1/Q4ppp/5b2/8/4B1b1/3P1NP1/P1PK1P1P/1R6 b - - 6 18","last":"e8e4","sol":["b1b8","g4c8","b8c8","d8c8","d3e4"],"r":1450,"th":["advantage","pin"]},{"id":"2VEvt","fen":"r2qr1k1/1b3ppp/p4n2/1pb1N3/3p1B2/3P4/PPP1BPPP/R2Q1RK1 b - - 5 17","last":"e8e5","sol":["f4e5","d8d5","e2f3","d5e5","f3b7"],"r":1573,"th":["advantage","hangingPiece","skewer"]},{"id":"ABxHe","fen":"2b1q1k1/1pp2ppp/1p1p1n2/6B1/r3R3/3Q2PB/PPP2P1P/R5K1 b - - 0 16","last":"a4e4","sol":["h3c8","e8c8","g5f6"],"r":1629,"th":["advantage"]},{"id":"5i9Yd","fen":"r1b2rk1/1pp2pp1/1p1p1q1p/8/4PnP1/P1N2NKn/1PPQ1P2/R3RB2 b - - 5 18","last":"h3g5","sol":["d2f4","f6f4","g3f4","g5f3","f4f3"],"r":1705,"th":[]},{"id":"6G3jK","fen":"2rnkb1r/4n1pp/p2Qp3/qp1NP3/5B2/1B6/PPP3PP/2KR3R b k - 0 17","last":"e6d5","sol":["e5e6","a5c7","d6c7","c8c7","f4c7"],"r":1776,"th":["advantage"]}],"sicilian":[{"id":"6BIFz","fen":"2r2rk1/pp1b2pp/1qnpp3/5p1n/4PP1b/P1N4P/1PP1B1PN/R1BQ1RK1 w - - 4 17","last":"g1h1","sol":["h5g3"],"r":916,"th":["mate","mateIn1"]},{"id":"0dPT5","fen":"r3k2r/pp2pp1p/1q1p2p1/2pB4/4P1bP/P2P2Q1/1b3PP1/R1B1K1NR w KQkq - 0 13","last":"a1b1","sol":["b2c3","e1f1","b6b1"],"r":1023,"th":["advantage","discoveredAttack","pin"]},{"id":"12Kol","fen":"B1bq1rk1/p3np1p/1p2p1p1/2ppb3/3n4/2NPB1P1/PPPQNP1P/R4RK1 w - - 0 12","last":"e3h6","sol":["d4f3","g1g2","f3d2"],"r":1037,"th":["crushing","fork"]},{"id":"2kemS","fen":"r1b2rk1/1pqp2pp/p3pb2/2p4Q/4NP2/3P4/PPP3PP/R1B2RK1 w - - 4 15","last":"h5c5","sol":["c7c5","e4c5","f6d4"],"r":1180,"th":["advantage"]},{"id":"1rgmS","fen":"r3k2r/pp1qbpp1/3p4/2pN2np/3p4/1P3B1P/PBPP1P1K/R2Q1R2 w kq - 2 15","last":"d5e7","sol":["d7h3","h2g1","g5f3","d1f3","h3f3"],"r":1275,"th":["crushing"]},{"id":"3aX7P","fen":"r4rk1/pp2qppp/8/2p5/3np3/3P2PP/PPPQ1PB1/R4RK1 w - - 0 15","last":"g2e4","sol":["e7e4","d3e4","d4f3","g1g2","f3d2"],"r":1361,"th":["advantage","fork","sacrifice"]},{"id":"4esic","fen":"r1bq1rk1/pp4pp/5b1B/2pp4/8/2NP1nP1/PPP3BP/R2QK2R w KQ - 0 13","last":"d1f3","sol":["f6c3","b2c3","f8f3"],"r":1404,"th":["advantage","discoveredAttack"]},{"id":"481Jl","fen":"r1br2k1/pp2n1bp/1q2p1pB/2p5/3nP3/P1N2N2/1PPQBPP1/R3K2R w KQ - 4 14","last":"h6g7","sol":["d4f3","e2f3","d8d2"],"r":1496,"th":["advantage","discoveredAttack"]},{"id":"2kTe7","fen":"q4rk1/3bppbp/5np1/1pp1p3/2B1P3/2NP1Q1P/1PP2PP1/2B1R1K1 w - - 0 15","last":"c3b5","sol":["d7b5","c4b5","a8a5","f3e2","a5b5"],"r":1583,"th":["advantage","fork"]},{"id":"2Tx2T","fen":"r1b1k2r/1p1p1pp1/p3p3/6b1/P2BP1p1/2NP1q2/BPPK1P2/R2QR3 w kq - 3 18","last":"d4e3","sol":["f3f2","d2c1","g5e3"],"r":1627,"th":["advantage","deflection","master","pin"]},{"id":"0hsSu","fen":"r4r2/1b2ppk1/p1np2p1/qp1Q3P/4P2P/1P3P2/P1P5/2KR1BNR w - - 1 16","last":"c1b2","sol":["c6b4","d5d4","e7e5","d4b4","a5b4"],"r":1717,"th":["master"]},{"id":"3QxMl","fen":"2r1k2r/pp1b1pp1/2n1p1np/q2pP3/Nb1P4/P2Q1N2/2B2PPP/R1B2RK1 w k - 0 17","last":"a3b4","sol":["c6b4","c1d2","b4d3","d2a5","c8c2"],"r":1801,"th":["advantage","capturingDefender"]}],"accdragon":[{"id":"Dqg3T","fen":"Q1b2rk1/p4p1p/3p2p1/8/2Bb1P2/2N4P/PPP2qP1/R1B4K w - - 0 18","last":"a8f3","sol":["f2g1"],"r":926,"th":["mate","mateIn1"]},{"id":"MR4uJ","fen":"3r3r/p3q1kp/2p1bn2/4p2B/4P3/5Q2/PBP3PP/1N3RK1 w - - 7 18","last":"b2e5","sol":["e7c5","f3f2","c5e5"],"r":1089,"th":["advantage","fork"]},{"id":"MkzD7","fen":"r4rk1/pp1b1pb1/1qn3p1/3p3p/3N3P/4BP2/PPPQB1P1/2KR3R w - - 4 15","last":"d4c6","sol":["b6b2"],"r":1170,"th":["mate","mateIn1","queensideAttack"]},{"id":"HxCZH","fen":"r4k1r/pp2ppb1/3p1np1/qB2P1Bp/1n6/1PN2P2/1PPQ2PP/2KR3R w - - 1 15","last":"e5f6","sol":["a5a1","c3b1","b4a2"],"r":1207,"th":["mate","mateIn2","queensideAttack","smotheredMate"]},{"id":"6Wiwz","fen":"r2qr1k1/p4pb1/1pn1bn1p/3p2p1/8/1NNB1QB1/PPP2PPP/3RR1K1 w - - 0 16","last":"c3b5","sol":["e6g4","e1e8","d8e8","f3g4","f6g4"],"r":1340,"th":["advantage"]},{"id":"KbDFI","fen":"r1bq1rk1/p5bp/2pp2p1/4p3/2N1Pp2/1NP2Pn1/PP4PP/R1BQ1RK1 w - - 2 15","last":"h2g3","sol":["f4g3","f1e1","d8h4"],"r":1393,"th":[]},{"id":"JXqpl","fen":"2r2rk1/4ppbp/3pbnp1/qp6/3BP3/1PN5/P2QBPPP/2RR2K1 w - - 0 16","last":"c3b5","sol":["a5d2","d1d2","c8c1"],"r":1456,"th":["advantage","capturingDefender"]},{"id":"5Jcxq","fen":"r1br2k1/ppQBq1bp/5ppn/4p3/4P3/2N1B3/PPP2PPP/2KR3R w - - 1 13","last":"e3c5","sol":["d8d7","c5e7","d7c7","d1d8","g8f7"],"r":1565,"th":["advantage"]},{"id":"KheJm","fen":"1rbq1rk1/p2pppbp/2p2np1/8/2B1P3/2N1B3/PPPQ1PPP/R3K2R w KQ - 6 10","last":"e1c1","sol":["f6e4","c3e4","g7b2","c1b1","b2c3"],"r":1609,"th":["crushing","discoveredAttack","discoveredCheck","queensideAttack"]},{"id":"0AatC","fen":"r3k2r/ppq1ppbp/2np2p1/8/4P1n1/1NN5/PPPQ3P/R3KBBR w KQkq - 4 13","last":"e1c1","sol":["g7h6","d2h6","g4h6"],"r":1690,"th":["advantage","pin"]},{"id":"1bHSP","fen":"3q1k1r/4ppbp/6p1/1Q6/8/3p4/P1P2PPP/R3KB1R w KQ - 2 18","last":"a1d1","sol":["g7c3","d1d2","d3c2"],"r":1775,"th":["advancedPawn","crushing","pin"]},{"id":"U1JBP","fen":"r1bq1rk1/pp2ppBp/6p1/1B6/4P3/2P5/PPnNQ1PP/R3K2R w KQ - 3 14","last":"e1d1","sol":["c8g4","d1c2","g4e2","b5e2","g8g7"],"r":1803,"th":["advantage","pin"]}],"dutch":[{"id":"qdYE0","fen":"r4rk1/2n1pqbp/2pp2p1/p7/2PPb3/5NP1/PB1QPPBP/2R1R1K1 w - - 1 19","last":"f3g5","sol":["f7f2","g1h1","e4g2"],"r":961,"th":["kingsideAttack","master","mate","mateIn2"]},{"id":"PMoiF","fen":"r1b2rk1/pp4bp/n1p3pq/5p2/2P3n1/PP4P1/1BQNP1BP/R2N1R1K w - - 4 17","last":"b2g7","sol":["h6h2"],"r":1012,"th":["kingsideAttack","mate","mateIn1"]},{"id":"A2Yf3","fen":"r1q1r3/pp3k1p/3Qnpp1/2p2p2/2P5/6P1/PP2PPBP/R2R2K1 w - - 2 19","last":"e2e3","sol":["e8d8","d6d3","d8d3"],"r":1134,"th":["advantage","trappedPiece"]},{"id":"JQQoN","fen":"3rq1k1/ppp2rbp/2n2n2/3N1p2/2P1p3/1P4P1/PB3PBP/R2Q1RK1 w - - 0 16","last":"a1c1","sol":["f6d5","c4d5","g7b2"],"r":1288,"th":["advantage","discoveredAttack","master","masterVsMaster"]},{"id":"2RBrT","fen":"r1b2r1k/pppnq1bp/5np1/4Np2/2P5/1QN3P1/PP2PPBP/R1BR2K1 w - - 1 12","last":"c1f4","sol":["d7e5","c3d5","f6d5"],"r":1370,"th":["advantage"]},{"id":"4C0Ct","fen":"5rk1/p3p2p/1p4p1/2p2p2/2b1qPP1/2P1P1P1/P7/R1BQR1K1 w - - 1 18","last":"g4f5","sol":["c4d5","d1d5","e4d5"],"r":1472,"th":["advantage"]},{"id":"IpDZE","fen":"rn2r1k1/ppq3bp/2p1bnp1/4p3/2P1p3/1PN2NP1/P1Q2PBP/1RBR2K1 w - - 0 14","last":"c3e4","sol":["f6e4","c2e4","e6f5","e4h4","f5b1"],"r":1529,"th":["advantage","master","skewer"]},{"id":"pWDUv","fen":"r2q1rk1/ppp3b1/4b1p1/3n1p1p/1P1Pn3/2NQPNP1/PB4BP/1R3RK1 w - - 0 17","last":"c3e4","sol":["f5e4","d3e4","e6f5"],"r":1572,"th":["clearance","crushing","master"]},{"id":"N1GQ2","fen":"1r4k1/pBp3bp/4b1p1/4p1B1/2Pr4/6P1/PP3P1P/R4RK1 w - - 2 18","last":"g5e3","sol":["b8b7","e3d4","e5d4"],"r":1681,"th":["crushing","master","masterVsMaster"]},{"id":"Ae7qZ","fen":"r1bq1rk1/pp2p1bp/3p2p1/2n3B1/2P1p3/6P1/PP2PPBP/R2QNRK1 w - - 0 12","last":"g2e4","sol":["c5e4","d1d5","e7e6","d5e4","d8g5"],"r":1698,"th":["crushing","discoveredAttack","hangingPiece"]},{"id":"aXaxw","fen":"r4rk1/ppq3bp/n1pp2p1/4Pb2/2P1Q3/P4NP1/1P3PBP/R1B2RK1 w - - 1 14","last":"e5d6","sol":["f5e4","d6c7","e4f3","g2f3","f8f3"],"r":1714,"th":["advantage"]},{"id":"yQKuN","fen":"r1b2rk1/ppq1p1bp/n1pp2p1/8/2P1N3/BP4P1/P3PPBP/R2QR1K1 w - - 1 14","last":"a1c1","sol":["c7a5","a3d6","e7d6"],"r":1814,"th":["crushing","master","trappedPiece"]}]};
+REP.puzzles={"catalan":[{"id":"cQXuV","fen":"r1b4r/1Nkn1pp1/2p2q1p/p7/2P5/P5P1/4PPBP/1R1Q1RK1 b - - 0 18","last":"c8b7","sol":["b1b7","c7b7","d1d7"],"r":1214,"th":["deflection","crushing","attraction"]},{"id":"n2rGK","fen":"qr3rk1/1p2bppp/p2n1B2/3p2N1/6b1/1P2P1P1/P1QN1PBP/R2R2K1 b - - 0 18","last":"e7f6","sol":["c2h7"],"r":825,"th":["master","mateIn1","kingsideAttack"]},{"id":"dbvSG","fen":"r4rk1/p4ppp/1p1qpnN1/8/2P2B2/6P1/PP2QP1P/5RK1 b - - 1 19","last":"d6c6","sol":["g6e7","g8h8","e7c6"],"r":871,"th":["crushing","fork"]},{"id":"o13no","fen":"r2q1r2/3nbppk/b1p1p2p/pp2P1P1/2pPN3/3n1N2/PPQB1PBP/R3R1K1 b - - 2 18","last":"d3e1","sol":["e4f6","h7h8","c2h7"],"r":1401,"th":["mateIn2","discoveredCheck","doubleCheck","master"]},{"id":"ApiJz","fen":"rnb2rk1/pp3pp1/4pn1p/2p5/2N5/P4NP1/1q2PPBP/R2Q1RK1 b - - 1 13","last":"b2c3","sol":["a1c1","c3c1","d1c1"],"r":1621,"th":["trappedPiece","advantage"]},{"id":"Y06TR","fen":"1r2k2r/pbp1bppp/2n5/1p1q4/2p5/2Nn1NP1/PP2QPBP/R1BR2K1 b k - 1 15","last":"c6d4","sol":["e2e7","e8e7","c3d5","b7d5","f3d4"],"r":1885,"th":["advantage","attraction","master"]},{"id":"Q6bPa","fen":"r5k1/pp4pp/2n1pp2/2b3B1/2N1P1n1/P5PP/1P1R1PB1/6K1 b - - 0 18","last":"g4f2","sol":["g5e3","c5e3","c4e3","f2h3","g2h3"],"r":1763,"th":["trappedPiece","advantage"]},{"id":"pRy4N","fen":"2Qq1rk1/p3bppp/bp3n2/8/2P5/1P4P1/Pp1N1PBP/R2Q1RK1 b - - 0 15","last":"b2a1q","sol":["c8d8","a1d1","d8f8","g8f8","f1d1"],"r":1581,"th":["advantage"]},{"id":"stqaY","fen":"r2q1rk1/pb2bppp/n3pn2/1p4N1/2pPP3/6P1/1PQB1PBP/RN3RK1 b - - 1 12","last":"h7h6","sol":["e4e5","b7g2","e5f6"],"r":1430,"th":["advantage"]},{"id":"Ov5xu","fen":"r3r1k1/1bp1qp1p/3p1np1/2P5/4P3/5BP1/2QN1P1P/2R1R1K1 b - - 0 19","last":"f6d7","sol":["c5c6","b7c6","c2c6"],"r":1589,"th":["crushing","fork","master"]},{"id":"Mn07I","fen":"3r2k1/1p2bppp/p4n2/5b2/PnQ5/3r2PP/1P1N1PB1/R1B3K1 b - - 0 19","last":"d3d2","sol":["c1d2","d8d2","c4f4","d2d7","f4f5"],"r":1985,"th":["crushing","fork","master"]},{"id":"ZbSGl","fen":"rn1q1rk1/pb2b1pp/4pp2/1p4N1/2pP4/2P3P1/2Q1PPBP/R1B2RK1 b - - 1 14","last":"b7g2","sol":["c2h7"],"r":963,"th":["mateIn1","kingsideAttack"]}],"qga":[{"id":"AIffR","fen":"r4rk1/pp3pp1/6b1/2p3q1/3nP2R/2N4Q/PP4PP/R5K1 b - - 1 19","last":"f7f6","sol":["h4h8","g8f7","h3d7"],"r":1152,"th":["mateIn2","epauletteMate","kingsideAttack"]},{"id":"6yjOC","fen":"r1b2r2/p2nq1p1/2p1p1k1/1p1nPpN1/P2P3Q/2P5/3B1PPP/R4RK1 b - - 1 16","last":"c8b7","sol":["h4h7"],"r":880,"th":["mateIn1"]},{"id":"60tva","fen":"2r2k1r/p3bppp/1q3n2/1Q1PN3/4P3/2N2P2/6PP/R3K2R b KQ - 0 18","last":"c8c3","sol":["b5b6","a7b6","a1a8"],"r":1645,"th":["advantage"]},{"id":"ehWzC","fen":"r4rk1/p1nqppbp/2N3p1/2nP4/PpN5/1P3P2/6PP/1RBQR1K1 b - - 2 17","last":"c7d5","sol":["d1d5","d7d5","c6e7","g8h8","e7d5"],"r":1683,"th":["deflection","advantage","attraction","fork","sacrifice","capturingDefender"]},{"id":"EYlen","fen":"rn3bkr/p3p1pp/3n4/q1pP4/PpB5/1P5Q/3B1PPP/RN2K2R b KQ - 0 14","last":"d6c4","sol":["h3e6"],"r":824,"th":["mateIn1","master"]},{"id":"EP9Fe","fen":"rn2k2r/pp3pp1/2P4p/4p3/2B1q1b1/2P3Q1/P3NPPP/R3K2R b KQkq - 0 13","last":"e4c4","sol":["g3e5","c4e6","e5e6","g4e6","c6b7"],"r":1765,"th":["advancedPawn","advantage"]},{"id":"sjDZP","fen":"rnb2rk1/p5pp/2p1pp2/1p2N1qB/2pP1P2/P1P5/6PP/R2Q1RK1 b - f3 0 14","last":"g5h6","sol":["e5g4","h6h5","g4f6","f8f6","d1h5"],"r":1740,"th":["crushing","sacrifice","kingsideAttack","discoveredAttack"]},{"id":"qQGrT","fen":"2kr3r/pppqbppp/4Pn2/8/2Q1PB2/2N2P2/PP3P1P/2KR3R b - - 0 13","last":"d7e6","sol":["c4c7"],"r":993,"th":["queensideAttack","mateIn1"]},{"id":"pQOeK","fen":"r2q1rk1/1b1nbppp/p3p3/2pnP3/Pp1P4/1P1BB2Q/N3NPPP/R4RK1 b - - 1 15","last":"c5d4","sol":["h3h7"],"r":1023,"th":["mateIn1","kingsideAttack"]},{"id":"HnvAa","fen":"r1b2rk1/pp3ppp/3q4/3N4/8/3Q4/PP3PPP/R3R1K1 b - - 2 17","last":"c8e6","sol":["d5f6","g7f6","d3d6"],"r":1382,"th":["advantage","discoveredAttack"]},{"id":"eRI8K","fen":"rn3k1r/pp3ppp/2p5/3P2Q1/1bB1q1b1/2N1B1P1/PP3K1P/R5N1 b - - 6 14","last":"b4c3","sol":["g5d8","e4e8","e3c5","f8g8","d8e8"],"r":1523,"th":["deflection","mateIn3"]},{"id":"Y23MB","fen":"r2qk2r/2pb1ppp/pp2p3/3nP3/2QP4/B7/PR1N1PPP/5RK1 b kq - 1 16","last":"d7b5","sol":["b2b5","a6b5","c4c6","d8d7","c6a8"],"r":1704,"th":["deflection","advantage","sacrifice"]}],"qgd":[{"id":"uFXWj","fen":"1r1k1b1r/p1Nn1Qpp/3q4/1p3b2/3P4/4PN2/PP3PPP/2R1K2R b K - 0 14","last":"f5g6","sol":["c7e6","d6e6","f7e6"],"r":1188,"th":["crushing"]},{"id":"frX5y","fen":"r1bq1rk1/pp2bpp1/4p2p/2p1P3/3PN3/P1NQn3/1P4PP/RB3RK1 b - - 1 16","last":"e3f1","sol":["e4f6","g7f6","d3h7"],"r":1250,"th":["clearance","mateIn2","sacrifice","kingsideAttack"]},{"id":"RlHI3","fen":"r1b2rk1/4qpp1/1p2pn1p/p1p5/3P2N1/2PQ4/P1B2PPP/R4RK1 b - - 1 16","last":"c5d4","sol":["g4f6","g7f6","d3h7"],"r":1209,"th":["mateIn2","kingsideAttack"]},{"id":"4sDlA","fen":"r1b2rQk/pp2N1bp/1npq2p1/4N3/3P4/3B4/PP3PPP/2R1R1K1 b - - 4 18","last":"f8g8","sol":["e5f7"],"r":1240,"th":["mateIn1","smotheredMate"]},{"id":"yF6xj","fen":"2r3k1/p2n1ppp/1p2pq2/3b4/3P4/P2Q1N2/1P3PPP/1B3RK1 b - - 3 17","last":"d5f3","sol":["d3h7","g8f8","h7h8","f8e7","h8c8","f6g5","g2g3"],"r":1291,"th":["advantage","skewer","defensiveMove","master"]},{"id":"cw2nL","fen":"r4nk1/pp3p1p/2pbbqpQ/8/3PB2N/6P1/PP1B1P1P/R5K1 b - - 3 17","last":"f6d4","sol":["d2c3","d4c3","b2c3"],"r":1414,"th":["advantage"]},{"id":"YltmD","fen":"2kr4/1ppq1p1p/B1n2p2/3p4/Q2P4/2P1P3/P4PrP/1R3R1K b - - 1 17","last":"d7h3","sol":["a6b7","c8d7","a4c6"],"r":1039,"th":["crushing","fork"]},{"id":"jmWoa","fen":"r1b1k2r/p4ppp/2p1pn2/6B1/2B5/2P1P3/P4PPP/3R1RK1 b kq - 0 12","last":"f6e4","sol":["d1d8"],"r":813,"th":["mateIn1"]},{"id":"mLyZc","fen":"r1b2rk1/pp3ppp/4p3/q2p2N1/1bPn3P/2NQ4/PP2BPP1/2R1K2R b K - 1 13","last":"d4e2","sol":["d3h7"],"r":824,"th":["mateIn1","kingsideAttack"]},{"id":"fI9BR","fen":"r2qr1k1/1b3ppp/p1n5/2pN4/8/P3PN2/1bQ2PPP/1BR2RK1 b - - 1 16","last":"b2c1","sol":["c2h7","g8f8","h7h8"],"r":1002,"th":["mateIn2","kingsideAttack"]},{"id":"CxXAK","fen":"r1b1k2r/ppq2p1p/2n1pN2/8/1bpp4/5N2/PP2QPPP/R2K1B1R b kq - 9 13","last":"e8e7","sol":["f6d5","e7d7","d5c7"],"r":1034,"th":["advantage","pin"]},{"id":"Rimq8","fen":"r3k2r/5ppp/bpp1p3/q2p4/nQ1PnP1B/P1P1P3/4N1PP/2R1KB1R b Kkq - 2 15","last":"a6e2","sol":["b4e7"],"r":858,"th":["mateIn1","master"]}],"slavw":[{"id":"mFDy1","fen":"1r2k1br/1p2p1bp/p1p3p1/6Nn/P1pqP1Q1/2N4P/1P3P2/3RKB1R b Kk - 1 18","last":"d4f6","sol":["g4d7","e8f8","d7d8","b8d8","d1d8"],"r":1287,"th":["mateIn3","sacrifice"]},{"id":"zz4eP","fen":"r2q1rk1/1p3ppp/p2bpn2/6B1/3PR1b1/P4NP1/1P3PBP/R2Q2K1 b - - 2 14","last":"d6e7","sol":["g5f6","e7f6","e4g4"],"r":1196,"th":["advantage","capturingDefender"]},{"id":"cBCzN","fen":"2rq1rk1/1p2bppp/p3pn2/3pP3/7B/2N1P2P/PPR1QPP1/2R3K1 b - - 0 18","last":"f6d7","sol":["h4e7","d8e7","c3d5","e6d5","c2c8"],"r":1176,"th":["crushing","discoveredAttack"]},{"id":"bFnqH","fen":"2kr1b1r/Rp1npppp/8/1B1NP1Bb/4p3/1P6/1P3PPP/4K2R b K - 2 14","last":"d7e5","sol":["a7a8"],"r":1273,"th":["mateIn1"]},{"id":"2Y7em","fen":"r2r2k1/pppn1ppp/5n2/q7/2P2Q2/P3PNP1/1P1N3P/1R3RK1 b - - 4 16","last":"d7c5","sol":["b2b4","a5a3","b4c5"],"r":1316,"th":["fork","advantage"]},{"id":"L2iMe","fen":"3r1rk1/2p2ppp/p1nb4/1pPNp3/4P1B1/P7/5PPP/3R1RK1 b - - 0 18","last":"d6c5","sol":["d1c1","c5a3","c1c6"],"r":1764,"th":["advantage"]},{"id":"hc8W0","fen":"2kr3r/ppp2B1p/5p2/4p3/1b2b3/4B3/PP3PPP/2R2RK1 b - - 1 16","last":"h8f8","sol":["f7e6","c8b8","c1c4","e4d3","c4b4"],"r":1599,"th":["advantage","fork"]},{"id":"oXTuY","fen":"r2qkb1r/2p1pppp/8/3bP3/4PP2/3Q4/PP3P1P/R3KB1R b KQkq e3 0 15","last":"d5b7","sol":["d3b5","c7c6","b5b7"],"r":1145,"th":["advantage","fork"]},{"id":"xdxGr","fen":"r1bqrk1Q/1pp3p1/p1n1p3/3nP1N1/3P4/2P1B3/P4PPP/R3K2R b KQ - 6 18","last":"f8e7","sol":["h8g7"],"r":809,"th":["epauletteMate","mateIn1"]},{"id":"MewHd","fen":"r1bqk2r/1p1nb1p1/p3Q2p/2pp4/3P4/3B1N2/PP1B1PPP/R4RK1 b kq - 0 14","last":"d7f6","sol":["d3g6","e8f8","e6f7"],"r":925,"th":["mateIn2"]},{"id":"YMfWV","fen":"r1bq1rk1/1pp2pp1/2n1p3/p2nP1NQ/1b1P3P/2N5/PP1B1PP1/R3K2R b KQ - 3 13","last":"f7f6","sol":["h5h7"],"r":851,"th":["mateIn1"]},{"id":"eAYyE","fen":"rn2kb1r/p4ppp/1pp1pn2/6B1/B3PP2/2N1q3/PP2N1PP/3QK2R b Kkq - 3 15","last":"f6e4","sol":["d1d8"],"r":1460,"th":["mateIn1"]}],"indian_w":[{"id":"LHYaM","fen":"r3r1k1/pp1b1p2/2p3pQ/4p1N1/2P5/6P1/Pq2PPBP/5RK1 b - - 0 18","last":"e5e4","sol":["h6h7","g8f8","h7f7"],"r":1100,"th":["mateIn2","kingsideAttack"]},{"id":"48uIo","fen":"r3kb1r/p2p2pp/b2Ppn2/2p5/2pn4/2N2BB1/PP1N1PPP/R3K2R b KQkq - 6 16","last":"d4c2","sol":["e1d1","c2a1","f3a8"],"r":1938,"th":["defensiveMove","advantage"]},{"id":"nLt0P","fen":"1q2kb1r/3n1ppp/2N1p3/Q2p4/1pp1b3/4BN2/1P3PPP/4KB1R b Kk - 3 18","last":"b8b7","sol":["a5d8"],"r":941,"th":["mateIn1"]},{"id":"C9TF0","fen":"rn2kb1r/p2q2pp/4p3/2p5/4NP2/2Qn4/PP1BK1PP/R5NR b kq - 2 16","last":"b8c6","sol":["c3d3","d7d3","e2d3"],"r":1523,"th":["crushing"]},{"id":"KfzF9","fen":"r3k2r/p2pppbp/6p1/2qP4/2b5/5NP1/P1Q1PPBP/2R2K1R b kq - 1 17","last":"c4e2","sol":["f1e2","c5c2","c1c2"],"r":1427,"th":["crushing","hangingPiece"]},{"id":"4ZvXD","fen":"q6r/3pk2p/2n1pp1Q/8/1p2P3/5P2/rP4PP/3R1KNR b - - 3 18","last":"a2a1","sol":["h6g7","e7e8","g7h8"],"r":1143,"th":["crushing","interference"]},{"id":"iZek0","fen":"r4rk1/p1q1pp1p/1nNp2p1/3P4/2p1PPn1/2Q2N2/PP4PP/R3R1K1 b - - 1 17","last":"b6d7","sol":["c6e7"],"r":962,"th":["mateIn1","kingsideAttack"]},{"id":"K2YVe","fen":"r1bqk2r/p2pp2p/2nP1ppB/2p5/1pP1Q3/1P1B1N2/P4PPP/bN2K2R b Kkq - 1 13","last":"a7a5","sol":["e4g6","h7g6","d3g6"],"r":1561,"th":["mateIn2","sacrifice"]},{"id":"YgKGV","fen":"rn3k1r/p1qp1p2/3bpn1p/1Pp1N1p1/2P5/2N3B1/P3QP1P/2KR4 b - - 0 17","last":"d6e5","sol":["g3e5","c7d8","e2f3"],"r":1980,"th":["fork","advantage"]},{"id":"Xyu4c","fen":"r2qk2r/4ppbp/bn1p1np1/p1pP4/2P1P3/2N2PN1/P2B2PP/1R1QKB1R b Kkq - 5 12","last":"b6c4","sol":["f1c4","a6c4","d1a4","f6d7","a4c4"],"r":1663,"th":["fork","advantage"]},{"id":"xO2zs","fen":"rn1qk2r/p2bpp1p/3p2p1/2p5/1pP5/1P3P2/PQ1BP1PP/1n2KBNR b Kkq - 0 13","last":"b1d2","sol":["b2h8"],"r":1006,"th":["mateIn1","backRankMate","hangingPiece"]},{"id":"YFKZS","fen":"rn4k1/4p2p/b3P1p1/1Np1b3/2B4q/5QP1/PP5P/R3K2R b KQ - 0 19","last":"h4c4","sol":["f3f7","g8h8","f7f8"],"r":967,"th":["mateIn2","kingsideAttack","master"]}],"ck":[{"id":"xGS5q","fen":"2kr1b1r/pp2p1p1/2p1p1P1/6Np/3PB1nP/6q1/PPP5/R1BQ1K1R w - - 0 18","last":"h1h3","sol":["g3f2"],"r":1298,"th":["mateIn1"]},{"id":"sgHP4","fen":"r3k2r/pp2qppp/2n1p1bn/1B1pP3/3p4/1NP2N1P/PP3PP1/R2QK2R w KQkq - 0 12","last":"c3d4","sol":["e7b4","d1d2","b4b5"],"r":1038,"th":["advantage","fork"]},{"id":"RKATL","fen":"rn2kb1r/pp3Np1/q3p2p/2ppP3/3n1QP1/1P6/P1P2P1P/RNB1K2R w KQkq - 0 13","last":"f7h8","sol":["a6e2"],"r":1273,"th":["mateIn1"]},{"id":"0axzp","fen":"2rqk2r/pp3pp1/4p1p1/2bpP3/8/5P2/PP1N2PP/R1BQ1RK1 w k - 1 17","last":"g1h1","sol":["h8h2","h1h2","d8h4"],"r":1227,"th":["mateIn2","attraction","sacrifice","kingsideAttack"]},{"id":"r32tH","fen":"r4rk1/pp4bp/4p1p1/2Pp3n/2P2P1q/3BQP1b/PP2N2P/R1B1R1K1 w - - 1 17","last":"c4d5","sol":["h4e1"],"r":1189,"th":["hangingPiece","mateIn1","kingsideAttack"]},{"id":"woU2Y","fen":"2r2rk1/1p3ppp/pqn1p3/3pPn2/1b1P4/P2Q1N2/1BR1NPPP/5RK1 w - - 0 18","last":"a3b4","sol":["c6b4","d3b3","c8c2"],"r":1297,"th":["crushing","fork","discoveredAttack"]},{"id":"hHLtf","fen":"r2qr2k/pp5p/2p3p1/3pPn2/2nP4/P1P5/1P4PP/RNBQ1RK1 w - - 1 18","last":"b2b3","sol":["c4e3","c1e3","f5e3","d1e2","e3f1"],"r":1134,"th":["advantage","fork"]},{"id":"O2xDy","fen":"r3k2r/1p1b1ppp/p3p3/2qpP3/5P2/2N1nN2/PPPQ2PP/R3K2R w KQkq - 2 14","last":"c3d1","sol":["e3c2","d2c2","c5c2"],"r":1243,"th":["crushing","fork","master"]},{"id":"9Sk7P","fen":"r3kb1r/pp3ppp/1q2p3/3pP3/3n1P2/2NQ4/PP4PP/R1BR2K1 w kq - 0 14","last":"d3d4","sol":["f8c5","c1e3","c5d4"],"r":1147,"th":["pin","advantage"]},{"id":"wDBW0","fen":"3r1rk1/pp2bppp/4q3/1B1pPp2/1n3P2/3Q4/PPP1N1PP/R4RK1 w - - 3 16","last":"d3b3","sol":["e6b6","g1h1","b6b5"],"r":1557,"th":["crushing","fork","master"]},{"id":"I1cXj","fen":"4rbnr/ppk3p1/6R1/2pp4/3P2Q1/2P5/PP1N1PPq/R1B2K2 w - - 4 17","last":"d2f3","sol":["h2h1","f3g1","h1g1","f1g1","e8e1"],"r":1613,"th":["attraction","mateIn3","sacrifice"]},{"id":"RamZB","fen":"N6r/pp1k1pp1/2n1p1p1/3pPn2/3P4/b3B2P/1q3PP1/R2QKB1R w KQ - 0 16","last":"a1b1","sol":["a3b4","e3d2","b4d2","d1d2","b2b1"],"r":1583,"th":["crushing"]},{"id":"tHYn7","fen":"r3k2r/pp3pp1/1qp1p2p/3n3P/3P4/b4N2/PPP1QPP1/1KBR3R w kq - 7 18","last":"c2c4","sol":["d5c3","b1a1","c3e2"],"r":1200,"th":["advantage","pin"]},{"id":"4jfrj","fen":"3rk2r/pp3p2/1qp1ppp1/1n6/2BP4/5P2/PPPQ2PP/1K1R3R w k - 2 19","last":"c2c3","sol":["b5a3","b1a1","a3c4"],"r":1262,"th":["queensideAttack","crushing","pin"]},{"id":"vulxX","fen":"r3r1k1/pp3ppp/2pq1pb1/3n4/3P4/2PB1PN1/PP4PP/R2Q1RK1 w - - 3 15","last":"f1e1","sol":["e8e1","d1e1","g6d3"],"r":1342,"th":["advantage","kingsideAttack"]},{"id":"p5ibE","fen":"1k1r3r/ppR2ppp/2p2nb1/2n5/5B2/1N4N1/qPPQ1PPP/2K2B1R w - - 3 17","last":"d2b4","sol":["c5b3","b4b3","a2a1"],"r":1303,"th":["mateIn2","queensideAttack"]},{"id":"5UFJO","fen":"r4rk1/ppq2pp1/2n1pn1p/8/8/4BNQ1/PPP2PPP/R2R2K1 w - - 1 17","last":"e3h6","sol":["c7g3","h2g3","g7h6"],"r":1116,"th":["advantage"]},{"id":"PXgOD","fen":"r3kb1r/p1qn1pp1/1pp1p1p1/8/2PP2n1/4BNN1/PPQ2PPP/R4RK1 w kq - 2 13","last":"h2h3","sol":["g4e3","f2e3","c7g3"],"r":1111,"th":["crushing"]},{"id":"uYWIJ","fen":"r3kb1r/pp1n1pp1/2p1pq1p/5b2/2PP4/3B1N2/PP3PPP/R1BQ1RK1 w kq - 1 10","last":"c1f4","sol":["f5d3","d1d3","f6f4"],"r":1061,"th":["advantage","discoveredAttack"]},{"id":"gBwUo","fen":"rn2r1k1/ppbq1ppp/2p2p2/2P5/2B5/1Q5P/PP3PP1/R1B2RK1 w - - 2 15","last":"b3b7","sol":["c7h2","g1h2","d7b7"],"r":1028,"th":["advantage","discoveredAttack"]},{"id":"dlUod","fen":"2kr3r/pp1n1Qp1/2p1P2p/3n4/1b5P/qP3NN1/P1PB1PP1/1K1R3R w - - 1 18","last":"d2c1","sol":["d5c3","b1a1","a3a2"],"r":1118,"th":["fork","mate","mateIn2"]},{"id":"X6pFI","fen":"r3k2r/ppq2ppp/2p1pnb1/5P2/2BP4/2P3b1/PP2Q1PP/R1B2RK1 w kq - 0 16","last":"f5g6","sol":["g3h2","g1h1","h7g6"],"r":1264,"th":["advantage","intermezzo"]},{"id":"FgzjF","fen":"rn1kr3/ppq3p1/2pb1n2/5N1p/3P2p1/4Q2B/PPP2PPP/R1B1R1K1 w - - 2 18","last":"e3g5","sol":["e8e1"],"r":1488,"th":["hangingPiece","kingsideAttack","mate","mateIn1"]},{"id":"7oxOE","fen":"2kr1bnr/pp1nq2b/2p2p2/6BQ/2BPN3/8/PPP2PPP/R3R1K1 w - - 0 16","last":"e4f6","sol":["g8f6","e1e7","f6h5"],"r":1659,"th":["advantage"]},{"id":"FGRIk","fen":"r4k1r/pR3ppp/5n2/1Bbpp3/3N4/2B2P2/q4P1P/3QK2R w K - 0 17","last":"d4b3","sol":["a2f2"],"r":904,"th":["attackingF2F7","master","mate","mateIn1"]},{"id":"F4lvt","fen":"r2qk2r/pp1b1ppp/2n1p3/1B1N4/3b4/5N2/PPP1QPPP/R3K2R w KQkq - 0 11","last":"f3d4","sol":["c6d4","b5d7","d8d7"],"r":981,"th":["advantage"]},{"id":"EOBAE","fen":"r4rk1/pp3ppp/2n1p3/3p4/3P4/1NP1B1qN/PP2B2b/R2QRK2 w - - 2 18","last":"e3f2","sol":["g3h3"],"r":1064,"th":["hangingPiece","mate","mateIn1"]},{"id":"PuTYr","fen":"1r1q1rk1/p4ppp/4p3/8/3nB3/8/PP1Q1PPP/R3K2R w KQ - 3 16","last":"e1g1","sol":["d4f3","e4f3","d8d2"],"r":1167,"th":["advantage","discoveredAttack"]},{"id":"QqWyc","fen":"r4b1r/ppN1kppp/8/4pq2/2P5/5n2/PP2KP1P/R2Q1B1R w - - 4 15","last":"c7a8","sol":["f5e4"],"r":1262,"th":["mate","mateIn1"]},{"id":"2g3kn","fen":"r4rk1/pp3ppp/3b4/3Qnq2/4nB2/2P5/PP2NPPP/RN3RK1 w - - 1 14","last":"b1d2","sol":["e5f3","g2f3","f5d5"],"r":1339,"th":["advantage","discoveredAttack"]},{"id":"Etttw","fen":"r2q1rk1/pp3pbp/4p3/3pPp2/4n3/2P4P/PP1N1PP1/R1BQR1K1 w - - 1 14","last":"f2f3","sol":["d8b6","g1h1","e4f2"],"r":1451,"th":["crushing"]},{"id":"1ojvq","fen":"r4rk1/pp4pp/2nb4/3p4/6n1/1NPB1N1q/PP3P2/R1BQR1K1 w - - 2 15","last":"d3f1","sol":["d6h2","f3h2","h3h2"],"r":1481,"th":["kingsideAttack","mate","mateIn2"]},{"id":"Gqgjj","fen":"r3k2r/p4ppp/1qp1pb2/3p4/N2n4/4BQ1P/PPP2PP1/1R3RK1 w kq - 0 15","last":"a4b6","sol":["d4f3","g2f3","a7b6"],"r":1604,"th":["advantage","intermezzo"]},{"id":"LM2pd","fen":"2r1k2r/pp3pp1/3qp3/3p4/3n2n1/P1P2N2/1PQN1PP1/R3R1K1 w k - 0 17","last":"f3d4","sol":["h8h1","g1h1","d6h2"],"r":1675,"th":["attraction","kingsideAttack","mate","mateIn2","sacrifice"]},{"id":"FV2x5","fen":"4k2r/pp3pp1/2r1pnp1/3p4/4q1P1/7P/2PBNP2/R2QK2R w KQk - 2 18","last":"h1h2","sol":["f6g4","f2f3","e4f3"],"r":1701,"th":["master"]},{"id":"J96Np","fen":"r2qk2r/1p3pp1/p1n1p3/3N2N1/2PP1bp1/8/PP2QPP1/R2R2K1 w kq - 0 18","last":"g5e6","sol":["h8h1","g1h1","d8h4","h1g1","h4h2","g1f1","h2h1"],"r":1821,"th":["attraction","kingsideAttack","mate","mateIn4","sacrifice"]},{"id":"KPpFR","fen":"r3k2r/pp3Npp/2p5/2n5/2P1P3/7n/PP4PP/RNB2RqK w kq - 7 17","last":"f1g1","sol":["h3f2"],"r":916,"th":["mate","mateIn1","smotheredMate"]},{"id":"5RAU8","fen":"r6q/pp2kpp1/4pn2/3pb1B1/8/2P2Pp1/PP2B1P1/RN1QR2K w - - 1 17","last":"h1g1","sol":["h8h2","g1f1","h2h1"],"r":992,"th":["kingsideAttack","mate","mateIn2"]},{"id":"DBMz3","fen":"r3qnk1/pp3ppp/2pb1p2/8/3P4/2P2B1P/PP3PP1/R1BQ2K1 w - - 0 14","last":"d1d3","sol":["e8e1","d3f1","d6h2","g1h2","e1f1"],"r":1046,"th":["crushing","deflection","kingsideAttack"]},{"id":"B0aGD","fen":"2r2rk1/pb3ppp/1p3b2/4n3/2B1q3/P3BN2/1P2QPPP/2R1R1K1 w - - 0 18","last":"f3e5","sol":["e4g2"],"r":1182,"th":["kingsideAttack","mate","mateIn1"]},{"id":"INV52","fen":"rn1qk2r/pp6/2p1p3/2b1P1B1/4n3/8/PPQ3PP/RN3R1K w kq - 1 16","last":"g5d8","sol":["e4g3"],"r":1222,"th":["mate","mateIn1","pin"]},{"id":"IWSe6","fen":"rn3rk1/pp3p1p/6p1/5QN1/3P4/8/qPP2PPP/2KR3R w - - 0 16","last":"f5h3","sol":["a2a1","c1d2","a1a5","c2c3","a5g5"],"r":1321,"th":["advantage","fork"]},{"id":"NtkJ4","fen":"2r1kb1r/pp3ppp/1q2p3/8/3n4/2PB1P2/P1Q2P1P/1RB1K2R w Kk - 0 14","last":"b1b6","sol":["d4c2","e1d2","a7b6"],"r":1431,"th":["advantage","intermezzo"]},{"id":"LwOnx","fen":"r4rk1/2q2pp1/b1pbpn1p/pp2N3/3P4/1BP2Q2/PP3PPP/R1B1R1K1 w - - 0 16","last":"f3c6","sol":["d6e5","c6c7","e5c7"],"r":1480,"th":["advantage"]},{"id":"AaOIa","fen":"2r1k1r1/p4p1p/4pp2/4qb2/8/5Q2/PP1PNPPP/R1B1K2R w KQ - 7 18","last":"e1g1","sol":["f5e4","f3e4","e5e4"],"r":1565,"th":["advantage"]},{"id":"8tNGB","fen":"r6k/pp2p1bp/2n1Q1p1/q4r2/8/2PP4/PP3PPP/1K1R1BNR w - - 1 16","last":"e6b3","sol":["f5b5","b3b5","a5b5"],"r":1647,"th":["advantage","master"]},{"id":"0zuxU","fen":"2r2rk1/p1qnbppp/5p2/1p1Q4/8/4BP2/PPP2PBP/1K1R3R w - - 1 15","last":"d5d7","sol":["c7c2","b1a1","f8d8","g2h3","d8d7"],"r":1665,"th":["advantage"]},{"id":"MpqsX","fen":"rn2kb1r/1Q2pppp/n1p5/p3P3/2Pq2b1/P7/1P4PP/RNB1KBNR w KQkq - 0 11","last":"b7a8","sol":["d4d1","e1f2","d1c1"],"r":1784,"th":["advantage","fork"]}],"slav":[{"id":"2pwM0","fen":"r4rk1/ppq2ppp/2pb4/3Pn3/P1p2Bb1/2N2NP1/1P3PBP/R2Q1RK1 w - - 5 14","last":"d1c2","sol":["e5f3","g2f3","g4f3"],"r":926,"th":[]},{"id":"C2aqJ","fen":"r4rk1/pp1n2pp/2pb1qp1/3p2n1/1P1P2P1/P1N1PN1P/5PK1/R1BQR3 w - - 1 17","last":"f3g5","sol":["f6f2","g2h1","f2h2"],"r":1049,"th":["mate","mateIn2"]},{"id":"5LvLz","fen":"1r2kb1r/2qn1pp1/4pnp1/6N1/3Q4/4PB2/PP3PPP/R1B2RK1 w k - 1 17","last":"c1d2","sol":["c7h2"],"r":1094,"th":["kingsideAttack","mate","mateIn1"]},{"id":"BEgwL","fen":"r3k2r/pp1n1ppp/8/q1bQ2PP/5B2/4PP2/PP6/R3K1NR w KQkq - 1 17","last":"e1e2","sol":["a5b5","d5d3","b5b2"],"r":1186,"th":["advantage"]},{"id":"CpPg1","fen":"r3k2r/ppq2pp1/2p1pnp1/3P4/1b1Pn3/1PNBP3/PBQ2PPP/2R2RK1 w kq - 1 15","last":"c3e4","sol":["c7h2"],"r":1304,"th":["kingsideAttack","mate","mateIn1"]},{"id":"0AgtT","fen":"2r4r/1p1k1ppp/1b1N4/4n3/6b1/4P3/PP3PPP/R3KB1R w KQ - 2 17","last":"d6c8","sol":["b6a5","b2b4","a5b4"],"r":1392,"th":["bodenMate","mate","mateIn2"]},{"id":"F5duA","fen":"rn2k2r/pp3pp1/2p1p3/2Pp4/3P1P1q/P3P1p1/1P4P1/RNBQ1RK1 w kq - 0 14","last":"f1e1","sol":["h4h1"],"r":1500,"th":["mate","mateIn1"]},{"id":"EGbPB","fen":"r3k2r/pp1n1p2/2p1pn1p/7b/3P2p1/2N1PNqP/PP2B1P1/R2Q1K1R w kq - 0 16","last":"h3g4","sol":["f6g4","d1e1","g4e3","f1g1","g3g2"],"r":1534,"th":["mate","mateIn3"]},{"id":"4DVOd","fen":"rb2k2r/ppq2pp1/2p1p2p/3nn3/1P1P4/P1N1P3/1B2QPPP/2R2RK1 w kq - 0 15","last":"c3d5","sol":["e5f3","g2f3","c7h2"],"r":1642,"th":["discoveredAttack","kingsideAttack","mate","mateIn2","sacrifice"]},{"id":"GLRTR","fen":"2r2rk1/pp3ppp/1q2pn2/nN1p3b/3P4/P3PN1P/1P2BPP1/2RQ1RK1 w - - 5 15","last":"f3e5","sol":["c8c1","d1c1","h5e2"],"r":1678,"th":["advantage"]},{"id":"BXCLR","fen":"2r1kb1r/p3pp2/1ppq1np1/3nN3/3P4/1Q1B4/PP1B1PPP/2R2RK1 w k - 4 15","last":"e5c6","sol":["d6h2"],"r":1724,"th":["kingsideAttack","mate","mateIn1"]},{"id":"A2toK","fen":"1r4k1/5ppp/Rrnqpn2/3p4/3P4/4PN2/1P2QPPP/2RN2K1 w - - 3 19","last":"h2h3","sol":["c6d4","f3d4","b6a6"],"r":1835,"th":["crushing","master"]}],"other_b":[{"id":"0LGTB","fen":"r1b3k1/pp3rpp/8/3pn1q1/8/7P/PPB2PP1/RN1Q1RK1 w - - 2 17","last":"d1d5","sol":["e5f3","d5f3","f7f3"],"r":928,"th":["advantage","kingsideAttack","pin"]},{"id":"0qxrH","fen":"r2q2k1/1bpn2bp/1p1p4/p3prn1/1PP4N/P2P2P1/1BQN1P1P/R4RK1 w - - 0 18","last":"h4f5","sol":["g5h3"],"r":1022,"th":["mate","mateIn1"]},{"id":"5wtip","fen":"r3k1nr/pp3pp1/2p1p1bp/3p4/1PnP1BPP/2N1PP2/1PPQN3/q1KR1B1R w kq - 1 13","last":"c3b1","sol":["a1b2"],"r":1068,"th":["mate","mateIn1","queensideAttack"]},{"id":"6MzsL","fen":"N2q1b1r/pp1k1ppp/2n1p3/2pp4/3P1Pb1/3B1N2/PPP2PPP/R2QK2R w KQ - 1 11","last":"d3b5","sol":["d8a5","d1d2","a5b5"],"r":1184,"th":["advantage","fork"]},{"id":"7OLDk","fen":"r4rk1/4bpp1/p3pq1p/8/3PQ3/4PPB1/PP3P1P/R4RK1 w - - 5 18","last":"g3h4","sol":["f6h4","e4h4","e7h4"],"r":1273,"th":["advantage"]},{"id":"64qEg","fen":"2k1r3/ppp2ppp/2n5/1B6/8/2qb4/PR1B1PPP/2Q2K1R w - - 3 17","last":"f1g1","sol":["c3c1","d2c1","e8e1"],"r":1329,"th":["backRankMate","mate","mateIn2"]},{"id":"0MYzS","fen":"r5k1/1pp2ppp/p1q2n2/2Pp1p2/3Pn3/1BNQP3/PP3PPr/R4RK1 w - - 0 18","last":"g1h2","sol":["f6g4","h2g1","c6h6"],"r":1415,"th":["clearance","crushing"]},{"id":"6M8hK","fen":"4Qb1r/p1p4p/2N2p1k/3p1pp1/3PP1n1/8/PPP2PqP/RNB1KR2 w Q - 0 18","last":"h2h4","sol":["f8b4","c6b4","h8e8"],"r":1502,"th":["advantage","discoveredAttack","pin"]},{"id":"5OX3A","fen":"r1r3k1/pQn2ppp/4p3/5P2/3q4/P7/1P1N1PPP/2R1K2R w K - 0 17","last":"c1c7","sol":["d4e5","e1d1","e5c7","b7c7","c8c7"],"r":1531,"th":["advantage"]},{"id":"6B1yS","fen":"2rq1rk1/pp3ppp/3b1n2/3p4/8/1NPbBQ1P/PP1N1PP1/2KR3R w - - 8 18","last":"e3g5","sol":["c8c3","b2c3","d6a3"],"r":1586,"th":["bodenMate","mate","mateIn2","queensideAttack","sacrifice"]},{"id":"58tsC","fen":"r3k2r/ppq2pp1/2nbp1p1/2ppN2n/3P1B2/2P1PN2/PP3PPP/R2Q1RK1 w kq - 6 12","last":"d4c5","sol":["d6e5","f4e5","c6e5","f3e5","c7e5"],"r":1661,"th":[]},{"id":"1tjdi","fen":"2r2rk1/pb4pp/1p2p3/3pqp2/4n1PB/2PB4/PPQN3P/R3K1R1 w Q - 0 18","last":"e1c1","sol":["e4c3","b2c3","c8c3","c1b1","c3c2"],"r":1814,"th":["advantage","pin"]}],"qgd_b":[{"id":"0eLaY","fen":"2r1kb1r/pp3ppp/8/q2R2B1/1n6/Pb2P3/1P3PPP/K4BNR w k - 0 18","last":"d5a5","sol":["c8c1"],"r":883,"th":["mate","mateIn1"]},{"id":"12v93","fen":"q3k2r/p4ppp/4pn2/1p6/2pPb3/5PP1/PP1Q3P/RN2K2R w KQk - 0 14","last":"f3e4","sol":["a8e4","d2e2","e4h1"],"r":1035,"th":["advantage","fork"]},{"id":"90aYH","fen":"rnb1k1r1/ppb5/2p1p3/2PpNpqp/1P1Pn3/P2BPP2/1B5P/RN1Q1R1K w q - 3 15","last":"f1g1","sol":["e4f2"],"r":1070,"th":["cornerMate","mate","mateIn1"]},{"id":"4gAq5","fen":"r1b2rk1/pp3pp1/2pq3p/3p4/3P2n1/P1NBP1K1/1PQ1NPP1/R4R2 w - - 3 17","last":"g3f3","sol":["g4h2"],"r":1198,"th":["mate","mateIn1"]},{"id":"AR9ZO","fen":"3qk2r/p2n1p1p/3Qbp2/3p4/3P4/2r1P3/P4PPP/R3KBNR w KQk - 0 13","last":"f1b5","sol":["d8a5","b5d7","e6d7"],"r":1224,"th":["advantage"]},{"id":"369is","fen":"r1b1r1k1/ppqn1pp1/2p4p/3p4/3P2nB/2NBP1K1/PP2NPP1/2RQ1R2 w - - 3 14","last":"g3g4","sol":["d7f6","g4f3","c8g4"],"r":1356,"th":["discoveredCheck","doubleCheck","mate","mateIn2"]},{"id":"76L37","fen":"r4rk1/3B1ppp/bp2p3/p3N3/Q2PP3/8/Pq3PPP/2RK3R w - - 4 18","last":"a4c2","sol":["b2d4","c2d2","d4e5"],"r":1451,"th":["advantage","fork"]},{"id":"3KSK0","fen":"r4rk1/2q1bppp/2p1pn2/2P3B1/1Pb5/5N2/2B2PPP/R2QR1K1 w - - 3 19","last":"c2b3","sol":["a8a1","d1a1","c4b3"],"r":1479,"th":["advantage"]},{"id":"9ZMWg","fen":"r1b2rk1/pp5p/2p2q2/3p2p1/3Pp1P1/4P1b1/PPQ1BP1P/R2K1R2 w - - 0 19","last":"f2g3","sol":["f6f1","e2f1","f8f1","d1e2","f1a1"],"r":1565,"th":["advantage","exposedKing","skewer"]},{"id":"4QEH6","fen":"N1bk1b2/pp1n1prp/8/q1p5/2Bn1P2/8/PP1N1PPP/R2Q1RK1 w - - 4 15","last":"f1e1","sol":["a5d2","d1d2","d4f3","g1h1","f3d2"],"r":1671,"th":["advantage","attraction","pin","sacrifice"]},{"id":"54zG6","fen":"r3k2N/2pbq3/p1n2n1p/2Pp4/8/2NB2P1/P1Q2pP1/R3K2R w KQq - 0 18","last":"e1f2","sol":["f6g4","f2f1","g4e3","f1g1","e3c2"],"r":1731,"th":["advantage","fork"]},{"id":"7be7m","fen":"3rr1k1/pp3pp1/1np2n1p/q7/2PP2bB/P4N2/4BPPP/R2QR1K1 w - - 3 18","last":"f3e5","sol":["e8e5","d4e5","d8d1"],"r":1797,"th":["crushing"]}],"nimzo":[{"id":"1Pxeg","fen":"r1b2rk1/pp1n1qp1/4p3/2ppP1p1/2PP3P/2P5/P2N4/R2QKB1R w KQ - 1 17","last":"h4g5","sol":["f7f2"],"r":955,"th":["mate","mateIn1"]},{"id":"AGOMr","fen":"rn2nrk1/pbp1q1p1/1p1p3p/3P1p2/2P1PR2/2NB4/PP1N2PP/R2Q2K1 w - - 0 15","last":"e4f5","sol":["e7e3","f4f2","e3d3"],"r":1044,"th":["advantage","fork"]},{"id":"LEOoy","fen":"r4rk1/pp3ppp/8/2bpn2q/6b1/2N2NP1/PP2BK1P/R1BQ3R w - - 2 17","last":"f2g2","sol":["h5h3"],"r":1129,"th":["master","masterVsMaster","mate","mateIn1"]},{"id":"FQPhE","fen":"5rk1/p4ppp/3pp3/q1pb2B1/3Pn3/2P1P1P1/P3BP1P/R2QK1R1 w Q - 3 18","last":"g5e7","sol":["a5c3","e1f1","e4d2","d1d2","c3d2"],"r":1183,"th":["advantage"]},{"id":"CL9A4","fen":"r5k1/p1pn2pp/1p1p2qr/3P1p2/4b3/2B1PN1P/PP2QPP1/R5RK w - - 2 18","last":"f3d2","sol":["h6h3"],"r":1222,"th":["kingsideAttack","mate","mateIn1","pin"]},{"id":"AQ9kU","fen":"r4rk1/pQp3pp/6q1/4pb2/2P5/P1B1P3/1P3PPP/R4RK1 w - - 1 17","last":"c3e5","sol":["f5e4","b7e4","g6e4"],"r":1303,"th":["advantage"]},{"id":"Ynhyt","fen":"rn1k3r/pbN2ppp/1p4q1/1P6/2BPnB2/P7/5PPP/R2QK2R w KQ - 1 17","last":"e1g1","sol":["e4c3","f4g3","c3d1"],"r":1378,"th":["advantage","master"]},{"id":"8rj6O","fen":"rn3rk1/pp3pp1/3q3p/4P3/2B2n2/5b2/P2B1PPP/2RQ1RK1 w - - 0 18","last":"g2f3","sol":["d6g6","g1h1","g6g2"],"r":1484,"th":["mate","mateIn2"]},{"id":"UwwII","fen":"r1r3k1/1n3ppp/p3pn2/Kp1b4/3RP3/5N2/PP2BPPP/R1B5 w - - 1 18","last":"a5b6","sol":["f6d7"],"r":1576,"th":["master","mate","mateIn1"]},{"id":"CnezL","fen":"rn1r2k1/pp3ppp/3q4/b1pN4/2BPb3/1Q2PN2/PP3PPP/R4RK1 w - - 3 15","last":"b3b7","sol":["e4d5","b7d5","d6d5","c4d5","d8d5"],"r":1629,"th":["advantage"]},{"id":"0vyQC","fen":"3r4/pp1bkp1p/4p3/8/3Qn3/P7/1P2NqPP/R1BK1B1R w - - 7 17","last":"d4f2","sol":["d7a4","d1e1","d8d1"],"r":1691,"th":["discoveredCheck","doubleCheck","master","mate","mateIn2","operaMate"]},{"id":"V7gku","fen":"r2r2k1/pp3ppp/3b1n2/3P3q/3Q4/P1N4b/1PB2PP1/R1B2RK1 w - - 0 17","last":"g2h3","sol":["h5h3","c1f4","h3g4"],"r":1807,"th":["advantage","kingsideAttack"]}],"qid":[{"id":"nhj2J","fen":"3r1rk1/2p2ppp/1pn1pn2/p2q4/3Pb3/2B2NP1/PP2PPBP/R1QR2K1 w - - 2 14","last":"e2e3","sol":["e4f3","g2f3","d5f3"],"r":869,"th":["crushing","master"]},{"id":"2P8Si","fen":"3q1rk1/3p1ppp/1p2pn2/2b5/rnP1b3/PQ2PN2/1P1B1PPP/2KR1B1R w - - 0 15","last":"b3a4","sol":["b4a2"],"r":1089,"th":["mate","mateIn1"]},{"id":"ohW6A","fen":"q4rk1/p1p1b1pp/1p1pNn2/5p2/2PP4/1P4n1/PBQ1PP1P/2R3K1 w - - 0 16","last":"e6f8","sol":["a8h1"],"r":1165,"th":["mate","mateIn1"]},{"id":"hrFN7","fen":"r3k2r/2pn1p2/bp1p1q1p/2nPp1p1/p1P1P3/P4P2/1PQNBBPP/2KR3R w kq - 7 18","last":"d2b1","sol":["c5b3","c2b3","a4b3"],"r":1187,"th":["advantage","master","queensideAttack"]},{"id":"xTmCY","fen":"r2q1r1k/pb2b1pp/1p6/5p2/2QnP3/6P1/PB1N2BP/R4RK1 w - - 2 18","last":"c4d4","sol":["e7c5","d4c5","b6c5"],"r":1268,"th":["advantage","pin"]},{"id":"UUzha","fen":"q4k1r/p1pp4/1p2pbQ1/6p1/2P1N1n1/5PP1/PP2n2P/R1B2RK1 w - - 1 18","last":"g1g2","sol":["h8h2"],"r":1375,"th":["master","mate","mateIn1"]},{"id":"t8QGO","fen":"r4rk1/p2nqpp1/1p2p2p/2p5/2NPPn2/1P3N2/P4PPP/2RQ1RK1 w - - 1 16","last":"d4d5","sol":["e6d5","e4d5","f4e2","g1h1","e2c1"],"r":1501,"th":["advantage","fork"]},{"id":"Z9lC2","fen":"2q2rk1/Q2nbppp/1p2p3/8/3PP3/2r3P1/P4PBP/R1BR2K1 w - - 1 18","last":"c1e3","sol":["c3a3","a7a3","e7a3"],"r":1534,"th":["advantage","trappedPiece"]},{"id":"YYnKB","fen":"r2qr1k1/p5bp/1p1p1np1/2pN2B1/2PpP3/6P1/PP3PKP/R2Q1R2 w - - 0 17","last":"f2f3","sol":["f6d5","g5d8","d5e3","g2h1","e3d1"],"r":1582,"th":["crushing","fork","master","sacrifice"]},{"id":"D0gV6","fen":"3r1rk1/pq3pp1/1p2pn1B/2p5/2Pnb3/P1Q2NP1/1P2PPBP/3RR1K1 w - - 1 19","last":"h6g5","sol":["d4e2","e1e2","d8d1"],"r":1685,"th":["crushing","deflection","discoveredAttack","kingsideAttack","master"]},{"id":"58gm5","fen":"2rq1rk1/1b2bppp/p7/1p1pB3/3p4/Q5PB/PP2PP1P/2R2RK1 w - - 0 17","last":"c1c8","sol":["b7c8","a3d3","c8h3"],"r":1779,"th":["advantage"]},{"id":"Jwgfs","fen":"r2q2k1/p1p2rpp/1p6/2b5/6n1/1PN3P1/PB2PPKP/R2Q1R2 w - - 3 16","last":"c3e4","sol":["f7f2","e4f2","g4e3","g2g1","e3d1"],"r":1884,"th":["crushing","fork","sacrifice"]}],"nf6_other":[{"id":"5koc1","fen":"r2q1rk1/pbp1np2/1p2p2p/P7/2P1n1p1/1QP1PNB1/5PPP/R3KB1R w KQ - 0 15","last":"f3e5","sol":["d8d2"],"r":893,"th":["mate","mateIn1"]},{"id":"Td2DK","fen":"2r2rk1/p2n1pp1/Bpp2q1p/3n4/1b1Pp3/4P1BN/PPQ2PPP/2R2K1R w - - 6 18","last":"a6c8","sol":["d5e3","f1e2","e3c2"],"r":991,"th":["crushing","pin"]},{"id":"ONKgt","fen":"rnb3k1/pp3p1p/4p1p1/q1b1P3/6Q1/2NBnN2/PPP3PP/3RK2R w K - 4 16","last":"g4h4","sol":["e3g2","e1e2","g2h4"],"r":1079,"th":["crushing","fork","master"]},{"id":"GRgAW","fen":"rr4k1/1ppqbpp1/5p1p/1B1p1b2/pn1P4/P1P1PN2/1P1N1PPP/2KQ2RR w - - 5 15","last":"b5d7","sol":["b4a2"],"r":1160,"th":["mate","mateIn1"]},{"id":"KtXlz","fen":"r1b2rk1/1pqn3p/p2bppp1/3pN3/3P1B2/2PB2Q1/PP3PPP/R3K2R w KQ - 0 17","last":"e5d7","sol":["d6f4","d7f8","f4g3"],"r":1291,"th":["advantage"]},{"id":"Kza57","fen":"r1bq1rk1/ppp3b1/5np1/4p1B1/4N3/4P3/PPP2PPP/R2QK2R w KQ - 2 14","last":"e4f6","sol":["g7f6","d1d8","f6d8","g5d8","f8d8"],"r":1340,"th":["advantage"]},{"id":"9Go45","fen":"r3k1r1/pp3p1p/2p2p2/1PPp1q2/P2Pp2n/2N1P3/4BPPK/R2Q1R2 w q - 1 17","last":"e2g4","sol":["g8g4","d1g4","f5g4"],"r":1399,"th":["crushing"]},{"id":"Qdfyz","fen":"r1b1k2r/pp1p1ppp/3bp3/2pn4/3Pq3/N1P1BN2/PP2K1PP/R2Q1B1R w kq - 1 13","last":"d1d3","sol":["d5f4","e2d2","f4d3"],"r":1528,"th":["advantage","fork"]},{"id":"OHQ6t","fen":"2rq1rk1/1p1nppb1/p1p1b2p/3p2pn/1PPP4/P3PNB1/3NBPPP/R2Q1RK1 w - - 2 15","last":"f3g5","sol":["h5g3","g5e6","g3e2","d1e2","f7e6"],"r":1596,"th":["advantage","kingsideAttack"]},{"id":"hphfS","fen":"r1b2r2/ppp2Bbk/5q1p/4p1pQ/4P3/7P/PPPN1PPB/R3K2R w KQ - 1 15","last":"f7b3","sol":["f6f2","e1d1","f2g2","h1g1","g2h2"],"r":1709,"th":["advantage","attackingF2F7"]},{"id":"GTrmH","fen":"r3k2r/3bbppp/1pn1pn2/3p4/3N3B/2P1P3/PP1N1PPP/R3KB1R w KQkq - 2 14","last":"f1b5","sol":["c6d4","b5d7","f6d7","h4e7","d4c2"],"r":1789,"th":["advantage","master"]},{"id":"KDbx7","fen":"r1b1k2r/pp3p2/2pb3q/3p1pp1/2PP2P1/3NP1P1/PP1NQ1B1/R4RK1 w kq - 1 17","last":"g1f2","sol":["d6g3","f2g3","h6h4","g3f3","f5g4"],"r":1814,"th":["attraction","master","mate","mateIn3","sacrifice"]}],"vienna":[{"id":"1GZdj","fen":"3qk2r/2pb1ppp/2np4/rB1Qp3/Pp1N4/2P1P2P/2P3P1/R4RK1 b k - 5 16","last":"c6d4","sol":["d5f7"],"r":881,"th":["attackingF2F7","mate","mateIn1"]},{"id":"6o78G","fen":"r4knr/ppN2ppp/2np4/4p3/2B1P2b/3P3P/PPP4P/R1BK1R2 b - - 0 13","last":"a8c8","sol":["f1f7"],"r":1000,"th":["mate","mateIn1"]},{"id":"8efQQ","fen":"r2qk2r/ppp2pQp/3p1n2/2b1p3/2B1PP2/2NP3P/PP2K1P1/n1B4R b kq - 0 11","last":"h8g8","sol":["g7f7"],"r":1072,"th":["attackingF2F7","mate","mateIn1"]},{"id":"5u8wM","fen":"r3kbQ1/pp1bq1pp/2pp4/4n1B1/4P3/1BN5/PPP3PP/5RK1 b q - 7 17","last":"e7g5","sol":["g8f8"],"r":1130,"th":["mate","mateIn1"]},{"id":"2ORvE","fen":"r2q2kr/ppp3pp/3b4/4p1N1/4PRQ1/P7/1P1P2PP/n1B3K1 b - - 0 15","last":"e5f4","sol":["g4e6","g8f8","e6f7"],"r":1198,"th":["kingsideAttack","mate","mateIn2"]},{"id":"3qw17","fen":"rnb3nr/pp2b1pp/1k6/1B1p1P2/P2N1B2/8/1PP2PPP/R3K2R b KQ - 3 18","last":"e7c5","sol":["a4a5"],"r":1235,"th":["mate","mateIn1"]},{"id":"AdtQS","fen":"rnbq3r/pp1p1k1p/1bp3p1/4Q3/1P2P3/P7/2PP1PPP/R1B1K1NR b KQ - 0 10","last":"d8f6","sol":["e5f6","f7f6","c1b2","f6e7","b2h8"],"r":1337,"th":["advantage","attraction","skewer"]},{"id":"5QTEK","fen":"1n1qr1k1/Q4ppp/5b2/8/4B1b1/3P1NP1/P1PK1P1P/1R6 b - - 6 18","last":"e8e4","sol":["b1b8","g4c8","b8c8","d8c8","d3e4"],"r":1450,"th":["advantage","pin"]},{"id":"2VEvt","fen":"r2qr1k1/1b3ppp/p4n2/1pb1N3/3p1B2/3P4/PPP1BPPP/R2Q1RK1 b - - 5 17","last":"e8e5","sol":["f4e5","d8d5","e2f3","d5e5","f3b7"],"r":1573,"th":["advantage","hangingPiece","skewer"]},{"id":"ABxHe","fen":"2b1q1k1/1pp2ppp/1p1p1n2/6B1/r3R3/3Q2PB/PPP2P1P/R5K1 b - - 0 16","last":"a4e4","sol":["h3c8","e8c8","g5f6"],"r":1629,"th":["advantage"]},{"id":"5i9Yd","fen":"r1b2rk1/1pp2pp1/1p1p1q1p/8/4PnP1/P1N2NKn/1PPQ1P2/R3RB2 b - - 5 18","last":"h3g5","sol":["d2f4","f6f4","g3f4","g5f3","f4f3"],"r":1705,"th":[]},{"id":"6G3jK","fen":"2rnkb1r/4n1pp/p2Qp3/qp1NP3/5B2/1B6/PPP3PP/2KR3R b k - 0 17","last":"e6d5","sol":["e5e6","a5c7","d6c7","c8c7","f4c7"],"r":1776,"th":["advantage"]}],"sicilian":[{"id":"6BIFz","fen":"2r2rk1/pp1b2pp/1qnpp3/5p1n/4PP1b/P1N4P/1PP1B1PN/R1BQ1RK1 w - - 4 17","last":"g1h1","sol":["h5g3"],"r":916,"th":["mate","mateIn1"]},{"id":"0dPT5","fen":"r3k2r/pp2pp1p/1q1p2p1/2pB4/4P1bP/P2P2Q1/1b3PP1/R1B1K1NR w KQkq - 0 13","last":"a1b1","sol":["b2c3","e1f1","b6b1"],"r":1023,"th":["advantage","discoveredAttack","pin"]},{"id":"12Kol","fen":"B1bq1rk1/p3np1p/1p2p1p1/2ppb3/3n4/2NPB1P1/PPPQNP1P/R4RK1 w - - 0 12","last":"e3h6","sol":["d4f3","g1g2","f3d2"],"r":1037,"th":["crushing","fork"]},{"id":"2kemS","fen":"r1b2rk1/1pqp2pp/p3pb2/2p4Q/4NP2/3P4/PPP3PP/R1B2RK1 w - - 4 15","last":"h5c5","sol":["c7c5","e4c5","f6d4"],"r":1180,"th":["advantage"]},{"id":"1rgmS","fen":"r3k2r/pp1qbpp1/3p4/2pN2np/3p4/1P3B1P/PBPP1P1K/R2Q1R2 w kq - 2 15","last":"d5e7","sol":["d7h3","h2g1","g5f3","d1f3","h3f3"],"r":1275,"th":["crushing"]},{"id":"3aX7P","fen":"r4rk1/pp2qppp/8/2p5/3np3/3P2PP/PPPQ1PB1/R4RK1 w - - 0 15","last":"g2e4","sol":["e7e4","d3e4","d4f3","g1g2","f3d2"],"r":1361,"th":["advantage","fork","sacrifice"]},{"id":"4esic","fen":"r1bq1rk1/pp4pp/5b1B/2pp4/8/2NP1nP1/PPP3BP/R2QK2R w KQ - 0 13","last":"d1f3","sol":["f6c3","b2c3","f8f3"],"r":1404,"th":["advantage","discoveredAttack"]},{"id":"481Jl","fen":"r1br2k1/pp2n1bp/1q2p1pB/2p5/3nP3/P1N2N2/1PPQBPP1/R3K2R w KQ - 4 14","last":"h6g7","sol":["d4f3","e2f3","d8d2"],"r":1496,"th":["advantage","discoveredAttack"]},{"id":"2kTe7","fen":"q4rk1/3bppbp/5np1/1pp1p3/2B1P3/2NP1Q1P/1PP2PP1/2B1R1K1 w - - 0 15","last":"c3b5","sol":["d7b5","c4b5","a8a5","f3e2","a5b5"],"r":1583,"th":["advantage","fork"]},{"id":"2Tx2T","fen":"r1b1k2r/1p1p1pp1/p3p3/6b1/P2BP1p1/2NP1q2/BPPK1P2/R2QR3 w kq - 3 18","last":"d4e3","sol":["f3f2","d2c1","g5e3"],"r":1627,"th":["advantage","deflection","master","pin"]},{"id":"0hsSu","fen":"r4r2/1b2ppk1/p1np2p1/qp1Q3P/4P2P/1P3P2/P1P5/2KR1BNR w - - 1 16","last":"c1b2","sol":["c6b4","d5d4","e7e5","d4b4","a5b4"],"r":1717,"th":["master"]},{"id":"3QxMl","fen":"2r1k2r/pp1b1pp1/2n1p1np/q2pP3/Nb1P4/P2Q1N2/2B2PPP/R1B2RK1 w k - 0 17","last":"a3b4","sol":["c6b4","c1d2","b4d3","d2a5","c8c2"],"r":1801,"th":["advantage","capturingDefender"]}],"accdragon":[{"id":"Dqg3T","fen":"Q1b2rk1/p4p1p/3p2p1/8/2Bb1P2/2N4P/PPP2qP1/R1B4K w - - 0 18","last":"a8f3","sol":["f2g1"],"r":926,"th":["mate","mateIn1"]},{"id":"MR4uJ","fen":"3r3r/p3q1kp/2p1bn2/4p2B/4P3/5Q2/PBP3PP/1N3RK1 w - - 7 18","last":"b2e5","sol":["e7c5","f3f2","c5e5"],"r":1089,"th":["advantage","fork"]},{"id":"MkzD7","fen":"r4rk1/pp1b1pb1/1qn3p1/3p3p/3N3P/4BP2/PPPQB1P1/2KR3R w - - 4 15","last":"d4c6","sol":["b6b2"],"r":1170,"th":["mate","mateIn1","queensideAttack"]},{"id":"HxCZH","fen":"r4k1r/pp2ppb1/3p1np1/qB2P1Bp/1n6/1PN2P2/1PPQ2PP/2KR3R w - - 1 15","last":"e5f6","sol":["a5a1","c3b1","b4a2"],"r":1207,"th":["mate","mateIn2","queensideAttack","smotheredMate"]},{"id":"6Wiwz","fen":"r2qr1k1/p4pb1/1pn1bn1p/3p2p1/8/1NNB1QB1/PPP2PPP/3RR1K1 w - - 0 16","last":"c3b5","sol":["e6g4","e1e8","d8e8","f3g4","f6g4"],"r":1340,"th":["advantage"]},{"id":"KbDFI","fen":"r1bq1rk1/p5bp/2pp2p1/4p3/2N1Pp2/1NP2Pn1/PP4PP/R1BQ1RK1 w - - 2 15","last":"h2g3","sol":["f4g3","f1e1","d8h4"],"r":1393,"th":[]},{"id":"JXqpl","fen":"2r2rk1/4ppbp/3pbnp1/qp6/3BP3/1PN5/P2QBPPP/2RR2K1 w - - 0 16","last":"c3b5","sol":["a5d2","d1d2","c8c1"],"r":1456,"th":["advantage","capturingDefender"]},{"id":"5Jcxq","fen":"r1br2k1/ppQBq1bp/5ppn/4p3/4P3/2N1B3/PPP2PPP/2KR3R w - - 1 13","last":"e3c5","sol":["d8d7","c5e7","d7c7","d1d8","g8f7"],"r":1565,"th":["advantage"]},{"id":"KheJm","fen":"1rbq1rk1/p2pppbp/2p2np1/8/2B1P3/2N1B3/PPPQ1PPP/R3K2R w KQ - 6 10","last":"e1c1","sol":["f6e4","c3e4","g7b2","c1b1","b2c3"],"r":1609,"th":["crushing","discoveredAttack","discoveredCheck","queensideAttack"]},{"id":"0AatC","fen":"r3k2r/ppq1ppbp/2np2p1/8/4P1n1/1NN5/PPPQ3P/R3KBBR w KQkq - 4 13","last":"e1c1","sol":["g7h6","d2h6","g4h6"],"r":1690,"th":["advantage","pin"]},{"id":"1bHSP","fen":"3q1k1r/4ppbp/6p1/1Q6/8/3p4/P1P2PPP/R3KB1R w KQ - 2 18","last":"a1d1","sol":["g7c3","d1d2","d3c2"],"r":1775,"th":["advancedPawn","crushing","pin"]},{"id":"U1JBP","fen":"r1bq1rk1/pp2ppBp/6p1/1B6/4P3/2P5/PPnNQ1PP/R3K2R w KQ - 3 14","last":"e1d1","sol":["c8g4","d1c2","g4e2","b5e2","g8g7"],"r":1803,"th":["advantage","pin"]}],"dutch":[{"id":"qdYE0","fen":"r4rk1/2n1pqbp/2pp2p1/p7/2PPb3/5NP1/PB1QPPBP/2R1R1K1 w - - 1 19","last":"f3g5","sol":["f7f2","g1h1","e4g2"],"r":961,"th":["kingsideAttack","master","mate","mateIn2"]},{"id":"PMoiF","fen":"r1b2rk1/pp4bp/n1p3pq/5p2/2P3n1/PP4P1/1BQNP1BP/R2N1R1K w - - 4 17","last":"b2g7","sol":["h6h2"],"r":1012,"th":["kingsideAttack","mate","mateIn1"]},{"id":"A2Yf3","fen":"r1q1r3/pp3k1p/3Qnpp1/2p2p2/2P5/6P1/PP2PPBP/R2R2K1 w - - 2 19","last":"e2e3","sol":["e8d8","d6d3","d8d3"],"r":1134,"th":["advantage","trappedPiece"]},{"id":"JQQoN","fen":"3rq1k1/ppp2rbp/2n2n2/3N1p2/2P1p3/1P4P1/PB3PBP/R2Q1RK1 w - - 0 16","last":"a1c1","sol":["f6d5","c4d5","g7b2"],"r":1288,"th":["advantage","discoveredAttack","master","masterVsMaster"]},{"id":"2RBrT","fen":"r1b2r1k/pppnq1bp/5np1/4Np2/2P5/1QN3P1/PP2PPBP/R1BR2K1 w - - 1 12","last":"c1f4","sol":["d7e5","c3d5","f6d5"],"r":1370,"th":["advantage"]},{"id":"4C0Ct","fen":"5rk1/p3p2p/1p4p1/2p2p2/2b1qPP1/2P1P1P1/P7/R1BQR1K1 w - - 1 18","last":"g4f5","sol":["c4d5","d1d5","e4d5"],"r":1472,"th":["advantage"]},{"id":"IpDZE","fen":"rn2r1k1/ppq3bp/2p1bnp1/4p3/2P1p3/1PN2NP1/P1Q2PBP/1RBR2K1 w - - 0 14","last":"c3e4","sol":["f6e4","c2e4","e6f5","e4h4","f5b1"],"r":1529,"th":["advantage","master","skewer"]},{"id":"pWDUv","fen":"r2q1rk1/ppp3b1/4b1p1/3n1p1p/1P1Pn3/2NQPNP1/PB4BP/1R3RK1 w - - 0 17","last":"c3e4","sol":["f5e4","d3e4","e6f5"],"r":1572,"th":["clearance","crushing","master"]},{"id":"N1GQ2","fen":"1r4k1/pBp3bp/4b1p1/4p1B1/2Pr4/6P1/PP3P1P/R4RK1 w - - 2 18","last":"g5e3","sol":["b8b7","e3d4","e5d4"],"r":1681,"th":["crushing","master","masterVsMaster"]},{"id":"Ae7qZ","fen":"r1bq1rk1/pp2p1bp/3p2p1/2n3B1/2P1p3/6P1/PP2PPBP/R2QNRK1 w - - 0 12","last":"g2e4","sol":["c5e4","d1d5","e7e6","d5e4","d8g5"],"r":1698,"th":["crushing","discoveredAttack","hangingPiece"]},{"id":"aXaxw","fen":"r4rk1/ppq3bp/n1pp2p1/4Pb2/2P1Q3/P4NP1/1P3PBP/R1B2RK1 w - - 1 14","last":"e5d6","sol":["f5e4","d6c7","e4f3","g2f3","f8f3"],"r":1714,"th":["advantage"]},{"id":"yQKuN","fen":"r1b2rk1/ppq1p1bp/n1pp2p1/8/2P1N3/BP4P1/P3PPBP/R2QR1K1 w - - 1 14","last":"a1c1","sol":["c7a5","a3d6","e7d6"],"r":1814,"th":["crushing","master","trappedPiece"]}],"alien":[{"id":"IOsnr","fen":"r2q2kr/pp1n2p1/2p1p2p/4P1bQ/2P5/3B1R2/PP3PKP/R1B5 b - - 4 17","last":"g5c1","sol":["h5f7"],"r":867,"th":["mate","mateIn1"]},{"id":"kVvZc","fen":"r1b1Q1kr/pp1n2b1/2p1p2p/3n4/2BP1P1q/8/PPP3PP/R1B2RK1 b - - 1 14","last":"g8h7","sol":["c4d3"],"r":1040,"th":["mate","mateIn1"]},{"id":"4LqoN","fen":"r4bkr/ppq1p1p1/2p1P2p/3n3Q/8/8/PPP2PPP/R1B2RK1 b - - 2 15","last":"g7g5","sol":["h5f7"],"r":1089,"th":["mate","mateIn1"]},{"id":"eHimz","fen":"r1bn1bk1/pp4pr/4P1Np/2p5/2B1n3/8/PPP3PP/R1B2RK1 b - - 0 16","last":"c8e6","sol":["f1f8"],"r":1104,"th":["kingsideAttack","mate","mateIn1"]},{"id":"5hfWZ","fen":"r1bqr1k1/pp1n4/2p1p2Q/4P3/2B5/4P3/PPP3PP/R5K1 b - - 0 18","last":"e8e7","sol":["c4e6","e7e6","h6e6"],"r":1149,"th":["advantage","kingsideAttack"]},{"id":"hNpPl","fen":"rn1qr2k/pp6/2pb1nQp/4p3/3P4/2PB3P/PP3PP1/R3R1K1 b - - 3 16","last":"e8g8","sol":["g6h6","f6h7","h6h7"],"r":1239,"th":["kingsideAttack","mate","mateIn2"]},{"id":"2jcxK","fen":"r1bqrnk1/pp2n1p1/2p1p2p/4P2Q/1BP5/3B4/PP3PPP/2KR3R b - - 2 16","last":"b7b6","sol":["d3h7","g8h7","d1d8"],"r":1337,"th":["advantage","discoveredAttack"]},{"id":"qtpKS","fen":"r2q1b1r/pp2pkp1/1np2n1p/8/3P1Bb1/2PB1N2/PP3PPP/R2QK2R b KQ - 2 10","last":"e7e6","sol":["f3e5","f7g8","e5g4"],"r":1376,"th":["advantage"]},{"id":"F0fqH","fen":"r1bqr1k1/pp4p1/2nbp1Np/7Q/3P4/3BP3/PP4PP/R4RK1 b - - 0 16","last":"c6e7","sol":["g6e7","e8e7","h5g6"],"r":1534,"th":["clearance","crushing","kingsideAttack"]},{"id":"fFgWA","fen":"rnbq1r1k/pp1n2p1/2p1B2B/4P2Q/8/8/PPP2PPP/R4RK1 b - - 0 14","last":"d8e7","sol":["h6g5"],"r":1576,"th":["discoveredAttack","mate","mateIn1"]},{"id":"uiTNp","fen":"rn2nb1r/pp2p1k1/4q1pp/2P1N3/5PP1/3Q4/PPP4P/R1B1K2R b KQ - 0 16","last":"b8d7","sol":["d3d7","e6d7","e5d7"],"r":1679,"th":["advantage"]},{"id":"0Mx4J","fen":"r2q1b1r/pp2pkp1/2n2n1p/2p5/3P2b1/1QPB1N2/PP3PPP/R1B1K2R b KQ - 2 10","last":"e7e6","sol":["b3b7","f8e7","b7c6"],"r":1824,"th":["advantage","fork"]}]};
 
 /* Turning coach messages into speech. Shared by the page (to look up recordings) and the recording script,
    so both cut the text into exactly the same sentences. Move names are wrapped in \u0001…\u0002 markers so a
@@ -8857,7 +9179,7 @@ if(typeof module!=="undefined")module.exports=SPEECH;
 /* ---------- data ---------- */
 const FAM={};REP.families.forEach(f=>{FAM[f.id]=f});
 const LINES=REP.lines;
-LINES.forEach(L=>{L.san=L.moves.split(" ");L.f=FAM[L.fam];L.family=L.f.name;L.trap=L.trap||[];L.notes=L.notes||{};L.why=L.why||{}});
+LINES.forEach(L=>{L.san=L.moves.split(" ");L.f=FAM[L.fam];L.v=L.sub&&L.f.subs?L.f.subs.find(v=>v.id===L.sub):null;L.family=L.f.name+(L.v?": "+L.v.name:"");L.trap=L.trap||[];L.notes=L.notes||{};L.why=L.why||{}});
 
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
@@ -8874,7 +9196,13 @@ const MK={o:"var(--mk-orange)",g:"var(--mk-green)",b:"var(--mk-blue)",r:"var(--m
 const arrowKey=k=>k==="x"?"r":(k||"o"),sqKey=k=>k==="x"?"o":(k||"r");
 const U=()=>S.side, OPP=()=>NAME[other(S.side)];
 const sideLines=()=>LINES.map((l,i)=>i).filter(i=>LINES[i].side===S.side);
-const courseLines=()=>{const f=LINES[S.li].fam;return LINES.map((l,i)=>i).filter(i=>LINES[i].fam===f)}; // the course you're in
+const subRank=l=>l.v?l.f.subs.indexOf(l.v):0;
+const inCourse=f=>LINES.map((l,i)=>i).filter(i=>LINES[i].fam===f).sort((a,b)=>subRank(LINES[a])-subRank(LINES[b])||a-b); // variation by variation
+const courseLines=()=>inCourse(LINES[S.li].fam); // the course you're in
+// Random can use only some of a course's lines: from..to, numbered like the line list (saved per course)
+let rrange=store.get("rep-rrange",{});
+function rangeOf(f){const n=inCourse(f).length,r=rrange[f]||[1,n];let a=Math.min(n,Math.max(1,Math.round(+r[0])||1)),b=Math.min(n,Math.max(1,Math.round(+r[1])||n));if(a>b)[a,b]=[b,a];return [a,b,n]}
+const randomPool=()=>{const f=LINES[S.li].fam,[a,b]=rangeOf(f);return inCourse(f).slice(a-1,b)};
 const moverAt=n=>n%2===0?"w":"b"; // who moves after n plies
 
 /* ---------- board ---------- */
@@ -9106,6 +9434,7 @@ function rateLine(i){
   const L=LINES[S.li],san=L.san[i];if(!san)return null;
   const n=noteAt(i),a=n&&annot(n.t,san),mine=moverAt(i)===U();
   if(!mine)return a;
+  if(L.book&&L.book.includes(i))return "book";                    // a gambit move the engine calls unsound: Book, not Brilliant
   if(a==="brilliant"||sacrifice(L,i))return "brilliant";
   if(i>0&&L.trap.includes(i-1))return "great";                  // you punished the opponent's mistake
   const shared=LINES.filter(o=>o.side===L.side&&samePre(o.san,L.san,i+1)).length;
@@ -9118,7 +9447,7 @@ function rateCached(i){const k=LINES[S.li].id+":"+i;if(!RCACHE.has(k))RCACHE.set
 function rateWrong(m,ex){
   if(ex.alt)return "book";
   const L=LINES[S.li],i=S.ply,fen=S.game.fen(),w=whyAt(i,m.san);
-  if(w){const x=/<b>([^<]*)<\/b>/.exec(w),g=x&&x[1].trim();if(g){if(/\?\?$/.test(g))return "blunder";if(/\?!$/.test(g))return "inaccuracy";if(/\?$/.test(g))return "mistake"}}
+  if(w){const x=/<b>([^<]*)<\/b>/.exec(w),g=x&&x[1].trim();if(g){if(/\?\?$/.test(g))return "blunder";if(/\?!$/.test(g))return "inaccuracy";if(/\?$/.test(g))return "mistake"}if(L.book&&L.book.includes(i))return "book"} // a good alternative this course skips on purpose
   const c=new Chess(fen);c.move(m.san);
   for(const r of c.moves({verbose:true})){c.move(r);const mate=c.in_checkmate();c.undo();if(mate)return "blunder"}
   const exp=nextMoveObj(),vw=-qs(c,-99,99,7),vr=exp?valueAfter(fen,exp.san):vw,lost=vr-vw;
@@ -9152,7 +9481,8 @@ const MSG={
   finRandom:(L,n,streak)=>`<b>It was the ${L.family}: ${L.name}.</b> ${MSG.mist(n)} Perfect streak: <b>${streak}</b>.${MSG.plan(L)}`,
   finPractice:(L,n)=>`<b>Line complete!</b> ${n===0?"Perfect run, no mistakes.":n+" mistake"+(n>1?"s":"")+". Run it again for 3 stars."}${MSG.plan(L)}`,
   finLearn:L=>`<b>End of the line.</b>${MSG.plan(L)||" "}<span class="why">Now switch to <b>Practice</b> and play it from memory.</span>`,
-  random:(course,n,side)=>`A random line from your ${course} course. ${NAME[other(side)]} picks the moves from ${n} lines, so you won't know which one it is until the end.${side==="w"?" Make your first move.":""}`,
+  randomPick:(n,side)=>`${NAME[other(side)]} picks the moves from ${n} line${n===1?"":"s"}, so you won't know which one it is until the end.`,
+  random:(course,n,side)=>`A random line from your ${course} course. ${MSG.randomPick(n,side)}${side==="w"?" Make your first move.":""}`,
   pzStart:side=>`Find the best move for ${NAME[side]}.`,
   pzGood:()=>`Correct. Keep going.`,
   pzWrong:why=>`${why} Try again.`,
@@ -9201,7 +9531,8 @@ function collectSpeech(){
         S.mode="learn";addHtml(MSG.wrongLearn(explainWrong(m,false),san),pack)}
     }
   }
-  REP.families.forEach(F=>{const ls=LINES.filter(l=>l.fam===F.id);ls.forEach(l=>addHtml(MSG.random(F.name,ls.length,F.side),l))});
+  REP.families.forEach(F=>{const ls=LINES.filter(l=>l.fam===F.id);ls.forEach(l=>addHtml(MSG.random(F.name,ls.length,F.side),l));
+    for(let k=1;k<ls.length;k++)addHtml(MSG.randomPick(k,F.side),"common")}); // Random over part of a course
   addHtml(VOICE_TEST,"common");
   for(let n=0;n<=60;n++)addHtml(`Perfect streak: <b>${n}</b>.`,"common");
   // building blocks for messages the coach invents on the spot (any move, any square)
@@ -9484,9 +9815,16 @@ function finishLine(){
   award(S.mode==="learn"?10:15+(S.mistakes?0:10)+5*(S.tally.brilliant||0),S.mode==="learn"?"Line learned":S.mistakes?"Line complete":"Perfect run");
   if(lastReview)setTimeout(()=>award(20,"Review complete"),900);
 }
+function drawRange(){const box=$("rrange");box.hidden=S.mode!=="random";if(box.hidden)return;
+  const [a,b,n]=rangeOf(LINES[S.li].fam),f=$("rFrom"),t=$("rTo");f.max=t.max=n;
+  if(document.activeElement!==f)f.value=a;if(document.activeElement!==t)t.value=b;$("rOf").textContent=`(${b-a+1} of ${n})`;$("rAll").hidden=a===1&&b===n}
+function setRange(a,b){const f=LINES[S.li].fam,n=inCourse(f).length;a=Math.round(+a);b=Math.round(+b);if(!(a>=1))a=1;if(!(b>=1))b=n;a=Math.min(a,n);b=Math.min(b,n);if(a>b)[a,b]=[b,a];
+  if(a===1&&b===n)delete rrange[f];else rrange[f]=[a,b];store.set("rep-rrange",rrange);if(S.mode==="random")startRandom()}
+$("rFrom").onchange=$("rTo").onchange=()=>setRange($("rFrom").value,$("rTo").value);
+$("rAll").onclick=()=>setRange(1,Infinity);
 function startRandom(){
   stopTimers();
-  S.mode="random";S.cand=courseLines();const course=LINES[S.li].family;loadLine(pick(S.cand),"random");
+  S.mode="random";S.cand=randomPool();const course=LINES[S.li].f.name;loadLine(pick(S.cand),"random");
   S.msg={k:"",t:MSG.random(course,S.cand.length,S.side)};render();
   // as Black, loadLine has already scheduled White's first move
 }
@@ -9570,7 +9908,7 @@ function drawBubble(){const bub=$("bubble");let txt,k="";
   if(!(S.msg&&S.msg.quiet))say(txt||"")}
 function render(){
   $("mPuzzle").disabled=!(PZ[LINES[S.li].fam]||[]).length;
-  $("boardCta").hidden=!(S.mode!=="puzzle"&&S.mode!=="play"&&S.done&&S.ply>=LINES[S.li].san.length&&!S.ctaHidden);
+  $("boardCta").hidden=!(S.mode!=="puzzle"&&S.mode!=="play"&&S.done&&S.ply>=LINES[S.li].san.length&&!S.ctaHidden&&!S.game.game_over()); // nothing to play on after mate
   if(S.mode==="puzzle"||S.mode==="play")return renderSession();
   const L=LINES[S.li];
   drawBoard();
@@ -9580,10 +9918,11 @@ function render(){
   drawBubble();
   const r=rstat[S.side];
   $("stats").innerHTML=`<span>Move <b>${Math.ceil(S.ply/2)}</b>${hide?"":" / "+Math.ceil(L.san.length/2)}</span>`+(S.mode!=="learn"?`<span>Mistakes <b>${S.mistakes}</b></span>`:"")+(S.mode==="random"?`<span>Streak <b>${r.streak}</b></span><span>Record <b>${r.best}</b></span>`:`<span>Best <b>${(prog[L.id]&&prog[L.id].stars)||0}</b>★</span>`);
+  drawRange();
   // key ideas
-  const F=L.f,ideas=$("ideas");ideas.hidden=hide;
-  $("ideasHead").textContent="Key ideas: "+F.name;
-  $("ideasBody").innerHTML=(F.ideas?`<ul>${F.ideas.map(x=>`<li>${x}</li>`).join("")}</ul>`:"")+(F.same?`<p>${F.same}</p>`:"");
+  const F=L.f,K=L.v||F,ideas=$("ideas");ideas.hidden=hide;
+  $("ideasHead").textContent="Key ideas: "+L.family;
+  $("ideasBody").innerHTML=(K.ideas?`<ul>${K.ideas.map(x=>`<li>${x}</li>`).join("")}</ul>`:"")+(K.same?`<p>${K.same}</p>`:"");
   // moves
   let mh="";const lim=hide?Math.min(L.san.length,S.ply+2-(S.ply%2)):L.san.length;for(let i=0;i<lim;i+=2){
     mh+=`<div class="mrow"><span class="n">${i/2+1}.</span>`;
@@ -9627,7 +9966,10 @@ function drawCourse(F,hide){
   $("modalTitle").textContent=F.name;$("modalProg").textContent=`${cdone} / ${mine.length} practised`;
   $("openList").innerHTML=`<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h2v2H3zm4 0h14v2H7zM3 11h2v2H3zm4 0h14v2H7zm-4 6h2v2H3zm4 0h14v2H7z"/></svg>Choose a line <small>${mine.length}</small>`;
   let lh=F.blurb?`<p class="listblurb">${F.blurb}</p>`:"";
+  let vh=null;
   mine.forEach((i,k)=>{const l=LINES[i],st=(prog[l.id]&&prog[l.id].stars)||0;
+    if(l.v&&l.v!==vh){vh=l.v;const vl=mine.filter(j=>LINES[j].v===vh),vd=vl.filter(j=>prog[LINES[j].id]&&prog[LINES[j].id].stars).length;
+      lh+=`<h4 class="listsub"><span>${vh.title}<small>${vh.move}</small></span><em>${vd} / ${vl.length}</em></h4>`}
     lh+=`<button class="lineitem ${st?"done":""}" data-i="${i}" aria-current="${i===S.li&&!hide}"><span class="ix">${st?"✓":k+1}</span><span class="t">${l.name}${l.trap.length?'<span class="tag">trap</span>':""}<span class="s">${l.key}</span></span><span class="stars" aria-label="${st} stars">${[1,2,3].map(n=>`<span class="${n<=st?"on":""}">${STAR}</span>`).join("")}</span></button>`});
   $("lines").innerHTML=lh;
   $("lines").querySelectorAll(".lineitem").forEach(b=>b.onclick=()=>{closeList();loadLine(+b.dataset.i,S.mode==="random"?"practice":null)});
@@ -9689,7 +10031,7 @@ function showStreak(celebrate){
   const s=streakNow(),n=s.n||0,d=practisedDays(),now=new Date(),doneToday=d.includes(dayKey(now));
   let w="",prevOn=false;
   for(let k=6;k>=0;k--){const t=new Date(now);t.setDate(now.getDate()-k);const on=d.includes(dayKey(t));
-    w+=`<div class="wd${on?" on":""}${on&&prevOn?" join":""}${k===0?" today":""}"><span>${"SMTWTFS"[t.getDay()]}</span><i>${on?CHECK:""}</i></div>`;prevOn=on}
+    w+=`<div class="wd${on?" on":""}${on&&prevOn?" join":""}${k===0?" tdy":""}"><span>${"SMTWTFS"[t.getDay()]}</span><i>${on?CHECK:""}</i></div>`;prevOn=on}
   $("sWeek").innerHTML=w;
   $("sMsg").textContent=celebrate?(n===1?"You started a streak! Finish a line every day to keep it growing.":MILESTONE[n]||`That's ${n} days in a row. Come back tomorrow to keep it going!`)
     :doneToday?"You've already practised today. See you tomorrow!":n?"Finish a line today to keep your streak alive.":"Finish any line to start a streak.";
@@ -9992,8 +10334,8 @@ function renderSession(){
 }
 
 /* ---------- start page: opening course cards ---------- */
-const SHOW={catalan:7,qga:4,qgd:4,slavw:4,ck_adv:6,ck_classic:8,ck_exch:6,ck_other:2,slav:4,other_b:6,qgd_b:4,nimzo:6,qid:6,nf6_other:2};
-const famLines=id=>LINES.map((l,i)=>i).filter(i=>LINES[i].fam===id);
+const SHOW={catalan:7,qga:4,qgd:4,slavw:4,ck:4,alien:11,slav:4,other_b:6,qgd_b:4,nimzo:6,qid:6,nf6_other:2};
+const famLines=inCourse;
 function miniBoard(F){
   const first=LINES[F.line!=null?F.line:famLines(F.id)[0]],n=F.show||SHOW[F.id]||2,c=new Chess();let last=null; // F.line: show that line instead of the course's first
   for(let k=0;k<Math.min(n,first.san.length);k++)last=c.move(first.san[k]);
