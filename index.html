@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Learn and drill a full chess opening repertoire: Catalan, Queen's Gambit, Vienna and the Alien Gambit as White; Caro-Kann, Slav, Sicilian and Dutch as Black. Spoken coach, puzzles and play against the computer.">
+<meta name="description" content="Learn and drill a full chess opening repertoire: Catalan, Queen's Gambit, Vienna and the Alien and Martian Gambits as White; Caro-Kann, Slav, Sicilian and Dutch as Black. Spoken coach, puzzles and play against the computer.">
 <meta name="theme-color" content="#5d9b3c">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%235d9b3c'%2F%3E%3Ctext%20x%3D'32'%20y%3D'49'%20font-size%3D'44'%20text-anchor%3D'middle'%20fill%3D'%23fff'%20font-family%3D'Segoe%20UI%20Symbol%2CDejaVu%20Sans%2Csans-serif'%3E%26%239822%3B%3C%2Ftext%3E%3C%2Fsvg%3E">
 <title>Repertoire Trainer</title>
@@ -7520,18 +7520,41 @@ REP.lines.push(
    and where the good alternatives in the Why-not notes (5.Nxf6+, 6.N5f3, 7.Bc4+) are rated "Book" too, not "Inaccuracy". */
 REP.families.push(
  {id:"alien",side:"w",name:"Alien Gambit",
-  blurb:"Against the Caro-Kann: 4...Nf6 5.Ng5 and a knight sacrifice on f7. A trap opening for fast games: the engine says it's unsound, but Black has to find the right moves.",
+  blurb:"Against the Caro-Kann: the Alien Gambit (4...Nf6 5.Ng5 and Nxf7), the Martian Gambit against 4...Bf5, and 5.Ng5 against 4...Nd7. Trap openings for fast games: the engine calls the sacrifices unsound, but Black has to find the right moves.",
   ideas:[
    "The gambit only happens after 4...Nf6 5.Ng5 h6. Then 6.Nxf7! drags Black's king out, and it can never castle.",
    "You're a knight down for a pawn, so keep making threats: checks with Ne5+ and Bc4+, and pawn pushes like g4. If you play slowly, the extra piece wins.",
    "Aim everything at the king: bishop on c4 or d3, knight on e5, queen to e2, rook to e1.",
    "Know the big traps: ...Bg4? loses a piece to Ne5+, ...Qd5? loses the queen to Bc4, and ...Ke8 can walk into Bg6 mate.",
    "If Black doesn't play ...h6, don't sacrifice. Develop (Bd3 or Bc4, N1f3, castle) and keep an eye on f7."],
-  same:"It's the Caro-Kann from the other side. In your own Caro-Kann you play 4...Bf5, so nobody can use this gambit against you."});
+  same:"It's the Caro-Kann from the other side. In your own Caro-Kann you play 4...Bf5, so nobody can use this gambit against you.",
+  subs:[
+   {id:"alien",name:"Alien Gambit",title:"Alien Gambit",move:"4...Nf6 5.Ng5",
+    ideas:[
+     "The gambit only happens after 4...Nf6 5.Ng5 h6. Then 6.Nxf7! drags Black's king out, and it can never castle.",
+     "You're a knight down for a pawn, so keep making threats: checks with Ne5+ and Bc4+, and pawn pushes like g4. If you play slowly, the extra piece wins.",
+     "Aim everything at the king: bishop on c4 or d3, knight on e5, queen to e2, rook to e1.",
+     "Know the big traps: ...Bg4? loses a piece to Ne5+, ...Qd5? loses the queen to Bc4, and ...Ke8 can walk into Bg6 mate.",
+     "If Black doesn't play ...h6, don't sacrifice. Develop (Bd3 or Bc4, N1f3, castle) and keep an eye on f7."],
+    same:"It's the Caro-Kann from the other side. In your own Caro-Kann you play 4...Bf5, so nobody can use this gambit against you."},
+   {id:"martian",name:"Martian Gambit",title:"Martian Gambit",move:"4...Bf5 5.Ng5",
+    ideas:[
+     "Against 4...Bf5 the knight still jumps to g5. After 5...Bg6 6.N1f3 h6, 7.Ne6!? gives up the knight to break open Black's king.",
+     "You don't win any material back. The point is that Black's king is stuck in the middle and the e6 pawn and the bishop are weak, so play Bd3, Ne5 and f4 fast.",
+     "If Black doesn't play ...h6, don't sacrifice: Bd3 or Ne5 goes after the g6 bishop, and you're a little better.",
+     "Against 5...e6, chase the bishop with g4 and h4, threatening to trap it.",
+     "Against 5...Nf6, 5...Nd7 or 5...h6, trade the bishops with Bd3 and put a knight on e5."],
+    same:"The engine calls 7.Ne6 unsound too (about -1.6), but that's a lot less than the Alien Gambit's -2.6."},
+   {id:"nd7",name:"Karpov Variation",title:"Karpov Variation",move:"4...Nd7 5.Ng5",
+    ideas:[
+     "Against 4...Nd7 the knight goes to g5 too. This is the Karpov Variation, a main line at the top level.",
+     "After 5...Ngf6 6.Bd3 e6 7.N1f3 it's the same position as the Alien course's 5...Nbd7 line, so the same plans work.",
+     "Two famous traps: 5...h6? 6.Ne6! (if 6...fxe6, Qh5+ mates), and 7...h6? 8.Nxe6!, Deep Blue's sacrifice against Kasparov.",
+     "Against 5...Ndf6, hit f7 with Bc4 and bring a knight to e5."]}]});
 
 REP.lines.push(
 /* ---------- the gambit: 5...h6 6.Nxf7 Kxf7 7.Nf3 ---------- */
- {id:"al_main",side:"w",fam:"alien",name:"Main line: 7...Bf5 8.Ne5+ Ke8",key:"6.Nxf7 Kxf7 7.Nf3 Bf5 8.Ne5+ Ke8 9.Bc4 e6 10.g4",book:[8,10,12],
+ {id:"al_main",side:"w",fam:"alien",sub:"alien",name:"Main line: 7...Bf5 8.Ne5+ Ke8",key:"6.Nxf7 Kxf7 7.Nf3 Bf5 8.Ne5+ Ke8 9.Bc4 e6 10.g4",book:[8,10,12],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Bf5 Ne5+ Ke8 Bc4 e6 g4 Bh7 Bxe6 Nbd7 Nxd7 Nxd7 O-O",
   intro:"The main line of the Alien Gambit. Black kicks your knight with ...h6, you sacrifice it on f7, and then you keep the king busy with checks and threats.",
   plan:"Bring the rook to e1 and push f4 and f5. You have two pawns for the knight, and the e6 bishop keeps Black's king stuck in the middle.",
@@ -7569,7 +7592,7 @@ REP.lines.push(
   18:{"O-O":"<b>10.O-O</b> is too slow. 10.g4 kicks the bishop with tempo and grabs space next to Black's king."},
   20:{"g5":"<b>11.g5</b> attacks the knight, but 11.Bxe6 is stronger: a second pawn, and the bishop locks Black's king in the middle."}}},
 
- {id:"al_kg8",side:"w",fam:"alien",name:"7...Bf5 8.Ne5+ Kg8",key:"8...Kg8 9.Bc4+ e6 10.g4 Be4 11.Bxe6+ Kh7 12.f3",book:[8,10,12],
+ {id:"al_kg8",side:"w",fam:"alien",sub:"alien",name:"7...Bf5 8.Ne5+ Kg8",key:"8...Kg8 9.Bc4+ e6 10.g4 Be4 11.Bxe6+ Kh7 12.f3",book:[8,10,12],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Bf5 Ne5+ Kg8 Bc4+ e6 g4 Be4 Bxe6+ Kh7 f3",
   intro:"Same start as the main line, but Black hides the king on g8. That shuts the h8 rook in, and your bishop check from c4 hurts even more.",
   plan:"Win the e4 bishop or chase it away, then castle and attack. Black's king is boxed in on h7 and the h8 rook is buried. The engine calls it about equal now: your gambit has paid off.",
@@ -7587,7 +7610,7 @@ REP.lines.push(
   20:{"O-O":"<b>11.O-O</b> is too slow. 11.Bxe6+ wins a pawn with check and pushes the king into the corner."},
   22:{"g5":"<b>12.g5</b> sets a sneaky trap (12...Bxh1?? 13.g6 is mate), but a careful player won't fall for it, and the engine rates it clearly worse. 12.f3 hits the bishop and saves your rook."}}},
 
- {id:"al_e6",side:"w",fam:"alien",name:"7...e6: the solid defence",key:"7...e6 8.Bf4 Bd6 9.Bxd6 Qxd6 10.Ne5+ Kg8 11.c3",book:[8,10,12],
+ {id:"al_e6",side:"w",fam:"alien",sub:"alien",name:"7...e6: the solid defence",key:"7...e6 8.Bf4 Bd6 9.Bxd6 Qxd6 10.Ne5+ Kg8 11.c3",book:[8,10,12],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 e6 Bf4 Bd6 Bxd6 Qxd6 Ne5+ Kg8 c3",
   intro:"Black stays calm with 7...e6. It gets the f8 bishop out and covers the d5 and f5 squares.",
   plan:"Bring the queen out to f3 or b3, then castle long. Use the e5 knight and the open f-file to bother Black's king. You're still a knight down, so keep making threats.",
@@ -7605,7 +7628,7 @@ REP.lines.push(
   14:{"Ne5+":"<b>8.Ne5+</b> is playable, but bring a new piece first. 8.Bf4 develops and keeps e5 ready for the knight."},
   20:{"Qe2":"<b>11.Qe2?!</b> looks active, but it leaves d4 without a guard, and 11...c5 hits it again. 11.c3 keeps your centre together first."}}},
 
- {id:"al_c5",side:"w",fam:"alien",name:"7...c5: the engine's choice",key:"7...c5 8.Bc4+ e6 9.Qe2 cxd4 10.O-O",book:[8,10,12],
+ {id:"al_c5",side:"w",fam:"alien",sub:"alien",name:"7...c5: the engine's choice",key:"7...c5 8.Bc4+ e6 9.Qe2 cxd4 10.O-O",book:[8,10,12],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 c5 Bc4+ e6 Qe2 cxd4 O-O",
   intro:"The engine's favourite defence: Black hits your centre at once with 7...c5. It's the toughest test of the gambit.",
   plan:"Win the d4 pawn back with Nxd4, and bring a rook to d1 or e1. Keep the queen and bishop aimed at e6 and the king. Black is better here, so look for tricks.",
@@ -7620,7 +7643,7 @@ REP.lines.push(
   why:{
   18:{"c3":"<b>10.c3</b> tries to win d4 back with a pawn, but it's slow. 10.O-O first: Nxd4 is coming anyway."}}},
 
- {id:"al_nbd7",side:"w",fam:"alien",name:"7...Nbd7",key:"7...Nbd7 8.Bc4+ e6 9.Qe2 Nd5 10.O-O Bd6 11.Ne5+",book:[8,10,12],
+ {id:"al_nbd7",side:"w",fam:"alien",sub:"alien",name:"7...Nbd7",key:"7...Nbd7 8.Bc4+ e6 9.Qe2 Nd5 10.O-O Bd6 11.Ne5+",book:[8,10,12],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Nbd7 Bc4+ e6 Qe2 Nd5 O-O Bd6 Ne5+ Bxe5 dxe5",
   intro:"Black develops the queen's knight to d7, where it guards e5. So your knight can't jump in yet: first you check from c4.",
   plan:"Your e5 pawn takes the f6 and d6 squares away from Black's pieces. Bring the bishop to d2 or e3 and a rook to d1, and look for Qh5+ or f4 and f5 to open lines to the king.",
@@ -7639,7 +7662,7 @@ REP.lines.push(
   why:{
   16:{"O-O":"<b>9.O-O</b> is a bit slow. 9.Qe2 hits e6 right away, so Black has to deal with it first."}}},
 
- {id:"al_mate",side:"w",fam:"alien",name:"Trap: 8...Ke8? and Bg6 mate",key:"8.Bc4+ Ke8 9.O-O Nb6 10.Bd3 Bg4 11.Ne5!",trap:[19,21],book:[8,10,12],
+ {id:"al_mate",side:"w",fam:"alien",sub:"alien",name:"Trap: 8...Ke8? and Bg6 mate",key:"8.Bc4+ Ke8 9.O-O Nb6 10.Bd3 Bg4 11.Ne5!",trap:[19,21],book:[8,10,12],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Nbd7 Bc4+ Ke8 O-O Nb6 Bd3 Bg4 Ne5 Bxd1 Bg6#",
   intro:"The most famous Alien Gambit trap. If Black's king goes back to e8 and then Black pins your knight, you leave your queen hanging and mate with the bishop.",
   plan:"It's checkmate! And if Black doesn't take your queen on move 11, you're winning anyway: the g4 bishop is attacked and Bg6+ is coming.",
@@ -7656,7 +7679,7 @@ REP.lines.push(
   why:{
   20:{"Bg6+":"<b>11.Bg6+</b> is a check, but 11.Ne5!! is much stronger: it threatens Bg6 mate and attacks the g4 bishop at the same time."}}},
 
- {id:"al_bg4",side:"w",fam:"alien",name:"Trap: 7...Bg4? 8.Ne5+",key:"7...Bg4 8.Ne5+ Ke8 9.Nxg4 Nxg4 10.Qxg4",trap:[13],book:[8,10,12],
+ {id:"al_bg4",side:"w",fam:"alien",sub:"alien",name:"Trap: 7...Bg4? 8.Ne5+",key:"7...Bg4 8.Ne5+ Ke8 9.Nxg4 Nxg4 10.Qxg4",trap:[13],book:[8,10,12],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Bg4 Ne5+ Ke8 Nxg4 Nxg4 Qxg4",
   intro:"A trap that catches lots of players. Black pins your f3 knight with 7...Bg4, but that bishop has no defender.",
   plan:"You've won your piece back and you're a pawn up, and Black's king still can't castle. Develop with Bd3 or Bc4, castle and attack.",
@@ -7671,7 +7694,7 @@ REP.lines.push(
   why:{
   14:{"Bc4+":"<b>8.Bc4+</b> is fine, but 8.Ne5+! wins a whole piece back right away."}}},
 
- {id:"al_qd5",side:"w",fam:"alien",name:"Trap: 7...Qd5? 8.Bc4",key:"7...Qd5 8.Bc4 Qxc4 9.Ne5+ Kg8 10.Nxc4",trap:[13],book:[8,10,12],
+ {id:"al_qd5",side:"w",fam:"alien",sub:"alien",name:"Trap: 7...Qd5? 8.Bc4",key:"7...Qd5 8.Bc4 Qxc4 9.Ne5+ Kg8 10.Nxc4",trap:[13],book:[8,10,12],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 h6 Nxf7 Kxf7 Nf3 Qd5 Bc4 Qxc4 Ne5+ Kg8 Nxc4",
   intro:"Another trap. Black's queen jumps to d5 to attack your knight and pawns, but it's on the same diagonal as the king.",
   plan:"You're way ahead: a queen for a bishop. Castle, develop and trade pieces. Don't rush.",
@@ -7687,7 +7710,7 @@ REP.lines.push(
   14:{"Ne5+":"<b>8.Ne5+</b> gives check, but then the queen just escapes. 8.Bc4! pins it to the king and wins it."}}},
 
 /* ---------- no gambit: Black doesn't play 5...h6 ---------- */
- {id:"al_5e6",side:"w",fam:"alien",name:"5...e6: no bait",key:"5...e6 6.Bd3 c5 7.N1f3 cxd4 8.Nxd4",book:[8,14],
+ {id:"al_5e6",side:"w",fam:"alien",sub:"alien",name:"5...e6: no bait",key:"5...e6 6.Bd3 c5 7.N1f3 cxd4 8.Nxd4",book:[8,14],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 e6 Bd3 c5 N1f3 cxd4 Nxd4 Bc5 Nb3 Be7 O-O",
   intro:"Black doesn't kick your knight with ...h6, so there's no gambit. You just develop and keep an eye on f7.",
   plan:"Next come Qe2, Rd1 and Bf4 or Be3. Your g5 knight can go back to f3 or e4 when it's attacked. It's a normal, equal game.",
@@ -7706,7 +7729,7 @@ REP.lines.push(
   why:{
   10:{"Nxf7":"<b>6.Nxf7?</b> doesn't work without ...h6. The king takes, and you're simply a piece down."}}},
 
- {id:"al_5bf5",side:"w",fam:"alien",book:[8],name:"5...Bf5: bishop trade",key:"5...Bf5 6.Bd3 Bxd3 7.Qxd3 e6 8.N1f3 h6 9.Ne4",
+ {id:"al_5bf5",side:"w",fam:"alien",sub:"alien",book:[8],name:"5...Bf5: bishop trade",key:"5...Bf5 6.Bd3 Bxd3 7.Qxd3 e6 8.N1f3 h6 9.Ne4",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 Bf5 Bd3 Bxd3 Qxd3 e6 N1f3 h6 Ne4 Nxe4 Qxe4",
   intro:"Black develops the bishop to f5 instead of kicking your knight. You offer a trade of the light-squared bishops.",
   plan:"Castle, put a rook on e1 and the bishop on d2 or f4. Your queen on e4 is active. It's an equal, normal Caro-Kann middlegame.",
@@ -7725,7 +7748,7 @@ REP.lines.push(
   why:{
   16:{"Nxf7":"<b>9.Nxf7?</b> doesn't work here. Black's king takes, and the engine gives Black a clear edge: you're a piece down for a pawn."}}},
 
- {id:"al_5bg4",side:"w",fam:"alien",book:[8],name:"5...Bg4",key:"5...Bg4 6.Be2 Bxe2 7.Nxe2 h6 8.Nf3",
+ {id:"al_5bg4",side:"w",fam:"alien",sub:"alien",book:[8],name:"5...Bg4",key:"5...Bg4 6.Be2 Bxe2 7.Nxe2 h6 8.Nf3",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 Bg4 Be2 Bxe2 Nxe2 h6 Nf3 e6 O-O",
   intro:"Black attacks your queen with 5...Bg4. You block with the bishop and offer a trade.",
   plan:"Next come c4 or c3, Bf4 and a rook to e1. Your knights are well placed and the game is equal.",
@@ -7742,7 +7765,7 @@ REP.lines.push(
   why:{
   10:{"f3":"<b>6.f3</b> also blocks the bishop, but it weakens your king and takes f3 away from your knights. 6.Be2 is simpler."}}},
 
- {id:"al_5nbd7",side:"w",fam:"alien",book:[8],name:"5...Nbd7: Karpov main line",key:"5...Nbd7 6.Bd3 e6 7.N1f3 Bd6 8.Qe2 h6 9.Ne4",
+ {id:"al_5nbd7",side:"w",fam:"alien",sub:"alien",book:[8],name:"5...Nbd7: Karpov main line",key:"5...Nbd7 6.Bd3 e6 7.N1f3 Bd6 8.Qe2 h6 9.Ne4",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 Nbd7 Bd3 e6 N1f3 Bd6 Qe2 h6 Ne4 Nxe4 Qxe4",
   intro:"Black develops the queen's knight. This is the same position as the famous Karpov Variation (4...Nd7 5.Ng5 Ngf6), so it's real top-level theory.",
   plan:"Castle, put the bishop on d2 and a rook on e1. Your queen stands in the middle of the board, and Black still has to find a job for the c8 bishop.",
@@ -7762,7 +7785,7 @@ REP.lines.push(
   16:{"Nxe6":"<b>9.Nxe6?</b> is Deep Blue's sacrifice, but it only works one move earlier (see the next line). Here Black's bishop is already on d6, and the engine rates it clearly worse for you.",
       "Nxf7":"<b>9.Nxf7?</b> is no Alien Gambit here: the engine says you're just a piece down for a pawn."}}},
 
- {id:"al_deepblue",side:"w",fam:"alien",book:[8],name:"Deep Blue's sacrifice: 7...h6? 8.Nxe6!",key:"5...Nbd7 6.Bd3 e6 7.N1f3 h6 8.Nxe6 fxe6 9.Bg6+",trap:[13],
+ {id:"al_deepblue",side:"w",fam:"alien",sub:"alien",book:[8],name:"Deep Blue's sacrifice: 7...h6? 8.Nxe6!",key:"5...Nbd7 6.Bd3 e6 7.N1f3 h6 8.Nxe6 fxe6 9.Bg6+",trap:[13],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 Nbd7 Bd3 e6 N1f3 h6 Nxe6 fxe6 Bg6+ Ke7 Bf4 Nd5 Bg3",
   intro:"In 1997 the computer Deep Blue beat world champion Garry Kasparov with this sacrifice. Black kicks the knight one move too early, before ...Bd6.",
   plan:"Castle, put a rook on e1 and push c4 to chase the d5 knight. Black's king is stuck on e7 in the middle, and you have a pawn and a big attack for the knight.",
@@ -7779,7 +7802,7 @@ REP.lines.push(
   why:{
   14:{"Ne4":"<b>8.Ne4</b> is the safe move. But after 7...h6? you can punish Black: 8.Nxe6!! rips the king open, and the engine says you're better."}}},
 
- {id:"al_5e5",side:"w",fam:"alien",book:[8],name:"Trap: 5...e5? 6.Bc4!",key:"5...e5 6.Bc4 Nd5 7.dxe5 Be7 8.N1f3",trap:[9],
+ {id:"al_5e5",side:"w",fam:"alien",sub:"alien",book:[8],name:"Trap: 5...e5? 6.Bc4!",key:"5...e5 6.Bc4 Nd5 7.dxe5 Be7 8.N1f3",trap:[9],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 e5 Bc4 Nd5 dxe5 Be7 N1f3 Na6 O-O",
   intro:"Black strikes back in the centre with 5...e5, but it leaves f7 weak. Your bishop joins the knight against it.",
   plan:"Next come Re1 and Ne4. You're a pawn up and your pieces are more active. Keep watching f7: it's still Black's weak spot.",
@@ -7796,7 +7819,7 @@ REP.lines.push(
   why:{
   10:{"dxe5":"<b>6.dxe5</b> wins a pawn too, but after 6.Bc4! Black is in real trouble on f7. The engine likes it much more."}}},
 
- {id:"al_5g6",side:"w",fam:"alien",book:[8],name:"Trap: 5...g6 6.Bc4 Bg7? 7.Bxf7+!",key:"5...g6 6.Bc4 Bg7 7.Bxf7+ Kf8",trap:[11],
+ {id:"al_5g6",side:"w",fam:"alien",sub:"alien",book:[8],name:"Trap: 5...g6 6.Bc4 Bg7? 7.Bxf7+!",key:"5...g6 6.Bc4 Bg7 7.Bxf7+ Kf8",trap:[11],
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 g6 Bc4 Bg7 Bxf7+ Kf8 N1f3 c5 O-O",
   intro:"Black wants to fianchetto the bishop, but that leaves f7 guarded only by the king.",
   plan:"Keep the bishop on f7 or bring it back to b3. You're a pawn up, Black can't castle and the h8 rook is stuck.",
@@ -7813,7 +7836,7 @@ REP.lines.push(
   why:{
   12:{"Nxf7":"<b>7.Nxf7</b> also wins the pawn, but 7.Bxf7+! does it with check and keeps the knight on g5."}}},
 
- {id:"al_5c5",side:"w",fam:"alien",book:[8],name:"5...c5: the engine's choice",key:"5...c5 6.Bc4 e6 7.Ne2 Nc6 8.Nf3",
+ {id:"al_5c5",side:"w",fam:"alien",sub:"alien",book:[8],name:"5...c5: the engine's choice",key:"5...c5 6.Bc4 e6 7.Ne2 Nc6 8.Nf3",
   moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5 c5 Bc4 e6 Ne2 Nc6 Nf3 Be7 O-O",
   intro:"The engine's top move: Black hits d4 at once with the c-pawn, even though it already moved once. You aim at f7 first.",
   plan:"Next come c3 or dxc5, and Bf4 or Be3. Keep your pieces active; the game is level.",
@@ -7830,6 +7853,230 @@ REP.lines.push(
   why:{
   10:{"dxc5":"<b>6.dxc5</b> lets Black trade queens with check (6...Qxd1+), and then there's no attack left. 6.Bc4 keeps the queens on."}}}
 );
+
+/* ===================== WHITE: MARTIAN GAMBIT (4...Bf5) and 5.Ng5 against 4...Nd7 =====================
+   Part of the Alien Gambit course (fam "alien", subs "martian" and "nd7"). Every White move is chessdb's best
+   (6.g4 in mt_5e6 is 0.03 below 6.Ne2), except the Martian sacrifice 7.Ne6 itself (book:[12]).
+   4...Nd7 5.Ng5 Ngf6 is the same position as 4...Nf6 5.Ng5 Nbd7, so nd7_main / nd7_deepblue reuse the notes
+   of al_5nbd7 / al_deepblue from move 6 on (copied at the end of this file). */
+REP.lines.push(
+/* ---------- Martian Gambit: 4...Bf5 5.Ng5 Bg6 6.N1f3 h6 7.Ne6 ---------- */
+ {id:"mt_main",side:"w",fam:"alien",sub:"martian",name:"Martian main line: 7.Ne6!? 8.Bd3",key:"5...Bg6 6.N1f3 h6 7.Ne6 fxe6 8.Bd3 Bf7 9.Ne5",book:[8,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 Bg6 N1f3 h6 Ne6 fxe6 Bd3 Bf7 Ne5 Nf6 f4",
+  intro:"The Martian Gambit: Witty Alien's answer to 4...Bf5. When Black kicks your knight with ...h6, it jumps to e6, and if Black takes it, the king is stuck in the middle.",
+  plan:"Castle, bring the queen to e2 or f3 and push f5 to open the f-file. You're a knight down for nothing, so every move should make a threat.",
+  vs:"Instead of 4...Nf6, Black plays 4...Bf5. The knight still goes to g5, but now the sacrifice comes on e6, not f7, and you follow with Bd3 against the g6 bishop.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  7:{t:"<b>4...Bf5</b> The main line: the bishop comes out and hits your knight. Against this you play the Martian Gambit.",a:[["f5","e4"]]},
+  8:{t:"<b>5.Ng5!?</b> The same jump as in the Alien Gambit. The knight eyes f7 and e6.",a:[["g5","f7"]]},
+  9:{t:"<b>5...Bg6</b> Black keeps the bishop on the diagonal toward c2. It's natural, but it walks into the Martian Gambit.",a:[["g6","c2"]]},
+  10:"<b>6.N1f3</b> Bring the other knight out. If Black kicks the g5 knight now, it has a surprise ready.",
+  11:{t:"<b>6...h6</b> Black kicks the knight.",a:[["h6","g5"]]},
+  12:{t:"<b>7.Ne6!?</b> The Martian Gambit! The knight jumps into e6 and attacks the queen and the f8 bishop.",a:[["e6","d8"],["e6","f8"]]},
+  13:"<b>7...fxe6</b> Black takes the knight. Black is a piece up, but the e6 pawn is weak and no pawn guards the g6 bishop any more.",
+  14:{t:"<b>8.Bd3</b> Attack the loose g6 bishop. If it's traded, Black's light squares get even weaker.",a:[["d3","g6"]]},
+  15:"<b>8...Bf7</b> The bishop steps back to stay alive.",
+  16:{t:"<b>9.Ne5</b> The knight jumps in and hits the f7 bishop and the c6 pawn.",a:[["e5","f7"],["e5","c6"]]},
+  17:"<b>9...Nf6</b> Black develops the knight.",
+  18:{t:"<b>10.f4</b> Support the e5 knight with a pawn. Later f5 can blast open the f-file toward Black's king.",a:[["f4","e5"]]}},
+  why:{
+  8:{"Ng3":"<b>5.Ng3</b> is the normal main line, and the engine likes it more. This course plays 5.Ng5 to set up the Martian Gambit."},
+  12:{"Nh3":"<b>7.Nh3</b> is the safe move, and the engine says it's better. The Martian Gambit is 7.Ne6!?: you give up the knight to open Black's king."},
+  14:{"Ne5":"<b>8.Ne5</b> is the move many guides give, but the engine prefers 8.Bd3: hit the loose g6 bishop first."}}},
+
+ {id:"mt_bxd3",side:"w",fam:"alien",sub:"martian",name:"Martian: 8...Bxd3 and Qxb7",key:"8.Bd3 Bxd3 9.Qxd3 Qa5+ 10.Bd2 Qf5 11.Qb3",book:[8,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 Bg6 N1f3 h6 Ne6 fxe6 Bd3 Bxd3 Qxd3 Qa5+ Bd2 Qf5 Qb3 Nd7 Qxb7",
+  intro:"Same Martian start, but Black trades bishops on d3. Your queen comes out and goes after Black's loose pawns.",
+  plan:"Castle, then hit the e6 and c6 pawns with your queen and rooks. Black's king still has nowhere safe to hide.",
+  vs:"Same as the Martian main line, but Black trades bishops with 8...Bxd3. Your queen comes to d3 and then b3, where it hits b7 and e6.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  15:"<b>8...Bxd3</b> Black trades the bishops.",
+  16:{t:"<b>9.Qxd3</b> Take back. From d3 your queen eyes g6 and the king on e8.",a:[["d3","g6"]]},
+  17:{t:"<b>9...Qa5+</b> Black checks to bring the queen out.",a:[["a5","e1"]]},
+  18:{t:"<b>10.Bd2</b> Block the check and hit the queen at the same time.",a:[["d2","a5"]]},
+  19:{t:"<b>10...Qf5</b> Black offers a queen trade. With fewer pieces on the board, the extra knight counts more.",a:[["f5","d3"]]},
+  20:{t:"<b>11.Qb3</b> Keep the queens on and attack b7 and e6.",a:[["b3","b7"],["b3","e6"]]},
+  21:"<b>11...Nd7</b> Black develops and lets b7 go.",
+  22:{t:"<b>12.Qxb7</b> Take the pawn. Your queen now hits the a8 rook and the c6 pawn.",a:[["b7","a8"]]}},
+  why:{
+  18:{"Nd2":"<b>10.Nd2</b> also blocks, but it puts the knight back home. 10.Bd2 develops and hits the queen."}}},
+
+ {id:"mt_qd6",side:"w",fam:"alien",sub:"martian",name:"Trap: 7...Qd6? 8.Nxf8",key:"7.Ne6 Qd6 8.Nxf8 Kxf8 9.Bd3",trap:[13],book:[8,12],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 Bg6 N1f3 h6 Ne6 Qd6 Nxf8 Kxf8 Bd3 Nd7 O-O",
+  intro:"Black doesn't take your knight and saves the queen with 7...Qd6, attacking the knight. That's a mistake: your knight grabs a bishop first.",
+  plan:"Put a rook on e1 and use your two bishops. Black's king is stuck on f8 and the h8 rook can't get out.",
+  vs:"Same Martian start, but Black doesn't take the knight on e6. Then 8.Nxf8 grabs a bishop and drags the king to f8.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  13:{t:"<b>7...Qd6?</b> The queen escapes and attacks your knight. But Black should just take it.",a:[["d6","e6"]]},
+  14:"<b>8.Nxf8</b> Take the f8 bishop before your knight is lost.",
+  15:"<b>8...Kxf8</b> Black takes back with the king, so it can never castle.",
+  16:{t:"<b>9.Bd3</b> Challenge the g6 bishop.",a:[["d3","g6"]]},
+  17:"<b>9...Nd7</b> Black develops.",
+  18:"<b>10.O-O</b> Castle. Your king is safe, you have the two bishops, and Black's king is stuck."},
+  why:{
+  14:{"Nf4":"<b>8.Nf4</b> saves the knight, but 8.Nxf8 takes a bishop first and drags the king to f8."}}},
+
+ {id:"mt_6e6",side:"w",fam:"alien",sub:"martian",name:"Martian: 6...e6 without ...h6",key:"6.N1f3 e6 7.Bd3 Nd7 8.O-O Be7 9.Re1",book:[8],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 Bg6 N1f3 e6 Bd3 Nd7 O-O Be7 Re1",
+  intro:"Black doesn't kick the knight, so there's no sacrifice. You go after the g6 bishop and develop fast.",
+  plan:"Next come c3 or c4, Qe2 and Bf4. Your rook and the g5 knight keep an eye on e6. The engine says you're a little better.",
+  vs:"Black plays 6...e6 instead of 6...h6, so the knight is never kicked and there's no sacrifice. You trade off the g6 bishop with Bd3 instead.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  11:"<b>6...e6</b> Black builds the wall and doesn't play ...h6. No sacrifice this time.",
+  12:{t:"<b>7.Bd3</b> Offer to trade the g6 bishop, Black's best piece.",a:[["d3","g6"]]},
+  13:"<b>7...Nd7</b> Black develops instead.",
+  14:"<b>8.O-O</b> Castle.",
+  15:{t:"<b>8...Be7</b> Black develops and attacks your g5 knight. The f3 knight protects it.",a:[["e7","g5"]]},
+  16:{t:"<b>9.Re1</b> The rook joins and lines up on the e-file, against the e6 pawn.",a:[["e1","e6"]]}}},
+
+ {id:"mt_6nf6",side:"w",fam:"alien",sub:"martian",name:"Martian: 6...Nf6 7.Ne5",key:"6.N1f3 Nf6 7.Ne5 Nbd7 8.Nxg6 hxg6",book:[8],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 Bg6 N1f3 Nf6 Ne5 Nbd7 Nxg6 hxg6 g3",
+  intro:"Another way to skip ...h6. Your other knight jumps to e5 and takes the g6 bishop.",
+  plan:"Play Bg2, castle and push c3. You have the two bishops and Black's pawns are doubled on the g-file. The engine says you're a little better.",
+  vs:"Like the 6...e6 line, Black skips ...h6. This time your f3 knight jumps to e5 and takes the g6 bishop.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  11:"<b>6...Nf6</b> Black develops and doesn't play ...h6.",
+  12:{t:"<b>7.Ne5</b> Jump in and attack the g6 bishop. Your g5 knight keeps hitting f7.",a:[["e5","g6"]]},
+  13:{t:"<b>7...Nbd7</b> Black challenges the e5 knight.",a:[["d7","e5"]]},
+  14:"<b>8.Nxg6</b> Take the bishop. Now you have the two bishops.",
+  15:"<b>8...hxg6</b> Black takes back. The h-file opens, but Black's g-pawns are doubled.",
+  16:{t:"<b>9.g3</b> Get ready for Bg2, where your bishop eyes the long diagonal.",a:[["f1","g2"]]}},
+  why:{
+  12:{"Bd3":"<b>7.Bd3</b> offers a trade, but 7.Ne5 is stronger: it goes after the g6 bishop right away."}}},
+
+ {id:"mt_5e6",side:"w",fam:"alien",sub:"martian",name:"Martian: 5...e6 6.g4",key:"5...e6 6.g4 Bg6 7.h4 h5 8.gxh5 Bxh5 9.Be2",book:[8],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 e6 g4 Bg6 h4 h5 gxh5 Bxh5 Be2",
+  intro:"Black blocks with 5...e6. The attacking answer: chase the bishop with your g- and h-pawns.",
+  plan:"After the bishop trade, develop with N1f3, c3 and Bf4. Your rook can use the open g-file.",
+  vs:"Black plays 5...e6 before ...Bg6, so the bishop is still on f5. You kick it with g4 and h4 instead of developing.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:"<b>5...e6</b> Black builds the wall behind the f5 bishop.",
+  10:{t:"<b>6.g4</b> Attack the bishop. It's the aggressive way, in the spirit of the gambit.",a:[["g4","f5"]]},
+  11:"<b>6...Bg6</b> The bishop steps back. 6...h6?? would lose to 7.Nxf7!",
+  12:{t:"<b>7.h4</b> Now h5 would trap the bishop!",a:[["h4","h5"]]},
+  13:{t:"<b>7...h5</b> Black stops h5 and hits your g4 pawn.",a:[["h5","g4"]]},
+  14:"<b>8.gxh5</b> Take the pawn and hit the bishop again.",
+  15:{t:"<b>8...Bxh5</b> The bishop takes back and attacks your queen.",a:[["h5","d1"]]},
+  16:"<b>9.Be2</b> Block and offer a trade. The g-file is open for your rook."},
+  why:{
+  10:{"Ne2":"<b>6.Ne2</b> is a calm move the engine likes just as much. 6.g4 is the attacking way: it chases the bishop and grabs space."},
+  12:{"N1f3":"<b>7.N1f3</b> is slower. 7.h4 threatens h5, trapping the bishop."}}},
+
+ {id:"mt_5h6",side:"w",fam:"alien",sub:"martian",name:"Martian: 5...h6",key:"5...h6 6.N5f3 Nf6 7.Bd3 Bxd3 8.Qxd3",book:[8],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 h6 N5f3 Nf6 Bd3 Bxd3 Qxd3 e6 Ne5",
+  intro:"Black kicks the knight right away, before ...Bg6. There's no sacrifice: the knight goes back and you trade bishops.",
+  plan:"Castle, then Bf4 or Bd2 and a rook to e1. Your e5 knight is strong. It's an equal, normal game.",
+  vs:"Black kicks the knight on move 5, before ...Bg6. The knight goes back to f3 and you trade bishops with Bd3.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:{t:"<b>5...h6</b> Black kicks the knight at once.",a:[["h6","g5"]]},
+  10:"<b>6.N5f3</b> Back it goes. No gambit this time.",
+  11:"<b>6...Nf6</b> Black develops.",
+  12:{t:"<b>7.Bd3</b> Offer to trade bishops.",a:[["d3","f5"]]},
+  13:"<b>7...Bxd3</b> Black trades.",
+  14:"<b>8.Qxd3</b> Take back with the queen.",
+  15:"<b>8...e6</b> Black builds the wall.",
+  16:{t:"<b>9.Ne5</b> A great square for the knight. It hits f7 and c6.",a:[["e5","f7"]]}},
+  why:{
+  10:{"Nxf7":"<b>6.Nxf7?</b> isn't a good gambit here: Black's king takes and you have nothing. The engine says you'd be clearly worse."}}},
+
+ {id:"mt_5nf6",side:"w",fam:"alien",sub:"martian",name:"Martian: 5...Nf6",key:"5...Nf6 6.Bd3 Bxd3 7.Qxd3 h6 8.N5f3",book:[8],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 Nf6 Bd3 Bxd3 Qxd3 h6 N5f3 e6 Ne5",
+  intro:"Black develops the knight. You trade bishops right away, then bring the knight back to f3 when it's kicked.",
+  plan:"Castle, then Bf4 or Bd2 and a rook to e1. Your e5 knight is strong. It's an equal, normal game.",
+  vs:"Black develops the knight first. You trade bishops at once, and after ...h6 you reach the same position as the 5...h6 line.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:"<b>5...Nf6</b> Black develops the knight.",
+  10:{t:"<b>6.Bd3</b> Offer to trade bishops.",a:[["d3","f5"]]},
+  11:"<b>6...Bxd3</b> Black trades.",
+  12:"<b>7.Qxd3</b> Take back with the queen.",
+  13:{t:"<b>7...h6</b> Black kicks the knight.",a:[["h6","g5"]]},
+  14:"<b>8.N5f3</b> Back it goes. No gambit this time.",
+  15:"<b>8...e6</b> Black builds the wall.",
+  16:{t:"<b>9.Ne5</b> A great square for the knight. It hits f7 and c6.",a:[["e5","f7"]]}}},
+
+ {id:"mt_5nd7",side:"w",fam:"alien",sub:"martian",name:"Martian: 5...Nd7",key:"5...Nd7 6.Bd3 Ngf6 7.Ne2 Bxd3 8.Qxd3",book:[8],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng5 Nd7 Bd3 Ngf6 Ne2 Bxd3 Qxd3 e6 O-O",
+  intro:"Black develops the queen's knight. Again you offer the bishop trade with Bd3.",
+  plan:"Next come Bf4, c4 and a rook to d1. It's equal, with an easy game for you.",
+  vs:"Like the 5...Nf6 line you trade bishops on d3, but here your g1 knight goes to e2 first.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:"<b>5...Nd7</b> Black develops the queen's knight.",
+  10:{t:"<b>6.Bd3</b> Offer to trade bishops.",a:[["d3","f5"]]},
+  11:"<b>6...Ngf6</b> The other knight comes out too.",
+  12:"<b>7.Ne2</b> Develop the g1 knight. If Black trades on d3, your queen takes back.",
+  13:"<b>7...Bxd3</b> Black trades.",
+  14:"<b>8.Qxd3</b> Take back with the queen.",
+  15:"<b>8...e6</b> Black builds the wall.",
+  16:"<b>9.O-O</b> Castle. A calm, equal game."}},
+
+/* ---------- 5.Ng5 against 4...Nd7 (the Karpov Variation) ---------- */
+ {id:"nd7_main",side:"w",fam:"alien",sub:"nd7",name:"4...Nd7: Karpov main line",key:"4...Nd7 5.Ng5 Ngf6 6.Bd3 e6 7.N1f3 Bd6 8.Qe2",
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nd7 Ng5 Ngf6 Bd3 e6 N1f3 Bd6 Qe2 h6 Ne4 Nxe4 Qxe4",
+  intro:"Black plays 4...Nd7 first: the Karpov Variation. Your knight still jumps to g5, and after 5...Ngf6 it's the same position as the 5...Nbd7 line.",
+  vs:"Black starts with 4...Nd7 instead of 4...Nf6. After 5.Ng5 Ngf6 it's exactly the same position as the 5...Nbd7 line, so you play the same moves.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  7:{t:"<b>4...Nd7</b> The Karpov Variation. Black gets ready for ...Ngf6, so that if you trade on f6, the d7 knight can take back.",a:[["d7","f6"]]},
+  8:{t:"<b>5.Ng5</b> The same jump as in the Alien Gambit. It hits f7 and sets traps.",a:[["g5","f7"]]},
+  9:"<b>5...Ngf6</b> Black brings the other knight out. Now it's the same position as 4...Nf6 5.Ng5 Nbd7."}},
+
+ {id:"nd7_deepblue",side:"w",fam:"alien",sub:"nd7",name:"4...Nd7: Deep Blue's 8.Nxe6!",key:"5...Ngf6 6.Bd3 e6 7.N1f3 h6 8.Nxe6",trap:[13],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nd7 Ng5 Ngf6 Bd3 e6 N1f3 h6 Nxe6 fxe6 Bg6+ Ke7 Bf4 Nd5 Bg3",
+  intro:"This is the move order of the real game: Kasparov played 4...Nd7, and after 7...h6? Deep Blue sacrificed on e6. Kasparov didn't take at once (8...Qe7), but here Black takes the knight.",
+  vs:"Same as the 4...Nd7 main line, but Black plays 7...h6? before 7...Bd6. Just like in the Alien course, that allows 8.Nxe6!!.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon."}},
+
+ {id:"nd7_h6",side:"w",fam:"alien",sub:"nd7",name:"Trap: 5...h6? 6.Ne6!",key:"4...Nd7 5.Ng5 h6 6.Ne6 fxe6 7.Qh5+ g6 8.Qxg6#",trap:[11],
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nd7 Ng5 h6 Ne6 fxe6 Qh5+ g6 Qxg6#",
+  intro:"A famous trap. Black kicks your knight too early, and 6.Ne6! hits the queen. If Black takes it, it's mate in two.",
+  plan:"It's checkmate! The right defence is 6...Qb6, and then 7.Nxf8 takes the f8 bishop and you're fine.",
+  vs:"Here Black plays 5...h6? before bringing out the g8 knight. That lets your knight land on e6, and taking it runs into a queen check on h5 and mate.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:{t:"<b>5...h6?</b> Black kicks the knight, but this is too early.",a:[["h6","g5"]]},
+  10:{t:"<b>6.Ne6!</b> The knight jumps in and attacks the queen. It can't be taken safely.",a:[["e6","d8"]]},
+  11:"<b>6...fxe6??</b> Black takes the knight. Now the diagonal from e8 to h5 is open.",
+  12:{t:"<b>7.Qh5+</b> Check! The king can't move: d7 has a knight and e7 a pawn.",a:[["h5","e8"]]},
+  13:"<b>7...g6</b> The only way to block.",
+  14:{t:"<b>8.Qxg6#</b> Checkmate! The queen takes the pawn, and nothing can take it back.",a:[["g6","e8"]]}},
+  why:{
+  10:{"Ne4":"<b>6.Ne4</b> is safe, but 6.Ne6! sets a trap: if Black takes, a queen check on h5 leads to mate."}}},
+
+ {id:"nd7_ndf6",side:"w",fam:"alien",sub:"nd7",name:"4...Nd7 5.Ng5 Ndf6",key:"5...Ndf6 6.Bc4 e6 7.N1f3 Qc7 8.Ne5",
+  moves:"e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nd7 Ng5 Ndf6 Bc4 e6 N1f3 Qc7 Ne5 Nh6 Ngf3",
+  intro:"Black moves the d7 knight again, to f6. That's slow, and f7 is weak, so your bishop joins the attack on it.",
+  plan:"Castle, then Qe2 and Bf4. Your e5 knight is a monster, and the engine says you're better.",
+  vs:"Black puts the d7 knight on f6 instead of bringing out the g8 knight. That's slow, so you hit f7 with Bc4 at once.",
+  notes:{
+  0:"<b>1.e4</b> Take the centre. If Black answers 1...c6, the Caro-Kann, this course is your weapon.",
+  9:"<b>5...Ndf6</b> The d7 knight goes to f6. It's a slow way to develop.",
+  10:{t:"<b>6.Bc4!</b> Now f7 is attacked twice: by the bishop and the knight.",a:[["c4","f7"],["g5","f7"]]},
+  11:"<b>6...e6</b> Black blocks the bishop's diagonal.",
+  12:"<b>7.N1f3</b> Bring the other knight out.",
+  13:{t:"<b>7...Qc7</b> Black's queen eyes h2.",a:[["c7","h2"]]},
+  14:{t:"<b>8.Ne5</b> The second knight jumps in, hitting f7 and c6.",a:[["e5","f7"]]},
+  15:"<b>8...Nh6</b> Black guards f7 with the knight.",
+  16:"<b>9.Ngf3</b> The g5 knight steps back. The e5 knight is strong enough on its own."},
+  why:{
+  10:{"N1f3":"<b>6.N1f3</b> is fine, but 6.Bc4! hits f7 at once, together with the knight."}}}
+);
+// 4...Nd7 5.Ng5 Ngf6 = 4...Nf6 5.Ng5 Nbd7: same position from move 6 on, so the same notes, Why-not boxes and plan
+(function(){const by=id=>REP.lines.find(l=>l.id===id);
+  for(const [to,from] of [["nd7_main","al_5nbd7"],["nd7_deepblue","al_deepblue"]]){const T=by(to),F=by(from);
+    for(const k in F.notes)if(+k>=10&&T.notes[k]===undefined)T.notes[k]=F.notes[k];
+    T.why=T.why||{};for(const k in F.why||{})if(+k>=10&&T.why[k]===undefined)T.why[k]=F.why[k];
+    if(!T.plan)T.plan=F.plan}
+  by("nd7_deepblue").notes[9]=by("nd7_main").notes[9];})();
 
 /* why-not notes: why the line's move beats the tempting alternative (generated from whyrows1.txt) */
 (function(W){for(const L of REP.lines){const w=W[L.id];if(!w)continue;L.why=L.why||{};for(const p in w)L.why[p]=Object.assign(L.why[p]||{},w[p])}})({"be4":{"20":{"Qxe4":"The bishop on e4 is guarded by the f6 knight, so you'd give your queen for a bishop."}},
@@ -9179,7 +9426,7 @@ if(typeof module!=="undefined")module.exports=SPEECH;
 /* ---------- data ---------- */
 const FAM={};REP.families.forEach(f=>{FAM[f.id]=f});
 const LINES=REP.lines;
-LINES.forEach(L=>{L.san=L.moves.split(" ");L.f=FAM[L.fam];L.v=L.sub&&L.f.subs?L.f.subs.find(v=>v.id===L.sub):null;L.family=L.f.name+(L.v?": "+L.v.name:"");L.trap=L.trap||[];L.notes=L.notes||{};L.why=L.why||{}});
+LINES.forEach(L=>{L.san=L.moves.split(" ");L.f=FAM[L.fam];L.v=L.sub&&L.f.subs?L.f.subs.find(v=>v.id===L.sub):null;L.family=L.f.name+(L.v&&L.v.name!==L.f.name?": "+L.v.name:"");L.trap=L.trap||[];L.notes=L.notes||{};L.why=L.why||{}});
 
 const $=id=>document.getElementById(id);
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
