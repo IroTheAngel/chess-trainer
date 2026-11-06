@@ -416,7 +416,10 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .bxcard ul,.bxcard ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.55}
 .bxboards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .bxboard{display:flex;flex-direction:column;gap:6px}
-.bxboard svg{width:100%;max-width:300px;border-radius:6px;display:block}
+.bxanim{display:block;width:100%;max-width:300px;padding:0;border:0;background:none;cursor:pointer;border-radius:6px;overflow:hidden}
+.bxboard svg{width:100%;border-radius:6px;display:block}
+.bxboard .mv span{border-radius:4px;padding:0 2px;transition:background .2s,color .2s}
+.bxboard .mv span.on{background:var(--accent);color:#fff}
 .bxboard .mv{font-family:var(--mono);font-size:13px;font-weight:700;line-height:1.5}
 .bxboard .cap{font-size:14px;color:var(--muted);line-height:1.45}
 .bxrep{border-top:1px solid var(--panel-2);padding:10px 0}
@@ -10902,13 +10905,29 @@ function drawVideos(){
 const bxIdx=id=>LINES.findIndex(l=>l.id===id);
 function bxMoves(L,n){let t="";for(let k=0;k<Math.min(n,L.san.length);k++)t+=(k%2?"":(k/2+1)+".")+L.san[k]+" ";return t.trim()}
 function bxBtn(id){const i=bxIdx(id);if(i<0)return "";const L=LINES[i],st=prog[L.id]&&prog[L.id].stars;return `<button class="bxl${st?" done":""}" data-i="${i}">Line ${courseLines().indexOf(i)+1}: ${escH(L.name)}</button>`}
+let bxAnim=[],bxTimer=null;
+function bxShow(a){const el=document.querySelector(`#basics .bxboard[data-j="${a.j}"]`);if(!el)return;el.querySelector(".bxanim").innerHTML=a.frames[a.k];
+  el.querySelectorAll(".mv span").forEach(sp=>sp.classList.toggle("on",+sp.dataset.p===a.k))}
+function bxStop(){if(bxTimer){clearInterval(bxTimer);bxTimer=null}}
+function bxPlay(){bxStop();
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return; // keep the final position, no movement
+  bxAnim.forEach(a=>{a.k=0;a.wait=2;bxShow(a)});
+  document.querySelectorAll("#basics .bxanim").forEach(b=>b.onclick=()=>{const a=bxAnim.find(x=>x.j===+b.closest(".bxboard").dataset.j);if(a){a.k=0;a.wait=2;bxShow(a)}});
+  bxTimer=setInterval(()=>{if(S.view!=="basics")return bxStop();
+    bxAnim.forEach(a=>{if(a.wait>0){a.wait--;return}
+      if(a.k<a.n){a.k++;bxShow(a);if(a.k===a.n)a.wait=4}else{a.k=0;a.wait=2;bxShow(a)}})},800);
+}
 function drawBasics(){
   const F=LINES[S.li].f,B=(REP.basics||{})[F.id],el=$("basics");
   const top=`<div class="bxtop"><button class="btn ghostb" id="bxBack">&larr; Back to the board</button><h2 id="bxTitle">Basics: ${escH(F.name)}</h2><span class="bxtime">About 30 minutes</span></div>`;
   if(!B){el.innerHTML=top+`<div class="bxcard"><p>${escH(F.blurb||"")}</p></div>`;$("bxBack").onclick=()=>openLine(S.li,"learn");return}
   const plans=B.plans||F.ideas||[],drill=B.drill.filter(id=>bxIdx(id)>=0),sec=(n,t)=>`<h3><span class="n">${n}</span>${t}</h3>`;
-  const boards=(B.key||[]).map(k=>{const i=bxIdx(k.line);if(i<0)return "";const L=LINES[i];
-    return `<div class="bxboard">${miniBoard({id:F.id,side:F.side,line:i,show:k.n})}<div class="mv">${bxMoves(L,k.n)}</div><div class="cap">${escH(k.t)}</div></div>`}).join("");
+  // the first-moves boards play their moves one by one and loop, like a GIF
+  bxAnim=[];
+  const boards=(B.key||[]).map((k,j)=>{const i=bxIdx(k.line);if(i<0)return "";const L=LINES[i],n=Math.min(k.n,L.san.length);
+    bxAnim.push({j,n,k:n,wait:0,frames:Array.from({length:n+1},(_,m)=>miniBoard({id:F.id,side:F.side,line:i,show:m}))});
+    const mv=L.san.slice(0,n).map((m,p)=>`<span data-p="${p+1}">${p%2?"":(p/2+1)+"."}${m}</span>`).join(" ");
+    return `<div class="bxboard" data-j="${j}"><button class="bxanim" type="button" aria-label="Replay the moves">${bxAnim[bxAnim.length-1].frames[n]}</button><div class="mv">${mv}</div><div class="cap">${escH(k.t)}</div></div>`}).join("");
   el.innerHTML=top+
    `<div class="bxcard">${sec(1,"The idea")}<p>${escH(B.idea)}</p></div>`+
    `<div class="bxcard">${sec(2,"The first moves")}<div class="bxboards">${boards}</div></div>`+
@@ -10921,6 +10940,7 @@ function drawBasics(){
      <li>Play the same lines again in Practice mode, from memory (about 1 minute each).</li>
      <li>Time left? Try Puzzles or Random for this course.</li></ol>
      <div class="bxgo"><button class="btn primary" id="bxStart">Start with line ${courseLines().indexOf(bxIdx(drill[0]))+1}</button></div></div>`;
+  bxPlay();
   $("bxBack").onclick=()=>openLine(S.li,"learn");
   $("bxStart").onclick=()=>openLine(bxIdx(drill[0]),"learn");
   el.querySelectorAll(".bxl").forEach(b=>b.onclick=()=>openLine(+b.dataset.i,"learn"));
@@ -10929,6 +10949,7 @@ function showView(v){
   S.view=v;const home=v==="home";
   $("home").hidden=!home;$("trainer").hidden=v!=="train";$("basics").hidden=v!=="basics";$("homeBtn").hidden=home;$("vids").hidden=true;
   if(v!=="train"){stopTimers();stopVoice();sfStop();if(S.play)S.play.tok++;lastSaid=""}
+  if(v!=="basics")bxStop();
   if(home)renderHome();if(v==="basics")drawBasics();
   window.scrollTo(0,0);
 }
