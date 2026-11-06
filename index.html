@@ -10852,7 +10852,7 @@ function renderSession(){
 const SHOW={catalan:7,qga:4,qgd:4,slavw:4,ck:4,alien:11,slav:4,other_b:6,qgd_b:4,nimzo:6,qid:6,nf6_other:2};
 const famLines=inCourse;
 function miniBoard(F){
-  const first=LINES[F.line!=null?F.line:famLines(F.id)[0]],n=F.show||SHOW[F.id]||2,c=new Chess();let last=null; // F.line: show that line instead of the course's first
+  const first=LINES[F.line!=null?F.line:famLines(F.id)[0]],n=F.show!=null?F.show:SHOW[F.id]||2,c=new Chess();let last=null; // F.line: show that line instead of the course's first
   for(let k=0;k<Math.min(n,first.san.length);k++)last=c.move(first.san[k]);
   const flip=F.side==="b",light=getComputedStyle(root).getPropertyValue("--light").trim(),dark=getComputedStyle(root).getPropertyValue("--dark").trim();
   let s=`<svg viewBox="0 0 320 320" aria-hidden="true">`;
