@@ -11034,7 +11034,7 @@ window.__rep={render,S,LINES,MSG,PZ,startPuzzles,startPlay,startReview,award,due
   $("bkOpen").onclick=open;$("bkClose").onclick=close;
   $("bkModal").addEventListener("click",e=>{if(e.target===$("bkModal"))close()});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("bkModal").hidden){e.preventDefault();close()}});
-  if(window.RepAndroid)$("bkSave").hidden=true; // the phone app copies text instead of saving files
+  if(window.RepAndroid||window.top!==window)$("bkSave").hidden=true; // the phone app and the claude.ai viewer can't save files, so they copy text instead
   $("bkSave").onclick=()=>{
     try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([pack()],{type:"application/json"}));
       a.download=`repertoire-progress-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();
