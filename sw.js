@@ -1,7 +1,7 @@
 // Service worker for the installed app (website only, not the artifact).
 // The page and its scripts are saved for offline use. Coach voice packs are saved one by one
 // as they're played, because all of them together are about 250 MB.
-const VERSION = "28f4cc492d";
+const VERSION = "97748b69bf";
 const SHELL = "shell-" + VERSION, VOICE = "voice", CDN = "cdn";
 const SHELL_FILES = ["./", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "voice/index.json"];
 const CDN_FILES = ["https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"];
