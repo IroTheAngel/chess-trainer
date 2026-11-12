@@ -156,6 +156,12 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .rrange input{width:58px;height:32px;border-radius:6px;border:2px solid var(--line);background:var(--panel);color:var(--fg);font:inherit;font-weight:900;text-align:center;font-variant-numeric:tabular-nums}
 .rrange input:focus{outline:none;border-color:var(--accent)}
 .rrange small{color:var(--dim);font-weight:700;font-size:12.5px}
+.rrange .rbasics{margin-left:auto;padding:5px 12px;border-radius:999px;background:var(--panel);border:2px solid var(--line);color:var(--fg);font-weight:800;font-size:12.5px}
+.rrange .rbasics[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.rrange .rbasics+.rall{margin-left:0}
+.rrange .rbasics[hidden]+.rall{margin-left:auto}
+.rrange.bonly input{opacity:.45}
+.bxgo .btn{flex:1 1 220px}
 .rrange .rall{margin-left:auto;padding:5px 12px;border-radius:999px;background:var(--line);color:var(--fg);font-weight:800;font-size:12.5px}
 .rrange .rall:hover{filter:brightness(1.05)}
 .ideas{margin:0 16px 12px;background:var(--panel-2);border-radius:6px;font-size:13.5px}
@@ -595,7 +601,7 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
       <div class="bubble" id="bubble" aria-live="polite"></div>
     </div>
     <div class="stats" id="stats"></div>
-    <div class="rrange" id="rrange" hidden><span>Random from line</span><input type="number" id="rFrom" inputmode="numeric" min="1" aria-label="First line"><span>to</span><input type="number" id="rTo" inputmode="numeric" min="1" aria-label="Last line"><small id="rOf"></small><button class="rall" id="rAll" type="button">All lines</button></div>
+    <div class="rrange" id="rrange" hidden><span>Random from line</span><input type="number" id="rFrom" inputmode="numeric" min="1" aria-label="First line"><span>to</span><input type="number" id="rTo" inputmode="numeric" min="1" aria-label="Last line"><small id="rOf"></small><button class="rbasics" id="rBasics" type="button" aria-pressed="false">Basics lines only</button><button class="rall" id="rAll" type="button">All lines</button></div>
     <details class="ideas" id="ideas"><summary id="ideasHead">Key ideas</summary><div id="ideasBody"></div></details>
     <div class="moves" id="moves"></div>
     <div class="actions" id="actions"></div>
@@ -10528,7 +10534,15 @@ const courseLines=()=>inCourse(LINES[S.li].fam); // the course you're in
 // Random can use only some of a course's lines: from..to, numbered like the line list (saved per course)
 let rrange=store.get("rep-rrange",{});
 function rangeOf(f){const n=inCourse(f).length,r=rrange[f]||[1,n];let a=Math.min(n,Math.max(1,Math.round(+r[0])||1)),b=Math.min(n,Math.max(1,Math.round(+r[1])||n));if(a>b)[a,b]=[b,a];return [a,b,n]}
-const randomPool=()=>{const f=LINES[S.li].fam,[a,b]=rangeOf(f);return inCourse(f).slice(a-1,b)};
+// the lines on a course's Basics page: the lines to know, then real trap lines (at most 4)
+function basicsSet(f){const B=(REP.basics||{})[f];if(!B)return {know:[],traps:[]};
+  const idx=id=>LINES.findIndex(l=>l.id===id),know=[];B.replies.forEach(r=>r.lines.forEach(id=>{const i=idx(id);if(i>=0&&!know.includes(i))know.push(i)}));
+  const isTrap=i=>i>=0&&LINES[i].trap&&LINES[i].trap.length&&!know.includes(i),traps=[];
+  B.traps.map(t=>idx(t.line)).concat(inCourse(f)).forEach(i=>{if(isTrap(i)&&!traps.includes(i)&&traps.length<4)traps.push(i)});
+  return {know,traps}}
+let rbasics=store.get("rep-rbasics",{}); // per course: Random uses only the Basics lines
+const basicsOnly=f=>!!rbasics[f]&&basicsSet(f).know.length>0;
+const randomPool=()=>{const f=LINES[S.li].fam;if(basicsOnly(f)){const b=basicsSet(f);return b.know.concat(b.traps)}const [a,b]=rangeOf(f);return inCourse(f).slice(a-1,b)};
 const moverAt=n=>n%2===0?"w":"b"; // who moves after n plies
 
 /* ---------- board ---------- */
@@ -11142,12 +11156,17 @@ function finishLine(){
   if(lastReview)setTimeout(()=>award(20,"Review complete"),900);
 }
 function drawRange(){const box=$("rrange");box.hidden=S.mode!=="random";if(box.hidden)return;
-  const [a,b,n]=rangeOf(LINES[S.li].fam),f=$("rFrom"),t=$("rTo");f.max=t.max=n;
-  if(document.activeElement!==f)f.value=a;if(document.activeElement!==t)t.value=b;$("rOf").textContent=`(${b-a+1} of ${n})`;$("rAll").hidden=a===1&&b===n}
+  const fam=LINES[S.li].fam,[a,b,n]=rangeOf(fam),f=$("rFrom"),t=$("rTo"),bo=basicsOnly(fam),has=basicsSet(fam).know.length>0;f.max=t.max=n;
+  if(document.activeElement!==f)f.value=a;if(document.activeElement!==t)t.value=b;
+  box.classList.toggle("bonly",bo);f.disabled=t.disabled=bo;
+  $("rOf").textContent=bo?`(${S.cand?S.cand.length:0} Basics lines)`:`(${b-a+1} of ${n})`;
+  $("rBasics").hidden=!has;$("rBasics").setAttribute("aria-pressed",String(bo));$("rAll").hidden=!bo&&a===1&&b===n}
+function setBasicsOnly(f,on){if(on)rbasics[f]=true;else delete rbasics[f];store.set("rep-rbasics",rbasics)}
 function setRange(a,b){const f=LINES[S.li].fam,n=inCourse(f).length;a=Math.round(+a);b=Math.round(+b);if(!(a>=1))a=1;if(!(b>=1))b=n;a=Math.min(a,n);b=Math.min(b,n);if(a>b)[a,b]=[b,a];
   if(a===1&&b===n)delete rrange[f];else rrange[f]=[a,b];store.set("rep-rrange",rrange);if(S.mode==="random")startRandom()}
 $("rFrom").onchange=$("rTo").onchange=()=>setRange($("rFrom").value,$("rTo").value);
-$("rAll").onclick=()=>setRange(1,Infinity);
+$("rAll").onclick=()=>{setBasicsOnly(LINES[S.li].fam,false);setRange(1,Infinity)};
+$("rBasics").onclick=()=>{const f=LINES[S.li].fam;setBasicsOnly(f,!basicsOnly(f));startRandom()};
 function startRandom(){
   stopTimers();
   S.mode="random";S.cand=randomPool();const course=LINES[S.li].f.name;loadLine(pick(S.cand),"random");
@@ -11754,11 +11773,13 @@ function drawBasics(){
   // short Basics: the first moves, then only the lines to know (no long text)
   const row=id=>{const i=bxIdx(id);if(i<0)return "";const L=LINES[i],st=prog[L.id]&&prog[L.id].stars;
     return `<button class="bxrow${st?" done":""}" data-i="${i}"><span class="bxn">${st?"✓":courseLines().indexOf(i)+1}</span><span class="bxt"><b>${escH(L.name)}</b><span class="bxk">${escH(L.key)}</span></span></button>`};
+  const set=basicsSet(F.id),n=set.know.length+set.traps.length;
   el.innerHTML=top+
    `<div class="bxcard">${sec(1,"The first moves")}<div class="bxboards">${boards}</div></div>`+
    `<div class="bxcard">${sec(2,"The lines to know")}${B.replies.map(r=>`<h4 class="bxvs">Against ${escH(r.vs)}</h4>${r.lines.map(row).join("")}`).join("")}</div>`+
-   `<div class="bxcard">${sec(3,"Traps")}${B.traps.map(t=>row(t.line)).join("")}</div>`+
-   `<div class="bxgo"><button class="btn primary" id="bxStart">Start with line ${courseLines().indexOf(bxIdx(drill[0]))+1}</button></div>`;
+   (set.traps.length?`<div class="bxcard">${sec(3,"Traps")}${set.traps.map(i=>row(LINES[i].id)).join("")}</div>`:"")+
+   `<div class="bxgo"><button class="btn primary" id="bxDrill">Practice these ${n} lines</button><button class="btn ghostb" id="bxStart">Learn line ${courseLines().indexOf(bxIdx(drill[0]))+1} first</button></div>`;
+  $("bxDrill").onclick=()=>{setBasicsOnly(F.id,true);openLine(set.know[0],"learn");startRandom()};
   bxPlay();
   $("bxBack").onclick=()=>openLine(S.li,"learn");
   $("bxStart").onclick=()=>openLine(bxIdx(drill[0]),"learn");
