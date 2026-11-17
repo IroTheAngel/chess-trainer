@@ -115,6 +115,31 @@ main{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,
   .vids,.foot,.home{max-width:var(--wide)}
   .home{padding-top:24px}
 }
+/* Sidebar, chess.com style: logo and name on top, then labelled rows you can click. */
+@media (min-width:1400px) and (min-aspect-ratio:3/2) and (min-height:700px){
+  :root{--sb:200px}
+  header{display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto auto 1fr;align-items:center;align-content:stretch;column-gap:10px;row-gap:4px;padding:18px 12px 16px;border-right:1px solid var(--line)}
+  header .logo{zoom:1;width:44px;height:44px;border-radius:10px}
+  header .logo svg{width:36px;height:36px}
+  header h1{font-size:18px;line-height:1.15;margin:0}
+  header>*:not(.logo):not(h1){grid-column:1/-1}
+  header .coursesbtn{margin-top:18px}
+  header .sp{align-self:stretch}
+  header .coursesbtn,header .xpchip,header .streak,header .iconbtn{width:100%;height:46px;display:flex;align-items:center;justify-content:flex-start;gap:12px;padding:0 12px;border-radius:8px;background:none;color:var(--fg);font-family:var(--body);font-weight:800;font-size:16px;box-shadow:none}
+  header .coursesbtn{background:var(--panel-2)}
+  header .coursesbtn svg{width:22px;height:22px;color:var(--accent-text)}
+  header .coursesbtn:hover,header .streak:hover,header .iconbtn:hover{background:var(--line);color:var(--fg)}
+  header .xpchip svg,header .streak svg{flex:none}
+  header .xpchip::after{content:"XP today";font-weight:700;font-size:14px;color:var(--muted);margin-left:-4px}
+  header .streak::after{content:"day streak";font-weight:700;font-size:14px;color:var(--muted);margin-left:-4px}
+  header .iconbtn{color:var(--muted)}
+  header .iconbtn svg{width:22px;height:22px;flex:none}
+  header #voiceBtn::after{content:"Coach voice"}
+  header #soundBtn::after{content:"Move sounds"}
+  header #themeBtn::after{content:"Light / dark"}
+  header .iconbtn::after{font-size:15px;font-weight:800;color:var(--fg)}
+  header .iconbtn[aria-pressed="true"] svg{color:var(--accent-text)}
+}
 .board{position:relative;width:100%;aspect-ratio:1;max-width:var(--bsz);margin:0 auto;border-radius:4px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;box-shadow:var(--board-shadow)}
 .grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr)}
 .sq{position:relative}
