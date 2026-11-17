@@ -93,6 +93,28 @@ main{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,
   header>*{zoom:var(--z)}
   header{padding-block:calc(14px * var(--z)) 14px}
 }
+/* Wide screens: chess.com-style layout. The top bar becomes a sidebar on the left, the board fills the
+   window height, and the panel sits to its right at about a quarter of the screen width. */
+@media (min-width:1400px) and (min-aspect-ratio:3/2) and (min-height:700px){
+  :root{--sb:172px;--pw:min(560px,max(calc(380px * var(--z)),24vw));--bfit:max(400px,calc(var(--vh) - 96px));--wide:min(calc(100vw - var(--sb) - 48px),calc(var(--bfit) + var(--pw) + 32px))}
+  body{padding-left:calc(var(--sb) + 24px);padding-right:24px}
+  header{position:fixed;left:0;top:0;bottom:0;width:var(--sb);max-width:none;margin:0;padding:16px 12px;z-index:40;background:var(--panel);flex-direction:column;flex-wrap:nowrap;align-items:flex-start;gap:8px;overflow-y:auto}
+  header>*{zoom:1}
+  header .logo{zoom:1.2}
+  header h1{position:static;width:auto;height:auto;clip:auto;overflow:visible;font-size:19px;line-height:1.15;margin:2px 0 10px}
+  header .coursesbtn{width:100%;height:42px;font-size:15px}
+  header .coursesbtn .cs{display:none} header .coursesbtn .cl{display:inline}
+  header .coursesbtn{background:var(--panel-2)}
+  header .sp{flex:1}
+  .coord{font-size:clamp(12px,1.6vh,20px)}
+  header .xpchip,header .streak{height:40px;font-size:17px}
+  header .iconbtn{width:42px;height:42px}
+  header .iconbtn svg{width:22px;height:22px}
+  .vpop{position:fixed;left:calc(var(--sb) + 10px);right:auto;top:auto;bottom:16px}
+  main{max-width:var(--wide);gap:32px;padding-top:24px}
+  .vids,.foot,.home{max-width:var(--wide)}
+  .home{padding-top:24px}
+}
 .board{position:relative;width:100%;aspect-ratio:1;max-width:var(--bsz);margin:0 auto;border-radius:4px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;box-shadow:var(--board-shadow)}
 .grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr)}
 .sq{position:relative}
