@@ -142,6 +142,7 @@ main{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,
   header .iconbtn:hover{background:var(--shov);color:var(--sfg)}
   header .iconbtn[aria-pressed="true"]{color:var(--sfg)}
   header .iconbtn[aria-pressed="true"] svg{color:inherit}
+  :root[data-mode="light"] header{--sbg:#ffffff;--sfg:#24221e;--smuted:#615c53;--shov:rgba(0,0,0,.06);box-shadow:1px 0 0 var(--line)}
 }
 .board{position:relative;width:100%;aspect-ratio:1;max-width:var(--bsz);margin:0 auto;border-radius:4px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;box-shadow:var(--board-shadow)}
 .grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr)}
