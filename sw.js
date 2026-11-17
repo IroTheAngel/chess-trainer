@@ -1,7 +1,7 @@
 // Service worker for the installed app (website only, not the artifact).
 // The page and its scripts are saved for offline use. Coach voice packs are saved one by one
 // as they're played, because all of them together are about 250 MB.
-const VERSION = "bigscreen1";
+const VERSION = "bigscreen2";
 const SHELL = "shell-" + VERSION, VOICE = "voice", CDN = "cdn";
 const SHELL_FILES = ["./", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "voice/index.json"];
 const CDN_FILES = ["https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"];
@@ -28,7 +28,8 @@ self.addEventListener("activate", e => {
 async function networkFirst(req, cacheName, key) {
   const c = await caches.open(cacheName);
   try {
-    const r = await fetch(req);
+    // Ask GitHub every time (no-cache), so a new version shows on the next launch instead of up to 10 minutes later.
+    const r = await fetch(req, { cache: "no-cache" });
     if (r.ok) await c.put(key || req, r.clone());
     return r;
   } catch (err) {
