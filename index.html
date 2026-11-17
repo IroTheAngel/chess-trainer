@@ -77,6 +77,22 @@ main{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,
 
 .boardwrap{min-width:0;--bsz:min(640px,100%,max(260px,calc(100vh - 140px)))}
 @supports (height:100dvh){.boardwrap{--bsz:min(640px,100%,max(260px,calc(100dvh - 140px)))}}
+/* Big screens: board fills the screen height (like chess.com) and the panel/header scale up with it. --z is the panel scale. */
+:root{--z:1;--vh:100vh}
+@supports (height:100dvh){:root{--vh:100dvh}}
+@media (min-width:1280px) and (min-height:860px){:root{--z:1.1}}
+@media (min-width:1500px) and (min-height:1000px){:root{--z:1.2}}
+@media (min-width:1800px) and (min-height:1200px){:root{--z:1.32}}
+@media (min-width:2200px) and (min-height:1400px){:root{--z:1.5}}
+@media (min-width:901px){
+  :root{--pw:calc(380px * var(--z));--bfit:max(400px,calc(var(--vh) - 64px * var(--z) - 82px));--wide:min(calc(100vw - 32px),calc(var(--bfit) + var(--pw) + 20px))}
+  header,main,.foot,.vids,.home{max-width:max(1080px,var(--wide))}
+  main{grid-template-columns:minmax(0,1fr) var(--pw)}
+  .boardwrap{--bsz:min(100%,var(--bfit))}
+  aside{zoom:var(--z)}
+  header>*{zoom:var(--z)}
+  header{padding-block:calc(14px * var(--z)) 14px}
+}
 .board{position:relative;width:100%;aspect-ratio:1;max-width:var(--bsz);margin:0 auto;border-radius:4px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;box-shadow:var(--board-shadow)}
 .grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr)}
 .sq{position:relative}
