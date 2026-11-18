@@ -226,6 +226,8 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .rrange .rbasics{margin-left:auto;padding:5px 12px;border-radius:999px;background:var(--panel);border:2px solid var(--line);color:var(--fg);font-weight:800;font-size:12.5px}
 .rrange .rbasics[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .rrange .rbasics+.rall{margin-left:0}
+.rrange #rExplain{margin-left:auto}
+.rrange #rExplain+.rbasics{margin-left:0}
 .rrange .rbasics[hidden]+.rall{margin-left:auto}
 .rrange.bonly input{opacity:.45}
 .bxgo .btn{flex:1 1 220px}
@@ -473,6 +475,35 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .pinbtn[aria-pressed="true"]{color:var(--accent-text)}
 .pinbtn[aria-pressed="true"] svg{transform:none}
 .pinhint{margin:4px 0 12px;color:var(--muted);font-size:14px}
+/* ---------- opening map ---------- */
+.mapsheet{width:min(760px,100%);max-height:min(88vh,900px)}
+.mapbody{overflow-y:auto;padding:12px 16px 18px;overscroll-behavior:contain}
+.mapintro{margin:0 2px 10px;color:var(--muted);font-size:13.5px;line-height:1.5}
+.mapstart{font-family:var(--mono);font-size:13px;font-weight:700;background:var(--panel-2);border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.mapbr{margin:6px 0 2px}
+.mapwho{font-size:11px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:10px 2px 6px}
+.mapwho.you{color:var(--accent-text)}
+.mapopt{background:var(--panel-2);border-radius:8px;margin:0 0 6px}
+.mapopt>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;padding:9px 10px}
+.mapopt>summary::-webkit-details-marker{display:none}
+.mapopt>summary .mv{font-family:var(--mono);font-weight:800;font-size:13.5px;background:var(--chip);color:var(--ink);padding:1px 6px;border-radius:4px;white-space:nowrap}
+.mapopt>summary .why{font-size:13.5px;line-height:1.45;color:var(--fg)}
+.mapopt>summary .cnt{font-size:12px;color:var(--dim);font-weight:800;white-space:nowrap}
+.mapopt[open]>summary{border-bottom:1px solid var(--line)}
+.mapkids{padding:4px 10px 8px 18px;border-left:2px solid var(--line);margin-left:14px}
+.mapchain{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin:6px 0 2px;line-height:1.6}
+.mapend{display:flex;align-items:center;gap:8px;margin:6px 0 2px;font-size:13px;font-weight:800}
+.mapend button{padding:4px 10px;border-radius:999px;background:var(--accent);color:#fff;font-weight:800;font-size:12.5px}
+.mapend button.ghost{background:var(--line);color:var(--fg)}
+.mapbtn{margin-top:8px}
+/* ---------- watch mode ---------- */
+.ctrl.watch{flex:1.4;display:flex;gap:6px;align-items:center;justify-content:center;font-size:14px}
+.ctrl.watch[aria-pressed="true"]{background:var(--accent);color:#fff}
+.ctrl.watch svg{width:18px;height:18px}
+/* ---------- coach in Random ---------- */
+.bubble .idea{display:block;margin-top:8px;padding:6px 9px;border-radius:6px;background:var(--panel-2);border-left:3px solid var(--next)}
+.bubble .idea ul{margin:4px 0 0;padding-left:18px}
+
 .ctop h3{margin:0;font-family:var(--display);font-weight:900;font-size:18px;line-height:1.2}
 .sidetag{font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--panel-2);color:var(--muted);border:1px solid var(--line)}
 .sidetag.w{background:#f4f2ec;color:#3a3732;border-color:#d9d5cc}
@@ -657,6 +688,7 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
       <button class="ctrl" id="bPrev" aria-label="Previous move"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5v14L6 12z"/></svg></button>
       <button class="ctrl" id="bNext" aria-label="Next move"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l10-7z"/></svg></button>
       <button class="ctrl" id="bEnd" aria-label="Go to end"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l10-7z"/></svg></button>
+      <button class="ctrl watch" id="bWatch" type="button" aria-pressed="false" title="Watch the line play while the coach explains every move"></button>
     </div>
     <p class="tip"><span class="mouse-only"><b>Right-click and drag</b> to draw arrows, <b>right-click</b> a square to mark it (<kbd>Shift</kbd> green, <kbd>Ctrl</kbd> blue, <kbd>Alt</kbd> swaps colours). Left-click clears them. </span><b>Move while your opponent is thinking</b> to premove.</p>
   </section>
@@ -675,7 +707,7 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
       <div class="bubble" id="bubble" aria-live="polite"></div>
     </div>
     <div class="stats" id="stats"></div>
-    <div class="rrange" id="rrange" hidden><span>Random from line</span><input type="number" id="rFrom" inputmode="numeric" min="1" aria-label="First line"><span>to</span><input type="number" id="rTo" inputmode="numeric" min="1" aria-label="Last line"><small id="rOf"></small><button class="rbasics" id="rBasics" type="button" aria-pressed="false">Basics lines only</button><button class="rall" id="rAll" type="button">All lines</button></div>
+    <div class="rrange" id="rrange" hidden><span>Random from line</span><input type="number" id="rFrom" inputmode="numeric" min="1" aria-label="First line"><span>to</span><input type="number" id="rTo" inputmode="numeric" min="1" aria-label="Last line"><small id="rOf"></small><button class="rbasics" id="rExplain" type="button" aria-pressed="true" title="After each move the coach explains it, and gives you the idea of your answer">Coach explains</button><button class="rbasics" id="rBasics" type="button" aria-pressed="false">Basics lines only</button><button class="rall" id="rAll" type="button">All lines</button></div>
     <details class="ideas" id="ideas"><summary id="ideasHead">Key ideas</summary><div id="ideasBody"></div></details>
     <div class="moves" id="moves"></div>
     <div class="actions" id="actions"></div>
@@ -683,6 +715,7 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
       <h3>Course progress <span id="progTxt"></span></h3>
       <div class="bar"><i id="progBar"></i></div>
       <button class="btn ghostb listbtn" id="openList"></button>
+      <button class="btn ghostb listbtn mapbtn" id="openMap" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4m1 4.8V11h5V7.8a2 2 0 1 1 2 0V11h5V7.8a2 2 0 1 1 2 0V13h-6v3.2a2 2 0 1 1-2 0V13H6v3.2a2 2 0 1 1-2 0V7.8z"/></svg>Opening map</button>
     </div>
   </aside>
 </main>
@@ -691,6 +724,12 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
   <div class="vhead"><h3 id="vidsTitle">Watch it explained</h3><p>Video lessons on this opening from YouTube coaches. They open on YouTube in a new tab.</p></div>
   <div class="vgrid" id="vgrid"></div>
 </section>
+<div class="modal" id="mapModal" hidden>
+  <div class="sheet mapsheet" role="dialog" aria-modal="true" aria-labelledby="mapTitle">
+    <div class="sheethead"><h3 id="mapTitle">Opening map</h3><button class="iconbtn" id="closeMap" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"/></svg></button></div>
+    <div class="mapbody" id="mapBody"></div>
+  </div>
+</div>
 <div class="modal" id="modal" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="sheethead"><h3 id="modalTitle">Your lines</h3><span id="modalProg"></span><button class="iconbtn" id="closeList" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"/></svg></button></div>
@@ -11152,6 +11191,7 @@ function gotoPly(n,animate){
 }
 function stopTimers(){if(S.replyT){clearTimeout(S.replyT);S.replyT=null}clearPre()}
 function loadLine(i,mode){
+  if(S.watching){S.watching=false;watchTok++;if(typeof drawWatch==="function")drawWatch()}
   stopTimers();sfStop();if(S.play)S.play.tok++;S.play=null;S.pz=null;if(!S.keepReview)S.review=null;
   if(LINES[i].side!==S.side){S.side=LINES[i].side;store.set("rep-side",S.side);buildBoard()}
   S.ctaHidden=false;S.li=i;if(mode)S.mode=mode;else if(S.mode==="puzzle"||S.mode==="play")S.mode="learn";S.mistakes=0;S.tally={};S.wrongHere=0;S.hint=false;S.done=false;S.msg=null;S.busy=false;
@@ -11956,6 +11996,106 @@ window.__rep={render,S,LINES,MSG,PZ,startPuzzles,startPlay,startReview,award,due
   $("bkIn").addEventListener("input",()=>{const t=$("bkIn").value.trim();if(t)check(t);else{pending=null;$("bkApply").hidden=true;msg("")}});
   $("bkApply").onclick=apply;
 })();
+
+/* ---------- coach explains in Random (can be switched off) ---------- */
+let rExplain=store.get("rep-rexplain",true);
+function noteFor(i,p){const o=LINES[i];let v=o.notes[p];
+  if(v===undefined)for(const q of LINES){if(q!==o&&q.side===o.side&&samePre(q.san,o.san,p+1)&&q.notes[p]!==undefined){v=q.notes[p];break}}
+  return v===undefined?null:(typeof v==="string"?v:v.t)}
+// a note about your next move, with the move itself taken out, so it gives the idea and not the answer
+function hideMove(txt,san){
+  const bare=san.replace(/[+#!?]+$/,""),esc=bare.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  let t=txt.replace(new RegExp("(\\d+\\.(?:\\.\\.)?\\s?)?"+esc+"[+#!?]*","g"),"this move");
+  t=t.replace(/<b>\s*this move\s*<\/b>/g,"this move").replace(/^\s*this move[.!:]?\s+(?=[A-Z])/,"").replace(/<b>\s*<\/b>/g,"").trim();
+  return t?t[0].toUpperCase()+t.slice(1):"";
+}
+function explainRandom(){
+  if(!rExplain||S.mode!=="random"||S.done)return "";
+  let out="";
+  const last=S.ply-1;
+  if(last>=0&&moverAt(last)!==U()){const n=noteFor(S.li,last);if(n)out+=`<span class="why"><span class="lbl">Why ${OPP()} played it</span>${n}</span>`}
+  const L=LINES[S.li];if(S.ply>=L.san.length)return out;
+  const opts=[...new Set(S.cand.map(i=>LINES[i].san[S.ply]).filter(Boolean))];
+  const ideas=opts.map(m=>{const i=S.cand.find(k=>LINES[k].san[S.ply]===m);const n=noteFor(i,S.ply);return n?hideMove(n,m):""});
+  if(opts.length===1){if(ideas[0])out+=`<span class="idea"><span class="lbl">Your idea</span>${ideas[0]}</span>`}
+  else if(opts.length>1){const li=ideas.filter(Boolean);out+=`<span class="idea"><span class="lbl">Your move</span>You have ${opts.length} good moves here.${li.length?`<ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</span>`}
+  return out;
+}
+{const _opp=MSG.opp;MSG.opp=(opp,san)=>_opp(opp,san)+explainRandom()}
+{const _rnd=MSG.random;MSG.random=(...a)=>_rnd(...a)+(U()==="w"&&S.ply===0?explainRandom():"")}
+function drawExplain(){const b=$("rExplain");if(b)b.setAttribute("aria-pressed",String(!!rExplain))}
+$("rExplain").onclick=()=>{rExplain=!rExplain;store.set("rep-rexplain",rExplain);drawExplain();
+  if(S.mode==="random"&&!S.done&&S.ply>0&&S.game.turn()===U()){S.msg={k:"",t:MSG.opp(OPP(),LINES[S.li].san[S.ply-1])};render()}};
+drawExplain();
+
+/* ---------- opening map: every line of the course as one tree ---------- */
+function buildTree(f){
+  const root={kids:new Map(),lines:[]};
+  for(const i of inCourse(f)){let n=root;n.lines.push(i);LINES[i].san.forEach((m,p)=>{if(!n.kids.has(m))n.kids.set(m,{san:m,ply:p,kids:new Map(),lines:[]});n=n.kids.get(m);n.lines.push(i)});n.end=(n.end||[]).concat(i)}
+  return root;
+}
+const mvLabel=(p,m)=>(Math.floor(p/2)+1)+(p%2?"...":".")+m;
+function mapChain(n){ // follow the single path from n until the next choice or the end of a line
+  const seq=[];while(n.kids.size===1&&!n.end){n=[...n.kids.values()][0];seq.push(n)}return {seq,n}}
+function mapEnd(n){if(!n.end)return "";return n.end.map(i=>`<div class="mapend">${LINES[i].name}<button type="button" data-learn="${i}">Learn</button><button type="button" class="ghost" data-watch="${i}">Watch</button></div>`).join("")}
+function mapNode(n,depth){
+  let h="";
+  const kids=[...n.kids.values()];if(!kids.length)return mapEnd(n);
+  if(n.end)h+=mapEnd(n);
+  const who=moverAt(kids[0].ply)===U();
+  h+=`<div class="mapbr"><div class="mapwho${who?" you":""}">${who?"Your choice":OPP()+"'s choices"}, move ${Math.floor(kids[0].ply/2)+1}</div>`;
+  for(const k of kids){
+    const esc=k.san.replace(/[+#!?]+$/,"").replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    const why=(noteFor(k.lines[0],k.ply)||"").replace(new RegExp("^\\s*(<b>)?\\s*(\\d+\\.(\\.\\.)?\\s?|\\.\\.\\.)?"+esc+"[+#!?]*\\s*(</b>)?[.:]?\\s*"),"");
+    const whyT=why&&why[0]!=="<"?why[0].toUpperCase()+why.slice(1):why;
+    const {seq,n:end}=mapChain(k);
+    h+=`<details class="mapopt"${depth<1?" open":""}><summary><span class="mv">${mvLabel(k.ply,k.san)}</span><span class="why">${whyT}</span><span class="cnt">${k.lines.length} line${k.lines.length>1?"s":""}</span></summary><div class="mapkids">`;
+    if(seq.length)h+=`<div class="mapchain">then ${seq.map((s,j)=>(s.ply%2===0||j===0)?mvLabel(s.ply,s.san):s.san).join(" ")}</div>`;
+    h+=mapNode(end,depth+1)+`</div></details>`;
+  }
+  return h+`</div>`;
+}
+function openMap(){
+  const f=LINES[S.li].fam,F=LINES[S.li].f,root=buildTree(f),{seq,n}=mapChain(root);
+  $("mapTitle").textContent="Opening map: "+F.name;
+  $("mapBody").innerHTML=`<p class="mapintro">Every line in this course as one tree. At each branch you see ${OPP()}'s options with the reason behind each one, and your answers. Open a branch to go deeper, and press <b>Learn</b> or <b>Watch</b> at the end of a line.</p>`+
+    (seq.length?`<div class="mapstart">${seq.map(s=>s.ply%2===0?mvLabel(s.ply,s.san):s.san).join(" ")}</div>`:"")+mapNode(n,0);
+  $("mapModal").hidden=false;$("closeMap").focus();
+}
+function closeMap(){$("mapModal").hidden=true}
+$("openMap").onclick=openMap;$("closeMap").onclick=closeMap;
+$("mapModal").addEventListener("click",e=>{if(e.target.id==="mapModal")return closeMap();
+  const l=e.target.closest("[data-learn]"),w=e.target.closest("[data-watch]");
+  if(l){closeMap();loadLine(+l.dataset.learn,"learn")}else if(w){closeMap();loadLine(+w.dataset.watch,"learn");startWatch()}});
+window.addEventListener("keydown",e=>{if($("mapModal").hidden)return;if(e.key==="Escape"){e.preventDefault();closeMap()}e.stopImmediatePropagation()},true);
+
+/* ---------- watch mode: the line plays itself while the coach explains every move ---------- */
+let watchTok=0;
+const WATCH_ICON={play:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h12v14H3zM17 9l4-2v10l-4-2z"/></svg>',stop:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>'};
+function drawWatch(){const b=$("bWatch"),on=watchTok>0&&S.watching;b.setAttribute("aria-pressed",String(!!on));b.innerHTML=(on?WATCH_ICON.stop+"Pause":WATCH_ICON.play+"Watch");b.setAttribute("aria-label",on?"Pause watching":"Watch the line play with the coach")}
+function stopWatch(){if(!S.watching)return;S.watching=false;watchTok++;drawWatch()}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function untilQuiet(tok){ // let the coach finish talking (or give time to read if the voice is off)
+  if(VO.on&&(synth||VIDX)){await wait(400);while(speaking&&tok===watchTok)await wait(150);await wait(500)}
+  else{const txt=$("bubble").textContent||"";await wait(Math.min(9000,Math.max(1800,txt.length*55)))}
+}
+async function startWatch(){
+  if(S.watching){stopWatch();return}
+  if(S.mode!=="learn")loadLine(S.li,"learn");
+  const L=LINES[S.li];if(S.ply>=L.san.length){S.msg=null;gotoPly(0)}
+  const tok=++watchTok;S.watching=true;drawWatch();
+  await untilQuiet(tok);
+  while(tok===watchTok&&S.mode==="learn"&&S.ply<LINES[S.li].san.length){
+    S.msg=null;gotoPly(S.ply+1,true);
+    if(S.ply<LINES[S.li].san.length&&moverAt(S.ply)!==U()&&moverAt(S.ply-1)===U()){await wait(900);if(tok!==watchTok)return;gotoPly(S.ply+1,true)}
+    await untilQuiet(tok);
+  }
+  if(tok===watchTok){S.watching=false;drawWatch();if(S.ply>=LINES[S.li].san.length)finishLine()}
+}
+$("bWatch").onclick=startWatch;
+["bStart","bPrev","bNext","bEnd","mLearn","mPractice","mRandom","mPuzzle","mBasics","openList","homeBtn"].forEach(id=>{const b=$(id);if(b)b.addEventListener("click",stopWatch,true)});
+$("board").addEventListener("pointerdown",stopWatch,true);
+drawWatch();
 })();
 
 </script>
