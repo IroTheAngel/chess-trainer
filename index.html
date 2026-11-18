@@ -503,6 +503,18 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 /* ---------- coach in Random ---------- */
 .bubble .idea{display:block;margin-top:8px;padding:6px 9px;border-radius:6px;background:var(--panel-2);border-left:3px solid var(--next)}
 .bubble .idea ul{margin:4px 0 0;padding-left:18px}
+/* ---------- quiz: what does the opponent's move want? ---------- */
+.qzbar{display:flex;justify-content:flex-start;padding:0 16px 10px}
+.qzpill{padding:5px 12px;border-radius:999px;background:var(--panel);border:2px solid var(--line);color:var(--fg);font-weight:800;font-size:12.5px}
+.qzpill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.bubble .qz{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.bubble .qz button{text-align:left;padding:8px 10px;border-radius:8px;background:var(--panel-2);color:var(--ink);font:inherit;font-weight:700;font-size:14px;line-height:1.4;border:2px solid transparent}
+.bubble .qz button:hover:not(:disabled){border-color:var(--accent)}
+.bubble .qz button.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 18%,var(--panel-2))}
+.bubble .qz button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--panel-2))}
+.bubble .qz button:disabled{cursor:default}
+.bubble .qzq{font-weight:900}
+
 
 .ctop h3{margin:0;font-family:var(--display);font-weight:900;font-size:18px;line-height:1.2}
 .sidetag{font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--panel-2);color:var(--muted);border:1px solid var(--line)}
@@ -707,6 +719,7 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
       <div class="bubble" id="bubble" aria-live="polite"></div>
     </div>
     <div class="stats" id="stats"></div>
+    <div class="qzbar" id="qzBar"><button class="qzpill" id="qzBtn" type="button" aria-pressed="true" title="After your opponent's moves, pick what the move is for">Quiz the opponent's moves</button></div>
     <div class="rrange" id="rrange" hidden><span>Random from line</span><input type="number" id="rFrom" inputmode="numeric" min="1" aria-label="First line"><span>to</span><input type="number" id="rTo" inputmode="numeric" min="1" aria-label="Last line"><small id="rOf"></small><button class="rbasics" id="rExplain" type="button" aria-pressed="true" title="After each move the coach explains it, and gives you the idea of your answer">Coach explains</button><button class="rbasics" id="rBasics" type="button" aria-pressed="false">Basics lines only</button><button class="rall" id="rAll" type="button">All lines</button></div>
     <details class="ideas" id="ideas"><summary id="ideasHead">Key ideas</summary><div id="ideasBody"></div></details>
     <div class="moves" id="moves"></div>
@@ -12005,7 +12018,7 @@ function noteFor(i,p){const o=LINES[i];let v=o.notes[p];
 // a note about your next move, with the move itself taken out, so it gives the idea and not the answer
 function hideMove(txt,san){
   const bare=san.replace(/[+#!?]+$/,""),esc=bare.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-  let t=txt.replace(new RegExp("(\\d+\\.(?:\\.\\.)?\\s?)?"+esc+"[+#!?]*","g"),"this move");
+  let t=txt.replace(new RegExp("(\\d+\\.(?:\\.\\.)?\\s?|\\.\\.\\.)?"+esc+"[+#!?]*","g"),"this move");
   t=t.replace(/<b>\s*this move\s*<\/b>/g,"this move").replace(/^\s*this move[.!:]?\s+(?=[A-Z])/,"").replace(/<b>\s*<\/b>/g,"").trim();
   return t?t[0].toUpperCase()+t.slice(1):"";
 }
@@ -12096,6 +12109,54 @@ $("bWatch").onclick=startWatch;
 ["bStart","bPrev","bNext","bEnd","mLearn","mPractice","mRandom","mPuzzle","mBasics","openList","homeBtn"].forEach(id=>{const b=$(id);if(b)b.addEventListener("click",stopWatch,true)});
 $("board").addEventListener("pointerdown",stopWatch,true);
 drawWatch();
+
+/* ---------- quiz: after the opponent's move, what is it for? (pick from 3 or 4 answers) ---------- */
+let qzOn=store.get("rep-quiz",true);
+const QZ_SKIP=/^(take back|recapture|white recaptures|black recaptures|castle|white castles|black castles|both kings|develop\.?$|trade\.?$|take\.?$)/i;
+function qzClean(txt,san){return hideMove(String(txt).replace(/<span[^>]*>|<\/span>/g,""),san)}
+function plainLen(h){return h.replace(/<[^>]+>/g,"").trim().length}
+function makeQuiz(){
+  if(!qzOn||S.watching||S.done||!["learn","practice","random"].includes(S.mode))return null;
+  const p=S.ply-1;if(p<0||moverAt(p)===U())return null;
+  const L=LINES[S.li],san=L.san[p],raw=noteFor(S.li,p);if(!raw)return null;
+  const right=qzClean(raw,san);if(plainLen(right)<28||QZ_SKIP.test(right.replace(/<[^>]+>/g,"")))return null;
+  const seen=new Set([right.replace(/<[^>]+>/g,"").toLowerCase()]),opts=[];
+  const add=(txt,s)=>{if(!txt||opts.length>=3)return;const c=qzClean(txt,s),k=c.replace(/<[^>]+>/g,"").toLowerCase();if(plainLen(c)<28||seen.has(k)||QZ_SKIP.test(k))return;seen.add(k);opts.push(c)};
+  // best wrong answers: what the opponent's OTHER moves at this same point are for
+  for(const o of LINES)if(o.fam===L.fam&&o.side===L.side&&o.san[p]&&o.san[p]!==san&&samePre(o.san,L.san,p)){const n=o.notes[p];add(typeof n==="string"?n:n&&n.t,o.san[p])}
+  // then ideas of the opponent's moves elsewhere in the course
+  const pool=[];for(const i of inCourse(L.fam)){const o=LINES[i];for(const k in o.notes){const q=+k;if(moverAt(q)===U()||Math.abs(q-p)>8)continue;const n=o.notes[k];pool.push([typeof n==="string"?n:n.t,o.san[q]])}}
+  for(let k=pool.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[pool[k],pool[j]]=[pool[j],pool[k]]}
+  for(const [n,s] of pool)add(n,s);
+  if(opts.length<2)return null;
+  const all=opts.concat([right]);for(let k=all.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[all[k],all[j]]=[all[j],all[k]]}
+  return {ply:p,san,opts:all,right:all.indexOf(right),pick:-1};
+}
+function quizHtml(q){
+  const lbl=moveLabel(q.ply);
+  return `<span class="qzq">What does ${OPP()}'s ${S2(lbl)} want?</span>`+
+    `<span class="qz">${q.opts.map((o,k)=>`<button type="button" data-qz="${k}"${q.pick>=0?" disabled":""} class="${q.pick<0?"":k===q.right?"right":k===q.pick?"wrong":""}">${o}</button>`).join("")}</span>`;
+}
+{const _draw=drawBubble;drawBubble=function(){
+  if(S.quiz&&S.quiz.pick<0){const bub=$("bubble");bub.className="bubble";bub.innerHTML=quizHtml(S.quiz);say(`What does ${OPP()}'s ${S2(moveLabel(S.quiz.ply))} want?`);return}
+  _draw();
+  if(S.quizDone){const q=S.quizDone,ok=q.pick===q.right;$("bubble").insertAdjacentHTML("afterbegin",`<span class="why ${ok?"":"whynot"}" style="margin:0 0 8px"><span class="lbl">${ok?"Right!":"Not quite"}</span>${OPP()}'s ${S2(moveLabel(q.ply))}: ${q.opts[q.right]}</span>`)}
+}}
+{const _opp=oppReply;oppReply=function(){
+  S.quizDone=null;_opp();
+  if(S.ply>0&&!S.done){const q=makeQuiz();if(q){clearPre();S.quiz=q;S.busy=true;render()}}
+}}
+{const _commit=commit;commit=function(f,t){if(S.quiz&&S.quiz.pick<0){S.sel=null;drawBoard();return}_commit(f,t)}}
+{const _load=loadLine;loadLine=function(i,mode){S.quiz=null;S.quizDone=null;return _load(i,mode)}}
+{const _goto=gotoPly;gotoPly=function(n,a){if(!a){S.quiz=null;S.quizDone=null;if(S.busy&&!S.replyT)S.busy=false}else if(S.quizDone&&moverAt(n-1)===U())S.quizDone=null;return _goto(n,a)}}
+$("bubble").addEventListener("click",e=>{const b=e.target.closest("[data-qz]");if(!b||!S.quiz||S.quiz.pick>=0)return;
+  const q=S.quiz;q.pick=+b.dataset.qz;S.quiz=null;S.busy=false;S.quizDone=q;tone(false);
+  lastSaid="";render();schedulePre()});
+function drawQuizBtn(){const b=$("qzBtn");if(!b)return;b.textContent=`Quiz ${OPP()}'s moves`;b.setAttribute("aria-pressed",String(!!qzOn));
+  $("qzBar").hidden=!["learn","practice","random"].includes(S.mode)}
+$("qzBtn").onclick=()=>{qzOn=!qzOn;store.set("rep-quiz",qzOn);if(!qzOn&&S.quiz){S.quiz=null;S.busy=false;render()}drawQuizBtn()};
+{const _render=render;render=function(){_render();drawQuizBtn()}}
+drawQuizBtn();
 })();
 
 </script>
