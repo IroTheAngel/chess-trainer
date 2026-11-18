@@ -495,7 +495,9 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .mapend{display:flex;align-items:center;gap:8px;margin:6px 0 2px;font-size:13px;font-weight:800}
 .mapend button{padding:4px 10px;border-radius:999px;background:var(--accent);color:#fff;font-weight:800;font-size:12.5px}
 .mapend button.ghost{background:var(--line);color:var(--fg)}
-.mapbtn{margin-top:8px}
+.mapbtn{margin-top:2px}
+.listrow{display:flex;flex-wrap:wrap;gap:8px}
+.listrow .listbtn{flex:1 1 150px;width:auto;white-space:nowrap}
 /* ---------- watch mode ---------- */
 .ctrl.watch{flex:1.4;display:flex;gap:6px;align-items:center;justify-content:center;font-size:14px}
 .ctrl.watch[aria-pressed="true"]{background:var(--accent);color:#fff}
@@ -762,8 +764,8 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
     <div class="course">
       <h3>Course progress <span id="progTxt"></span></h3>
       <div class="bar"><i id="progBar"></i></div>
-      <button class="btn ghostb listbtn" id="openList"></button>
-      <button class="btn ghostb listbtn mapbtn" id="openMap" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4m1 4.8V11h5V7.8a2 2 0 1 1 2 0V11h5V7.8a2 2 0 1 1 2 0V13h-6v3.2a2 2 0 1 1-2 0V13H6v3.2a2 2 0 1 1-2 0V7.8z"/></svg>Opening map</button>
+      <div class="listrow"><button class="btn ghostb listbtn" id="openList"></button>
+      <button class="btn ghostb listbtn mapbtn" id="openMap" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4m1 4.8V11h5V7.8a2 2 0 1 1 2 0V11h5V7.8a2 2 0 1 1 2 0V13h-6v3.2a2 2 0 1 1-2 0V13H6v3.2a2 2 0 1 1-2 0V7.8z"/></svg>Opening map</button></div>
     </div>
   </aside>
 </main>
