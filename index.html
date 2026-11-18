@@ -11428,7 +11428,7 @@ boardEl.addEventListener("pointercancel",()=>{rdrag=null;if(drag){drag.g.remove(
 const STAR='<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.6 7.2.7-5.4 4.8 1.6 7.1L12 17.5 5.6 21.2l1.6-7.1L1.8 9.3 9 8.6z"/></svg>';
 function learnText(L){
   // when it's your turn, the coach tells you what to play (the blue arrow shows it too)
-  const yours=S.ply<L.san.length&&moverAt(S.ply)===U()&&!S.busy?`<span class="why"><span class="lbl">Your move</span>Play ${S2(L.san[S.ply])} on the board, or press Next.</span>`:"";
+  const yours=S.ply<L.san.length&&moverAt(S.ply)===U()&&!S.busy&&!S.watching?`<span class="why"><span class="lbl">Your move</span>Play ${S2(L.san[S.ply])} on the board, or press Next.</span>`:"";
   if(S.ply===0)return `${L.intro?L.intro:""}${L.vs?`<span class="why whynot"><span class="lbl">How it's different</span>${L.vs}</span>`:""}${U()==="w"?yours:` Press <b>Next</b> to see White's first move.`}`;
   // show the move chip unless the note already names the move
   const fmt=(i,label)=>{const n=noteAt(i),bare=L.san[i].replace(/[+#]/,"");return (n&&n.t.includes(bare)?n.t:`${S2(label)}${n?" "+n.t:""}`)+(moverAt(i)===U()?whyBox(i):"")};
