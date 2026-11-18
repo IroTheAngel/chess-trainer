@@ -514,6 +514,14 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .bubble .qz button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--panel-2))}
 .bubble .qz button:disabled{cursor:default}
 .bubble .qzq{font-weight:900}
+.bubble .qzhead{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.bubble .qztag{font-size:10.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:var(--next);color:#fff;padding:2px 7px;border-radius:4px}
+.bubble .qzq{font-size:16px}
+.bubble .qzsub{display:block;color:var(--ink-soft);font-size:13px;margin-top:2px}
+.bubble .qz button{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;border:2px solid var(--line);background:var(--paper)}
+.bubble .qz button .n{width:24px;height:24px;border-radius:50%;background:var(--next);color:#fff;display:grid;place-items:center;font-weight:900;font-size:13px;margin-top:1px}
+.bubble .qz button.right .n{background:var(--good)} .bubble .qz button.wrong .n{background:var(--bad)}
+
 /* ---------- pictures: boards in the opening map and the line list ---------- */
 .mapopt>summary{grid-template-columns:96px minmax(0,1fr) auto;align-items:center}
 .mapopt>summary .mb{width:96px;height:96px;border-radius:5px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.25)}
@@ -12159,8 +12167,8 @@ function makeQuiz(){
 }
 function quizHtml(q){
   const lbl=moveLabel(q.ply);
-  return `<span class="qzq">What does ${OPP()}'s ${S2(lbl)} want?</span>`+
-    `<span class="qz">${q.opts.map((o,k)=>`<button type="button" data-qz="${k}"${q.pick>=0?" disabled":""} class="${q.pick<0?"":k===q.right?"right":k===q.pick?"wrong":""}">${o}</button>`).join("")}</span>`;
+  return `<span class="qzhead"><span class="qztag">Quiz</span><span class="qzq">What does ${OPP()}'s ${S2(lbl)} want?</span></span><span class="qzsub">Pick the right answer: click it or press 1–${q.opts.length}.</span>`+
+    `<span class="qz">${q.opts.map((o,k)=>`<button type="button" data-qz="${k}"${q.pick>=0?" disabled":""} class="${q.pick<0?"":k===q.right?"right":k===q.pick?"wrong":""}"><span class="n">${k+1}</span><span>${o}</span></button>`).join("")}</span>`;
 }
 {const _draw=drawBubble;drawBubble=function(){
   if(S.quiz&&S.quiz.pick<0){const bub=$("bubble");bub.className="bubble";bub.innerHTML=quizHtml(S.quiz);say(`What does ${OPP()}'s ${S2(moveLabel(S.quiz.ply))} want?`);return}
@@ -12177,7 +12185,10 @@ function quizHtml(q){
 $("bubble").addEventListener("click",e=>{const b=e.target.closest("[data-qz]");if(!b||!S.quiz||S.quiz.pick>=0)return;
   const q=S.quiz;q.pick=+b.dataset.qz;S.quiz=null;S.busy=false;S.quizDone=q;tone(false);
   lastSaid="";render();schedulePre()});
-function drawQuizBtn(){const b=$("qzBtn");if(!b)return;b.textContent=`Quiz ${OPP()}'s moves`;b.setAttribute("aria-pressed",String(!!qzOn));
+window.addEventListener("keydown",e=>{if(!S.quiz||S.quiz.pick>=0||e.ctrlKey||e.metaKey||e.altKey)return;const k=+e.key;if(k>=1&&k<=S.quiz.opts.length){e.preventDefault();e.stopImmediatePropagation();const b=$("bubble").querySelector(`[data-qz="${k-1}"]`);if(b)b.click()}},true);
+// with the quiz off, Practice still tells you what the opponent's move is for (Random has its own coach switch)
+{const _o=MSG.opp;MSG.opp=(opp,san)=>{let s=_o(opp,san);if(!qzOn&&S.mode==="practice"&&S.ply>0){const n=noteFor(S.li,S.ply-1);if(n)s+=`<span class="why"><span class="lbl">Why ${OPP()} played it</span>${n}</span>`}return s}}
+function drawQuizBtn(){const b=$("qzBtn");if(!b)return;b.textContent=qzOn?`Quiz ${OPP()}'s moves: on`:`Quiz ${OPP()}'s moves: off`;b.setAttribute("aria-pressed",String(!!qzOn));
   $("qzBar").hidden=!["learn","practice","random"].includes(S.mode)}
 $("qzBtn").onclick=()=>{qzOn=!qzOn;store.set("rep-quiz",qzOn);if(!qzOn&&S.quiz){S.quiz=null;S.busy=false;render()}drawQuizBtn()};
 {const _render=render;render=function(){_render();drawQuizBtn()}}
