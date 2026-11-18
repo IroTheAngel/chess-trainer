@@ -514,6 +514,26 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .bubble .qz button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--panel-2))}
 .bubble .qz button:disabled{cursor:default}
 .bubble .qzq{font-weight:900}
+/* ---------- pictures: boards in the opening map and the line list ---------- */
+.mapopt>summary{grid-template-columns:96px minmax(0,1fr) auto;align-items:center}
+.mapopt>summary .mb{width:96px;height:96px;border-radius:5px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.mapopt>summary .mb svg{width:100%;height:100%;display:block}
+.mapopt>summary .txt{display:flex;flex-direction:column;gap:4px;align-items:flex-start;min-width:0}
+.mapstartrow{display:flex;gap:12px;align-items:center;background:var(--panel-2);border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.mapstartrow .mb{width:120px;height:120px;flex:none;border-radius:5px;overflow:hidden}
+.mapstartrow .mb svg{width:100%;height:100%;display:block}
+.mapstartrow .mapstart{background:none;padding:0;margin:0}
+.mapvid{display:flex;align-items:center;gap:10px;margin:0 2px 12px;font-size:13px;color:var(--muted)}
+.mapvid button{padding:5px 12px;border-radius:999px;background:var(--line);color:var(--fg);font-weight:800;font-size:12.5px;display:flex;gap:6px;align-items:center}
+.mapvid svg{width:16px;height:16px;fill:#e33}
+.lineitem{grid-template-columns:30px 52px 1fr auto}
+.lineitem .th{width:52px;height:52px;border-radius:4px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.lineitem .th svg{width:100%;height:100%;display:block}
+/* the coach-voice settings open beside the sidebar, inside the screen */
+@media (min-width:1400px) and (min-aspect-ratio:3/2) and (min-height:700px){
+  header #vpop{position:fixed;left:calc(var(--sb) + 10px);right:auto;top:auto;bottom:16px;max-height:calc(100vh - 32px);overflow-y:auto}
+}
+
 
 
 .ctop h3{margin:0;font-family:var(--display);font-weight:900;font-size:18px;line-height:1.2}
@@ -11468,7 +11488,7 @@ function drawCourse(F,hide){
   mine.forEach((i,k)=>{const l=LINES[i],st=(prog[l.id]&&prog[l.id].stars)||0;
     if(l.v&&l.v!==vh){vh=l.v;const vl=mine.filter(j=>LINES[j].v===vh),vd=vl.filter(j=>prog[LINES[j].id]&&prog[LINES[j].id].stars).length;
       lh+=`<h4 class="listsub"><span>${vh.title}<small>${vh.move}</small></span><em>${vd} / ${vl.length}</em></h4>`}
-    lh+=`<button class="lineitem ${st?"done":""}" data-i="${i}" aria-current="${i===S.li&&!hide}"><span class="ix">${st?"✓":k+1}</span><span class="t">${l.name}${l.trap.length?'<span class="tag">trap</span>':""}<span class="s">${l.key}</span></span><span class="stars" aria-label="${st} stars">${[1,2,3].map(n=>`<span class="${n<=st?"on":""}">${STAR}</span>`).join("")}</span></button>`});
+    lh+=`<button class="lineitem ${st?"done":""}" data-i="${i}" aria-current="${i===S.li&&!hide}"><span class="ix">${st?"✓":k+1}</span><span class="th">${$("modal").hidden?"":thumb(i,l.san.length)}</span><span class="t">${l.name}${l.trap.length?'<span class="tag">trap</span>':""}<span class="s">${l.key}</span></span><span class="stars" aria-label="${st} stars">${[1,2,3].map(n=>`<span class="${n<=st?"on":""}">${STAR}</span>`).join("")}</span></button>`});
   $("lines").innerHTML=lh;
   $("lines").querySelectorAll(".lineitem").forEach(b=>b.onclick=()=>{closeList();loadLine(+b.dataset.i,S.mode==="random"?"practice":null)});
 }
@@ -12062,17 +12082,22 @@ function mapNode(n,depth){
     const why=(noteFor(k.lines[0],k.ply)||"").replace(new RegExp("^\\s*(<b>)?\\s*(\\d+\\.(\\.\\.)?\\s?|\\.\\.\\.)?"+esc+"[+#!?]*\\s*(</b>)?[.:]?\\s*"),"");
     const whyT=why&&why[0]!=="<"?why[0].toUpperCase()+why.slice(1):why;
     const {seq,n:end}=mapChain(k);
-    h+=`<details class="mapopt"${depth<1?" open":""}><summary><span class="mv">${mvLabel(k.ply,k.san)}</span><span class="why">${whyT}</span><span class="cnt">${k.lines.length} line${k.lines.length>1?"s":""}</span></summary><div class="mapkids">`;
+    h+=`<details class="mapopt"${depth<1?" open":""}><summary><span class="mb">${thumb(k.lines[0],k.ply+1)}</span><span class="txt"><span class="mv">${mvLabel(k.ply,k.san)}</span><span class="why">${whyT}</span></span><span class="cnt">${k.lines.length} line${k.lines.length>1?"s":""}</span></summary><div class="mapkids">`;
     if(seq.length)h+=`<div class="mapchain">then ${seq.map((s,j)=>(s.ply%2===0||j===0)?mvLabel(s.ply,s.san):s.san).join(" ")}</div>`;
     h+=mapNode(end,depth+1)+`</div></details>`;
   }
   return h+`</div>`;
 }
+const THUMBS=new Map();
+function thumb(i,n){const k=i+":"+n+":"+getComputedStyle(root).getPropertyValue("--light").trim()+S.side;
+  if(!THUMBS.has(k))THUMBS.set(k,miniBoard({id:LINES[i].fam,side:LINES[i].side,line:i,show:n}));return THUMBS.get(k)}
 function openMap(){
   const f=LINES[S.li].fam,F=LINES[S.li].f,root=buildTree(f),{seq,n}=mapChain(root);
   $("mapTitle").textContent="Opening map: "+F.name;
   $("mapBody").innerHTML=`<p class="mapintro">Every line in this course as one tree. At each branch you see ${OPP()}'s options with the reason behind each one, and your answers. Open a branch to go deeper, and press <b>Learn</b> or <b>Watch</b> at the end of a line.</p>`+
-    (seq.length?`<div class="mapstart">${seq.map(s=>s.ply%2===0?mvLabel(s.ply,s.san):s.san).join(" ")}</div>`:"")+mapNode(n,0);
+    `<div class="mapvid">Prefer to watch? <button type="button" id="mapVids"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9L15.5 12z"/></svg>Video lessons for this course</button></div>`+
+    (seq.length?`<div class="mapstartrow"><span class="mb">${thumb(inCourse(f)[0],seq.length)}</span><div class="mapstart">${seq.map(s=>s.ply%2===0?mvLabel(s.ply,s.san):s.san).join(" ")}</div></div>`:"")+mapNode(n,0);
+  const vb=$("mapVids");if(vb)vb.onclick=()=>{closeMap();const v=$("vids");if(v&&!v.hidden)v.scrollIntoView({behavior:"smooth",block:"start"})};
   $("mapModal").hidden=false;$("closeMap").focus();
 }
 function closeMap(){$("mapModal").hidden=true}
