@@ -652,26 +652,36 @@ aside{background:var(--panel);border-radius:10px;overflow:hidden;min-width:0;dis
 .treeModal .mapbody{padding:0;overflow:hidden;flex:1;display:flex}
 .tree{position:relative;flex:1;display:flex;min-height:0;background:radial-gradient(ellipse at 50% 100%,#1f2630 0,#14171d 60%)}
 .treeWrap{flex:1;min-width:0;position:relative}
-#treeSvg{width:100%;height:100%;display:block;cursor:grab;touch-action:none;user-select:none}
+#treeSvg{width:100%;height:100%;display:block;cursor:grab;touch-action:none;user-select:none;will-change:transform}
 #treeSvg:active{cursor:grabbing}
 .tring{fill:none;stroke:rgba(233,201,164,.07);stroke-width:1.2}
 .te{fill:none;stroke:#3a414c;stroke-width:4;stroke-linejoin:round}
 .te.lit{stroke:#cfcac0}
 .tn{cursor:pointer;outline:none}
-.tn .halo{fill:none;stroke:rgba(255,255,255,0);stroke-width:2.5;transition:stroke .15s}
-.tn .ring{fill:#20252d;stroke:#4a525e;stroke-width:3}
-.tn .shade{fill:rgba(15,18,24,.38);stroke:none;transition:fill .15s}
-.tn.done .ring{fill:#f2efe8;stroke:#f2efe8}
-.tn.done .shade{fill:rgba(0,0,0,0)}
-.tn.part .ring{stroke:#cfcac0}
-.tn.part .shade{fill:rgba(15,18,24,.28)}
-.tn.you .ring{stroke:#81b64c}.tn.you.done .ring{stroke:#a7d36f;fill:#a7d36f}
-.tn:hover .shade,.tn:focus-visible .shade{fill:rgba(0,0,0,0)}
-.tn:hover .halo,.tn:focus-visible .halo{stroke:rgba(255,255,255,.45)}
-.tn.sel .halo{stroke:#fff;stroke-width:3}
-.tn.root .ring{stroke:#e9c9a4;stroke-width:4}
+.tn .halo{fill:none;stroke:rgba(255,255,255,0);stroke-width:2.5}
+.tn .ring{fill:#1b2028;stroke:#4a525e;stroke-width:3}
+.tn .ic{opacity:.45}
+.tn.part .ring{stroke:#f5c76a;fill:#2a2a24}.tn.part .ic{opacity:.85}
+.tn.done .ring{fill:#fff3d6;stroke:#f5c76a;stroke-width:4;filter:drop-shadow(0 0 10px rgba(245,199,106,.9))}
+.tn.done .ic{opacity:1}
+.tn.you .ring{stroke:#81b64c}.tn.you.part .ring{stroke:#a7d36f}
+.tn.you.done .ring{fill:#eaf6dc;stroke:#a7d36f;filter:drop-shadow(0 0 10px rgba(167,211,111,.9))}
+.tn:hover .halo,.tn:focus-visible .halo{stroke:rgba(255,255,255,.5)}
+.tn:hover .ic{opacity:1}
+.tn.sel .halo{stroke:#fff;stroke-width:3.5}
+.tn.root .ring{stroke:#e9c9a4;stroke-width:4;fill:#2a2620}.tn.root .ic{opacity:1}
+.tg{fill:none;stroke:rgba(245,199,106,.28);stroke-width:16;stroke-linejoin:round;stroke-linecap:round}
+.te.lit{stroke:#ffd98a;stroke-width:5}
+.tn.done .tl,.tn.part .tl{fill:#ffe2a8}
 .tl{fill:#cfcac0;font:800 21px var(--mono);text-anchor:middle;paint-order:stroke;stroke:#14171d;stroke-width:4px}
 .tn.todo .tl{fill:#8b919b}
+.tn2{fill:#a9aeb6;font:700 17px var(--sans,system-ui);text-anchor:middle;paint-order:stroke;stroke:#14171d;stroke-width:4px}
+.tn.done .tn2{fill:#ffe2a8}
+.treeLegend{position:absolute;left:336px;top:12px;max-width:330px;display:flex;flex-direction:column;gap:5px;font-size:12.5px;line-height:1.45;color:#b9bec6;background:rgba(20,23,29,.85);border:1px solid #2a2f38;border-radius:10px;padding:10px 12px;pointer-events:none}
+.treeLegend b{color:#e9c9a4;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+.lg{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-2px;margin:0 4px 0 2px;border:2.5px solid}
+.lg.you{border-color:#81b64c}.lg.opp{border-color:#6b7380;margin-left:10px}.lg.done{border-color:#f5c76a;background:#fff3d6;box-shadow:0 0 8px #f5c76a}.lg.todo{border-color:#4a525e;margin-left:10px}
+@media (max-width:760px){.treeLegend{display:none}}
 .treeInfo{width:320px;flex:none;padding:18px 18px 14px;overflow-y:auto;border-right:1px solid #2a2f38;background:linear-gradient(90deg,rgba(10,12,16,.6),rgba(10,12,16,.2))}
 .tih{font:800 22px var(--mono);letter-spacing:.02em;color:#fff;border-bottom:1px solid #e9c9a466;padding-bottom:8px}
 .tisub{display:flex;justify-content:space-between;margin:8px 0 10px;font-size:13px;font-weight:800;color:#e9c9a4;letter-spacing:.04em;text-transform:uppercase}
@@ -12335,31 +12345,34 @@ function treeData(f){
   return {R,all,STEP,maxD};
 }
 function tLabel(t){if(t.root)return t.seq.length?"Start":"Start";return mvLabel(t.k.ply,t.k.san)}
-function tBoard(t){const i=t.lines[0],n=t.root?t.seq.length:(t.k.ply+1+t.seq.length);
-  return thumb(i,n).replace('<svg viewBox="0 0 320 320"','<svg x="-1" y="-1" width="2" height="2" viewBox="0 0 320 320" preserveAspectRatio="xMidYMid slice"')}
+function tIcon(t){let pc="k",col=S.side;if(!t.root){const m=t.k.san;pc=/^[KQRBN]/.test(m)?m[0].toLowerCase():/^O-O/.test(m)?"k":"p";col=t.k.ply%2?"b":"w"}
+  return `<svg x="-.68" y="-.68" width="1.36" height="1.36" viewBox="0 0 40 40"><use href="#p-${col}${pc}"/></svg>`}
+const short=n=>n.length>24?n.slice(0,23)+"…":n;
 function drawTree(f){
   const {R,all,STEP}=treeData(f),wrap=$("treeWrap");
-  let e="",nodes="";
+  let e="",glow="",litE="",nodes="";
   for(const t of all)for(const c of t.kids){
     const r1=t.r,rm=t.root?STEP*0.55:t.r+STEP*0.45,a1=t.root?c.a:t.a; // from the root each branch leaves straight
     const lit=c.state!=="todo"?" lit":"",P=(r,a)=>`${(r*Math.cos(a)).toFixed(1)} ${(-r*Math.sin(a)).toFixed(1)}`;
     let d=`M${t.x.toFixed(1)} ${t.y.toFixed(1)}L${P(rm,a1)}`;const n=Math.max(2,Math.ceil(Math.abs(c.a-a1)/0.03));
     for(let j=1;j<=n;j++)d+=`L${P(rm,a1+(c.a-a1)*j/n)}`;
-    e+=`<path class="te${lit}" d="${d}L${c.x.toFixed(1)} ${c.y.toFixed(1)}"/>`;
+    const dd=`${d}L${c.x.toFixed(1)} ${c.y.toFixed(1)}`;
+    if(lit){glow+=`<path class="tg" d="${dd}"/>`;litE+=`<path class="te lit" d="${dd}"/>`}else e+=`<path class="te" d="${dd}"/>`;
   }
   all.forEach((t,ix)=>{t.ix=ix;const rad=t.root?52:(t.kids.length?38:34),you=!t.root&&moverAt(t.k.ply)===U();
     nodes+=`<g class="tn ${t.state}${you?" you":""}${t.root?" root":""}" data-t="${ix}" transform="translate(${t.x.toFixed(1)} ${t.y.toFixed(1)})" tabindex="0" role="button" aria-label="${tLabel(t)}">`+
       `<circle class="halo" r="${rad+7}"/><circle class="ring" r="${rad+2.5}"/>`+
-      `<g clip-path="url(#tclip)" transform="scale(${rad})">${tBoard(t)}</g>`+
-      `<circle class="shade" r="${rad}"/>`+
-      `<text class="tl" y="${rad+24}">${tLabel(t)}</text></g>`});
+      `<g class="ic" transform="scale(${rad})">${tIcon(t)}</g>`+
+      `<text class="tl" y="${rad+26}">${tLabel(t)}</text>`+
+      (t.kids.length||t.root?"":`<text class="tn2" y="${rad+50}">${short(LINES[t.lines[0]].name)}</text>`)+
+      `<title>${tLabel(t)}${t.root?"":" · "+(you?"your move":OPP()+"'s choice")} · ${t.nl} of ${t.lines.length} learned</title></g>`});
   wrap.innerHTML=`<svg id="treeSvg" xmlns="${NS}"><defs><clipPath id="tclip" clipPathUnits="userSpaceOnUse"><circle r="1"/></clipPath>
     <radialGradient id="tglow"><stop offset="0" stop-color="rgba(129,182,76,.18)"/><stop offset="1" stop-color="rgba(129,182,76,0)"/></radialGradient></defs>
-    <g id="tview"><circle r="${STEP*0.55}" fill="url(#tglow)"/>${[...new Set(all.map(t=>t.r))].filter(r=>r).map(r=>`<circle class="tring" r="${r}"/>`).join("")}${e}${nodes}</g></svg>`;
+    <g id="tview"><circle r="${STEP*0.55}" fill="url(#tglow)"/>${[...new Set(all.map(t=>t.r))].filter(r=>r).map(r=>`<circle class="tring" r="${r}"/>`).join("")}${e}${glow}${litE}${nodes}</g></svg>`;
   // fit everything, then allow drag + wheel/pinch zoom
   const xs=all.map(t=>t.x),ys=all.map(t=>t.y),pad=70;
   const vb={x:Math.min(...xs)-pad,y:Math.min(...ys)-pad,w:Math.max(...xs)-Math.min(...xs)+pad*2,h:Math.max(...ys)-Math.min(...ys)+pad*2+30};
-  const svg=$("treeSvg"),set=()=>svg.setAttribute("viewBox",`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);set();
+  const svg=$("treeSvg");let raf=0;const apply=()=>{raf=0;svg.setAttribute("viewBox",`${vb.x} ${vb.y} ${vb.w} ${vb.h}`)},set=()=>{if(!raf)raf=requestAnimationFrame(apply)};apply();
   const pt=(cx,cy)=>{const b=svg.getBoundingClientRect(),s=Math.max(vb.w/b.width,vb.h/b.height);return [vb.x+(cx-b.left-(b.width-vb.w/s)/2)*s,vb.y+(cy-b.top-(b.height-vb.h/s)/2)*s,s]};
   svg.addEventListener("wheel",ev=>{ev.preventDefault();const [px,py]=pt(ev.clientX,ev.clientY),k=Math.exp(ev.deltaY*0.0015);
     const nw=Math.min(Math.max(vb.w*k,200),20000);const kk=nw/vb.w;vb.x=px-(px-vb.x)*kk;vb.y=py-(py-vb.y)*kk;vb.w*=kk;vb.h*=kk;set()},{passive:false});
@@ -12387,7 +12400,9 @@ openMap=function(){
   $("mapTitle").textContent="Opening tree: "+F.name;
   $("mapBody").innerHTML=`<div class="tree"><aside class="treeInfo" id="treeInfo"></aside><div class="treeWrap" id="treeWrap"></div>
     <div class="treeTools"><button type="button" id="treeZoomIn" aria-label="Zoom in">+</button><button type="button" id="treeZoomOut" aria-label="Zoom out">−</button><button type="button" id="treeFit">Fit</button></div>
-    <div class="treeHint">Drag to move · scroll to zoom · click a node</div></div>`;
+    <div class="treeHint">Drag to move · scroll to zoom · click a node</div>
+    <div class="treeLegend"><b>How to read it</b><span>Start is at the bottom. Each branch is a point where the line splits. Each line ends on the outer edge, with its name.</span>
+      <span><i class="lg you"></i>your move <i class="lg opp"></i>${OPP()}'s choice</span><span><i class="lg done"></i>learned (glows) <i class="lg todo"></i>not yet</span></div></div>`;
   $("mapModal").classList.add("treeModal");$("mapModal").hidden=false;drawTree(f);$("closeMap").focus();
 };
 $("openMap").onclick=openMap;
