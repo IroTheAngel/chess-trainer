@@ -12415,6 +12415,15 @@ openMap=function(){
 };
 $("openMap").onclick=openMap;
 }
+
+/* XP only once per run of a line: stepping back and forward at the end, or jumping to the end, gives no extra XP */
+{const _fin=finishLine,_ll=loadLine;
+  finishLine=function(){const quiet=S.runDone||S.noXP;S.runDone=true;
+    if(!quiet)return _fin.apply(this,arguments);
+    const a=award;award=()=>{};try{return _fin.apply(this,arguments)}finally{award=a}};
+  loadLine=function(){S.runDone=false;S.noXP=false;return _ll.apply(this,arguments)};
+  $("bEnd").onclick=()=>{if(S.busy)return;S.msg=null;if(S.ply<LINES[S.li].san.length)S.noXP=true;gotoPly(LINES[S.li].san.length);finishLine()};
+}
 })();
 
 </script>

@@ -73,7 +73,7 @@ static class Program
         {
             k.SetValue("DisplayName", Name);
             k.SetValue("DisplayIcon", InstalledExe + ",0");
-            k.SetValue("DisplayVersion", "1.3");
+            k.SetValue("DisplayVersion", "1.4");
             k.SetValue("Publisher", "IroTheAngel");
             k.SetValue("InstallLocation", InstallDir);
             k.SetValue("UninstallString", "\"" + InstalledExe + "\" --uninstall");
