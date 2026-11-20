@@ -73,7 +73,7 @@ static class Program
         {
             k.SetValue("DisplayName", Name);
             k.SetValue("DisplayIcon", InstalledExe + ",0");
-            k.SetValue("DisplayVersion", "1.4");
+            k.SetValue("DisplayVersion", "1.5");
             k.SetValue("Publisher", "IroTheAngel");
             k.SetValue("InstallLocation", InstallDir);
             k.SetValue("UninstallString", "\"" + InstalledExe + "\" --uninstall");
@@ -256,6 +256,7 @@ static class Program
                 if (path == "") path = "index.html";
                 if (path.Contains("..")) { Respond(e, null, path); return; }
                 if (path.StartsWith("voice/")) { Respond(e, await Voice(path.Substring(6)), path); return; }
+                if (path == "index.html") { Respond(e, await Page(), path); return; }
                 Respond(e, Read(Path.Combine(InstallDir, "app", path.Replace('/', '\\'))), path);
             }
             catch
@@ -263,6 +264,38 @@ static class Program
                 try { Respond(e, null, "x"); } catch { }
             }
             finally { deferral.Complete(); }
+        }
+
+
+        // The trainer page updates itself: each start loads the newest page from the website (a few seconds at most),
+        // keeps a copy on this PC, and falls back to that copy (or the installed one) when offline.
+        static async Task<byte[]> Page()
+        {
+            string keep = Path.Combine(DataDir, "app", "index.html");
+            try
+            {
+                using (var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(6)))
+                {
+                    var res = await Http.GetAsync(Site + "index.html?v=" + DateTime.UtcNow.Ticks, cts.Token);
+                    if (res.IsSuccessStatusCode)
+                    {
+                        string html = await res.Content.ReadAsStringAsync();
+                        if (html.Contains("REP.lines") && html.Length > 200000)
+                        {
+                            // the website registers a service worker; the app does not need one
+                            html = System.Text.RegularExpressions.Regex.Replace(html, "<script>[^<]*serviceWorker[^<]*</script>", "");
+                            byte[] b = System.Text.Encoding.UTF8.GetBytes(html);
+                            Directory.CreateDirectory(Path.GetDirectoryName(keep));
+                            File.WriteAllBytes(keep + ".part", b);
+                            if (File.Exists(keep)) File.Delete(keep);
+                            File.Move(keep + ".part", keep);
+                            return b;
+                        }
+                    }
+                }
+            }
+            catch { }
+            return Read(keep) ?? Read(Path.Combine(InstallDir, "app", "index.html"));
         }
 
         static byte[] Read(string path)
